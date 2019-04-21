@@ -12,6 +12,7 @@
   "dependencies": {
     "@ludic/box2d": "github:Ludic/box2d",
     "@ludic/ein": "github:Ludic/ein",
+    "@ludic/ludic": "github:Ludic/ludic",
     "@ludic/ludic-box2d": "github:Ludic/ludic-box2d"
   },
   "devDependencies": {
