@@ -1,3 +1,6 @@
 import Component from 'ein'
 
-console.log("component", Component)
+export default class PositionComponent implements Component {
+	public x: number
+	public y: number
+}
