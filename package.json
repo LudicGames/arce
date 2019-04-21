@@ -9,6 +9,12 @@
   },
   "author": "",
   "license": "ISC",
+  "dependencies": {
+    "@ludic/box2d": "github:Ludic/box2d",
+    "@ludic/ein": "github:Ludic/ein",
+    "@ludic/ludic-box2d": "github:Ludic/ludic-box2d",
+    "@ludic/ludic-vue": "github:Ludic/ludic-vue"
+  },
   "devDependencies": {
     "parcel-bundler": "^1.12.3",
     "typescript": "^3.4.4"
