@@ -8,8 +8,12 @@ export default class Arce extends Ludic {
     super(opts)
 
     this.screenManager = new ScreenManager(this)
+
+    // TODO
+    // this.screenManager.addScreenEventListener(this)
     this.screenManager.addScreen(new GameScreen())
   }
+
 
   update(delta: number){
     console.log("updating")
