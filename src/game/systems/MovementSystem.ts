@@ -1,8 +1,4 @@
-import ComponentMapper from 'ein/ComponentMapper'
-import Family from 'ein/Family'
-import Entity from 'ein/Entity'
-import System from 'ein/System'
-import Engine from 'ein/Engine'
+import {ComponentMapper, Family, Entity, System, Engine} from '@ludic/ein'
 
 import PositionComponent from '../components/PositionComponent'
 import MovementComponent from '../components/MovementComponent'

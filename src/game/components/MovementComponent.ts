@@ -1,5 +1,5 @@
-import Component from 'ein'
-import Vector2 from '../utils/Vector2'
+import { Component } from '@ludic/ein'
+import { Vector2 } from '@ludic/ludic'
 
 export default class MovementComponent implements Component {
 	public velocity: Vector2 = new Vector2()

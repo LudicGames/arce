@@ -1,6 +1,11 @@
-import Component from 'ein'
+import { Component } from '@ludic/ein'
 
 export default class PositionComponent implements Component {
 	public x: number
 	public y: number
+
+  constructor(x: number, y: number){
+    this.x = x
+    this.y = y
+  }
 }

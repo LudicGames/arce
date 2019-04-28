@@ -1,10 +1,5 @@
-import ComponentMapper from 'ein/ComponentMapper'
-import Family from 'ein/Family'
-import Entity from 'ein/Entity'
-import System from 'ein/System'
-import Engine from 'ein/Engine'
-
-import PositionComponent from '../components/position'
+import {ComponentMapper, Family, Entity, System, Engine} from '@ludic/ein'
+import PositionComponent from '../components/PositionComponent'
 
 interface Klass<T> {
   new(): T
@@ -41,6 +36,9 @@ export default class PositionSystem extends System {
 		  const p: PositionComponent | null = this.pm.get(entity)
 
       if(p){
+        // console.log(entity)
+        // console.log(p)
+        // p.x += 1
 		    // p.x += m.velocityX * deltaTime
 		    // p.y += m.velocityY * deltaTime
       }
