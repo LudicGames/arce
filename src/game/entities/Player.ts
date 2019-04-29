@@ -1,25 +1,23 @@
-import { Entity, Engine} from 'ein'
+import { Entity } from '@ludic/ein'
 
-import MovementComponent from '../components/MovementComponent.ts'
-import PositionComponent from '../components/PositionComponent.ts'
+import MovementComponent from '../components/MovementComponent'
+import PositionComponent from '../components/PositionComponent'
+import RenderComponent from '../components/RenderComponent';
 
-export default class Player {
-  public movement: MovementComponent
-  public position: PositionComponent
-  public entity: Entity
-  public engine: Engine
 
-  constructor(engine: Engine){
-    this.engine = engine
-    this.entity = engine.createEntity()
+export default class Player extends Entity {
 
-    this.position = new PositionComponent(2, 2)
-    this.movement = new MovementComponent(0, 0)
+  constructor(){
+    super()
 
-    this.entity.add(this.position)
-    this.entity.add(this.movement)
+    this.add(new PositionComponent(2, 2))
+    this.add(new MovementComponent())
+    this.add(new RenderComponent(this.render))
+  }
 
-    engine.addEntity(this.entity)
+  render(ctx: CanvasRenderingContext2D, position: PositionComponent){
+    ctx.fillStyle = 'blue'
+    ctx.fillRect(position.x, position.y, 2, 2)
   }
 
 

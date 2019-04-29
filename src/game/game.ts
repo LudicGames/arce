@@ -1,4 +1,4 @@
-import Ludic, { LudicOptions, ScreenManager, ScreenManagerListener, Screen } from '@ludic/ludic'
+import Ludic, { LudicOptions, ScreenManager, ScreenManagerListener, Screen, GamepadController } from '@ludic/ludic'
 import GameScreen from './screens/GameScreen'
 
 export default class Arce extends Ludic implements ScreenManagerListener {
@@ -7,6 +7,8 @@ export default class Arce extends Ludic implements ScreenManagerListener {
   constructor(opts: LudicOptions){
     console.log("constructor", opts)
     super(opts)
+
+    Ludic.input.addController(new GamepadController())
 
     this.screenManager = new ScreenManager()
     this.screenManager.addScreenEventListener(this)
@@ -27,8 +29,9 @@ export default class Arce extends Ludic implements ScreenManagerListener {
 
   }
 
-  update(delta: number){
+  update(time: number, delta: number){
     // console.log("updating")
+    Ludic.input.update(time, delta)
     this.screenManager.update(delta)
   }
 }

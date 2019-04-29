@@ -1,5 +1,7 @@
+import Ludic from '@ludic/ludic'
 import {ComponentMapper, Family, Entity, System, Engine} from '@ludic/ein'
 import PositionComponent from '../components/PositionComponent'
+import GamepadComponent from '../components/GamepadComponent';
 
 interface Klass<T> {
   new(): T
@@ -7,6 +9,7 @@ interface Klass<T> {
 
 export default class PositionSystem extends System {
   private pm: ComponentMapper<PositionComponent> = ComponentMapper.getFor(PositionComponent as Klass<PositionComponent>)
+  private gm: ComponentMapper<GamepadComponent> = ComponentMapper.getFor(GamepadComponent as Klass<GamepadComponent>)
 
   public entities: Entity[]
   public components = [PositionComponent]
@@ -14,7 +17,7 @@ export default class PositionSystem extends System {
 
   constructor(){
     super()
-    this.family = Family.all([PositionComponent]).get()
+    this.family = Family.all([PositionComponent, GamepadComponent]).get()
     // console.log("this.family: ", this.family)
   }
 
@@ -33,14 +36,22 @@ export default class PositionSystem extends System {
     if(this.engine)  this.entities = this.engine.getEntitiesFor(this.family)
     this.entities.forEach((entity: Entity) => {
 
-		  const p: PositionComponent | null = this.pm.get(entity)
-
+		  const p: PositionComponent = this.pm.get(entity)
+		  const g: GamepadComponent = this.gm.get(entity)
+      const gamepad = Ludic.input.gamepad.get(g.index)
+      
       if(p){
-        // console.log(entity)
-        // console.log(p)
-        // p.x += 1
-		    // p.x += m.velocityX * deltaTime
-		    // p.y += m.velocityY * deltaTime
+        // Update the position based on gamepad actions
+        if(gamepad.right.pressed) {
+          p.x += 0.2
+        } else if(gamepad.left.pressed) {
+          p.x -= 0.2
+        }
+        if(gamepad.up.pressed) {
+          p.y += 0.2
+        } else if(gamepad.down.pressed) {
+          p.y -= 0.2
+        }
       }
     })
   }

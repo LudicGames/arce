@@ -31,11 +31,11 @@ export default class MovementSystem extends System {
     this.entities.forEach((entity: Entity) => {
 
 		  const p: PositionComponent | null = this.pm.get(entity)
-		  const m: MovementComponent | null = this.mm.get(entity)
+      const m: MovementComponent | null = this.mm.get(entity)
 
       if(p && m){
-		    p.x += m.velocityX * deltaTime
-		    p.y += m.velocityY * deltaTime
+		    p.x += m.velocity.x * deltaTime
+		    p.y += m.velocity.y * deltaTime
       }
     })
   }
