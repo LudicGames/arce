@@ -2,14 +2,13 @@ import {ComponentMapper, Family, Entity, System, Engine} from '@ludic/ein'
 import PositionComponent from '../components/PositionComponent'
 import RenderComponent from '../components/RenderComponent'
 import Ludic, { Camera } from '@ludic/ludic'
+import FillComponent from '../components/FillComponent'
 
-interface Klass<T> {
-  new(): T
-}
 
 export default class RenderSystem extends System {
-  private rm: ComponentMapper<RenderComponent> = ComponentMapper.getFor(RenderComponent as Klass<RenderComponent>)
-  private pm: ComponentMapper<PositionComponent> = ComponentMapper.getFor(PositionComponent as Klass<PositionComponent>)
+  private rm: ComponentMapper<RenderComponent> = ComponentMapper.getFor(RenderComponent)
+  private pm: ComponentMapper<PositionComponent> = ComponentMapper.getFor(PositionComponent)
+  private fillComponentMapper: ComponentMapper<FillComponent> = ComponentMapper.getFor(FillComponent)
 
   public entities: Entity[]
   public components = [RenderComponent]
@@ -19,7 +18,7 @@ export default class RenderSystem extends System {
 
   constructor(camera: Camera){
     super()
-    this.family = Family.all([RenderComponent]).get()
+    this.family = Family.all(this.components).get()
     this.camera = camera
   }
 
@@ -46,7 +45,11 @@ export default class RenderSystem extends System {
     
       const r: RenderComponent = this.rm.get(entity)
       const pos: PositionComponent = this.pm.get(entity)
+      const fillComponent = this.fillComponentMapper.get(entity)
       if(r){
+        if(fillComponent){
+          ctx.fillStyle = fillComponent.fillStyle
+        }
         r.renderFn(ctx, pos)
       }
       ctx.restore()

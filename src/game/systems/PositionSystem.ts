@@ -1,15 +1,11 @@
 import Ludic from '@ludic/ludic'
 import {ComponentMapper, Family, Entity, System, Engine} from '@ludic/ein'
 import PositionComponent from '../components/PositionComponent'
-import GamepadComponent from '../components/GamepadComponent';
-
-interface Klass<T> {
-  new(): T
-}
+import GamepadComponent from '../components/GamepadComponent'
 
 export default class PositionSystem extends System {
-  private pm: ComponentMapper<PositionComponent> = ComponentMapper.getFor(PositionComponent as Klass<PositionComponent>)
-  private gm: ComponentMapper<GamepadComponent> = ComponentMapper.getFor(GamepadComponent as Klass<GamepadComponent>)
+  private pm: ComponentMapper<PositionComponent> = ComponentMapper.getFor(PositionComponent)
+  private gm: ComponentMapper<GamepadComponent> = ComponentMapper.getFor(GamepadComponent)
 
   public entities: Entity[]
   public components = [PositionComponent]

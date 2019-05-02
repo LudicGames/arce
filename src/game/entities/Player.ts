@@ -16,7 +16,6 @@ export default class Player extends Entity {
   }
 
   render(ctx: CanvasRenderingContext2D, position: PositionComponent){
-    ctx.fillStyle = 'blue'
     ctx.fillRect(position.x, position.y, 2, 2)
   }
 

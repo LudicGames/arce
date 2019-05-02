@@ -4,8 +4,8 @@ import PositionComponent from '../components/PositionComponent'
 import MovementComponent from '../components/MovementComponent'
 
 export default class MovementSystem extends System {
-  private pm: ComponentMapper<PositionComponent> = ComponentMapper.getFor(PositionComponent.constructor.prototype)
-  private mm: ComponentMapper<MovementComponent> = ComponentMapper.getFor(MovementComponent.constructor.prototype)
+  private pm: ComponentMapper<PositionComponent> = ComponentMapper.getFor(PositionComponent)
+  private mm: ComponentMapper<MovementComponent> = ComponentMapper.getFor(MovementComponent)
 
   public entities: Entity[]
   public components = [PositionComponent, MovementComponent]
@@ -29,9 +29,9 @@ export default class MovementSystem extends System {
     if(this.engine)  this.entities = this.engine.getEntitiesFor(this.family)
 
     this.entities.forEach((entity: Entity) => {
-
-		  const p: PositionComponent | null = this.pm.get(entity)
-      const m: MovementComponent | null = this.mm.get(entity)
+      
+		  const p = this.pm.get(entity)
+      const m = this.mm.get(entity)
 
       if(p && m){
 		    p.x += m.velocity.x * deltaTime

@@ -6,6 +6,7 @@ import PositionComponent from '../components/PositionComponent'
 import Player from '../entities/Player';
 import RenderSystem from '../systems/RenderSystem';
 import GamepadComponent from '../components/GamepadComponent';
+import PlayerCreate from '../systems/PlayerCreate';
 
 export default class GameScreen extends Screen {
   engine: Engine
@@ -29,14 +30,15 @@ export default class GameScreen extends Screen {
   initSystems(){
     this.engine.addSystem(new PositionSystem())
     this.engine.addSystem(new RenderSystem(this.camera))
+    this.engine.addSystem(new PlayerCreate())
   }
 
   initEntities(){
 	  // const entity = this.engine.createEntity()
     // entity.add(new PositionComponent(10, 0))
-    this.player = new Player()
-    this.player.add(new GamepadComponent(0))
-    this.engine.addEntity(this.player)
+    // this.player = new Player()
+    // this.player.add(new GamepadComponent(0))
+    // this.engine.addEntity(this.player)
   }
 
   update(delta: number){
