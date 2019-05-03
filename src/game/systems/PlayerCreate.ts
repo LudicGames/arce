@@ -13,6 +13,7 @@ export default class PlayerCreate extends System {
     2: 'green',
     3: 'purple',
   }
+  time: number = Date.now()
 
   constructor(){
     super(100)
@@ -36,14 +37,7 @@ export default class PlayerCreate extends System {
     })
     // We do not need to process this system too often so we
     // time it out for 500ms
-    this.timeout(500)
-  }
-
-  timeout(ms: number){
-    this.setProcessing(false)
-    window.setTimeout(()=>{
-      this.setProcessing(true)
-    }, ms)
+    this.sleep(500)
   }
   
   createPlayer(gamepad: Gamepad){

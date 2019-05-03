@@ -7,6 +7,7 @@ import Player from '../entities/Player';
 import RenderSystem from '../systems/RenderSystem';
 import GamepadComponent from '../components/GamepadComponent';
 import PlayerCreate from '../systems/PlayerCreate';
+import PlayerControlSystem from '../systems/PlayerControlSystem';
 
 export default class GameScreen extends Screen {
   engine: Engine
@@ -28,7 +29,7 @@ export default class GameScreen extends Screen {
   }
 
   initSystems(){
-    this.engine.addSystem(new PositionSystem())
+    this.engine.addSystem(new PlayerControlSystem())
     this.engine.addSystem(new RenderSystem(this.camera))
     this.engine.addSystem(new PlayerCreate())
   }
