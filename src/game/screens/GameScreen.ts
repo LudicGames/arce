@@ -3,11 +3,11 @@ import {Engine, Entity} from '@ludic/ein'
 
 import PositionSystem from '../systems/PositionSystem'
 import PositionComponent from '../components/PositionComponent'
-import Player from '../entities/Player';
-import RenderSystem from '../systems/RenderSystem';
-import GamepadComponent from '../components/GamepadComponent';
-import PlayerCreate from '../systems/PlayerCreate';
-import PlayerControlSystem from '../systems/PlayerControlSystem';
+import Player from '../entities/Player'
+import RenderSystem from '../systems/RenderSystem'
+import GamepadComponent from '../components/GamepadComponent'
+import PlayerCreate from '../systems/PlayerCreate'
+import PlayerControlSystem from '../systems/PlayerControlSystem'
 
 export default class GameScreen extends Screen {
   engine: Engine
@@ -23,7 +23,6 @@ export default class GameScreen extends Screen {
   }
 
   public onAddedToManager() {
-    console.log("added to Manager")
     this.initSystems()
     this.initEntities()
   }
