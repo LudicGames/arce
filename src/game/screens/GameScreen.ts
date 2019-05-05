@@ -1,18 +1,13 @@
 import Ludic, {Screen, Camera} from '@ludic/ludic'
 import {Engine, Entity} from '@ludic/ein'
 
-import PositionSystem from '../systems/PositionSystem'
-import PositionComponent from '../components/PositionComponent'
-import Player from '../entities/Player'
-import RenderSystem from '../systems/RenderSystem'
-import GamepadComponent from '../components/GamepadComponent'
-import PlayerCreate from '../systems/PlayerCreate'
-import PlayerControlSystem from '../systems/PlayerControlSystem'
+import Level1 from '../levels/Level1'
 
 export default class GameScreen extends Screen {
   engine: Engine
   player: Player
   camera: Camera
+  level: any
 
   constructor() {
     super()
@@ -20,25 +15,13 @@ export default class GameScreen extends Screen {
     this.camera = new Camera(Ludic.canvas)
     this.camera.centerWorldToCamera()
     this.camera.pixelsToMeters = 20
+
+    this.level = new Level1(this.engine, this.camera)
   }
 
   public onAddedToManager() {
-    this.initSystems()
-    this.initEntities()
-  }
-
-  initSystems(){
-    this.engine.addSystem(new PlayerControlSystem())
-    this.engine.addSystem(new RenderSystem(this.camera))
-    this.engine.addSystem(new PlayerCreate())
-  }
-
-  initEntities(){
-	  // const entity = this.engine.createEntity()
-    // entity.add(new PositionComponent(10, 0))
-    // this.player = new Player()
-    // this.player.add(new GamepadComponent(0))
-    // this.engine.addEntity(this.player)
+    this.level.initSystems()
+    this.level.initEntities()
   }
 
   update(delta: number){
