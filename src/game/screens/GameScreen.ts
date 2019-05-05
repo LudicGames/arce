@@ -2,6 +2,8 @@ import Ludic, {Screen, Camera} from '@ludic/ludic'
 import {Engine, Entity} from '@ludic/ein'
 
 import Level1 from '../levels/Level1'
+import Level2 from '../levels/Level2'
+import Level3 from '../levels/Level3'
 
 export default class GameScreen extends Screen {
   engine: Engine
