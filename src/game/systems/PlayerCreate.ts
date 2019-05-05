@@ -3,6 +3,7 @@ import Ludic from '@ludic/ludic'
 import Player from '../entities/Player'
 import GamepadComponent from '../components/GamepadComponent'
 import FillComponent from '../components/FillComponent'
+import PlayerStateComponent from '../components/PlayerStateComponent';
 
 export default class PlayerCreate extends System {
 
@@ -44,6 +45,7 @@ export default class PlayerCreate extends System {
     const player = new Player()
     player.add(new FillComponent(this.playerColors[gamepad.index]))
     player.add(new GamepadComponent(gamepad.index))
+    player.add(new PlayerStateComponent())
     return player
   }
 }
