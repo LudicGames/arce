@@ -3,7 +3,7 @@ import Ludic from '@ludic/ludic'
 import Player from '../entities/Player'
 import GamepadComponent from '../components/GamepadComponent'
 import FillComponent from '../components/FillComponent'
-import PlayerStateComponent from '../components/PlayerStateComponent';
+import PlayerStateComponent from '../components/PlayerStateComponent'
 
 export default class PlayerCreate extends System {
 
@@ -40,7 +40,7 @@ export default class PlayerCreate extends System {
     // time it out for 500ms
     this.sleep(500)
   }
-  
+
   createPlayer(gamepad: Gamepad){
     const player = new Player()
     player.add(new FillComponent(this.playerColors[gamepad.index]))
