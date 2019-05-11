@@ -2,9 +2,11 @@ import Ludic, {Screen, Camera} from '@ludic/ludic'
 import {Engine, Entity} from '@ludic/ein'
 
 // Systems
-import RenderSystem from '../systems/RenderSystem'
+import PlayerRenderSystem from '../systems/PlayerRenderSystem'
+import TileRenderSystem from '../systems/TileRenderSystem'
 import PlayerCreate from '../systems/PlayerCreate'
 import PlayerControlSystem from '../systems/PlayerControlSystem'
+import TileActivationSystem from '../systems/TileActivationSystem'
 
 // Entities
 import Player from '../entities/Player'
@@ -21,12 +23,14 @@ export default class Level2 {
 
   initSystems(){
     this.engine.addSystem(new PlayerControlSystem())
-    this.engine.addSystem(new RenderSystem(this.camera))
+    this.engine.addSystem(new TileRenderSystem(this.camera))
+    this.engine.addSystem(new PlayerRenderSystem(this.camera))
+    this.engine.addSystem(new TileActivationSystem())
     this.engine.addSystem(new PlayerCreate())
   }
 
   initEntities(){
-    this.initTiles(4)
+    this.initTiles(3)
   }
   initTiles(size: number){
     const ptm = this.camera.pixelsToMeters
@@ -34,7 +38,7 @@ export default class Level2 {
     const w = this.camera.width / ptm
     const d = size * 2
 
-    const totalY = Math.ceil(h / size) + 2
+    const totalY = Math.ceil(h / size) + 3
     const totalX = Math.ceil(w / (d + size))
 
 
@@ -55,12 +59,12 @@ export default class Level2 {
     for(let i=0; i<totalX; i++){
       for(let j=0; j<totalY; j++){
         let extra = 0
-        if(j % 2) extra = d * .8
+        if(j % 2) extra = d * .775
         this.engine.addEntity(new Tile(x+extra, y, size))
-        y += size * .9
+        y += size * .89
       }
       y = 0
-      x += size * 3.2
+      x += size * 3.1
     }
   }
 }

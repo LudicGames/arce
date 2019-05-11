@@ -1,6 +1,24 @@
 import { Component } from '@ludic/ein'
 
 export default class PlayerStateComponent extends Component {
-  speed = 0.4
-  vibrating = false
+  speed: number
+  size: number
+  vibrating: boolean
+  playerType: string
+  color: string
+
+  constructor(size: number = 2, playerType: string = 'type1'){
+    super()
+
+    this.speed = 0.5
+    this.size = size
+    this.vibrating = false
+    this.playerType = playerType
+
+    if(this.playerType == 'type1'){
+      this.color = 'rgba(192, 57, 43,1.0)'
+    } else {
+      this.color = 'orange'
+    }
+  }
 }
