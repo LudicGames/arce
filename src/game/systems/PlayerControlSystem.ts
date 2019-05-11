@@ -20,7 +20,7 @@ export default class PlayerControlSystem extends IteratingSystem {
     super(Family.all([GamepadComponent, PositionComponent, PlayerStateComponent]).get())
   }
 
-  async processEntity(ent: Entity, deltaTime: number) {
+  processEntity(ent: Entity, deltaTime: number) {
     const p = this.positionMapper.get(ent)
     const g = this.gamepadMapper.get(ent)
     const state = this.playerStateMapper.get(ent)
@@ -45,7 +45,7 @@ export default class PlayerControlSystem extends IteratingSystem {
         if(gamepad.gamepad.vibrationActuator != null){
           state.vibrating = true
           // @ts-ignore
-          gamepad.gamepad.vibrationActuator.playEffect("dual-rumble", {
+          gamepad.vibrate({
             duration: 150,
             strongMagnitude: 0.0,
             weakMagnitude: 1.0
@@ -54,8 +54,8 @@ export default class PlayerControlSystem extends IteratingSystem {
           })
         }
       }
-      // normalize the player vector
-      playerVector.normalize().scale(state.speed)
+      // normalize the player vector and apply speed multiplier
+      playerVector.scale(state.speed)
       p.x += playerVector.x
       p.y += playerVector.y
     }

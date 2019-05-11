@@ -1,4 +1,4 @@
-import Game from "~/src/game/game"
+import Game from '/src/game/game'
 
 new Game({
   el: '#game',

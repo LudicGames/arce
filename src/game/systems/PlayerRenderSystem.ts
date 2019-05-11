@@ -3,6 +3,8 @@ import PositionComponent from '../components/PositionComponent'
 import RenderComponent from '../components/RenderComponent'
 import PlayerStateComponent from '../components/PlayerStateComponent'
 import Ludic, { Camera } from '@ludic/ludic'
+import { MechComponentMapper } from '../components/mappers';
+import Player from '../entities/Player';
 
 export default class PlayerRenderSystem extends System {
   private rm: ComponentMapper<RenderComponent> = ComponentMapper.getFor(RenderComponent)
@@ -41,15 +43,19 @@ export default class PlayerRenderSystem extends System {
     this.camera.drawAxes(ctx)
     this.entities.forEach((entity: Entity) => {
       ctx.save()
-
-      const r: RenderComponent = this.rm.get(entity)
-      const pos: PositionComponent = this.pm.get(entity)
-      const state: PlayerStateComponent = this.sm.get(entity)
-      if(r){
-        r.renderFn(ctx, pos, state)
-      }
+      this.renderPlayer(ctx, entity)
       ctx.restore()
     })
     ctx.restore()
+  }
+
+  renderPlayer(ctx: CanvasRenderingContext2D, player: Player){
+    const r = this.rm.get(player)
+    const pos = this.pm.get(player)
+    const state = this.sm.get(player)
+    const mechComp = MechComponentMapper.get(player)
+
+    ctx.fillStyle = mechComp.type
+    ctx.fillRect(pos.x, pos.y, state.size, state.size)
   }
 }

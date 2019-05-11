@@ -1,15 +1,17 @@
-import Ludic, {Screen, Camera, Vector2} from '@ludic/ludic'
+import Ludic, {Screen, Camera, ScreenManager, Vector2} from '@ludic/ludic'
 import {Engine, Entity} from '@ludic/ein'
 
 import Level1 from '../levels/Level1'
 import Level2 from '../levels/Level2'
 import Level3 from '../levels/Level3'
+import Player from '../entities/Player';
+import BaseLevel from '../levels/BaseLevel';
 
 export default class GameScreen extends Screen {
   engine: Engine
   player: Player
   camera: Camera
-  level: any
+  level: BaseLevel
 
   constructor() {
     super()
@@ -21,9 +23,10 @@ export default class GameScreen extends Screen {
     this.level = new Level2(this.engine, this.camera)
   }
 
-  public onAddedToManager() {
-    this.level.initSystems()
-    this.level.initEntities()
+  public onAddedToManager(manager: ScreenManager, finalData?: {[key: number]: string}) {
+    this.level.init({
+      playerMap: finalData
+    })
   }
 
   update(delta: number){

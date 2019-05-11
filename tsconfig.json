@@ -9,7 +9,7 @@
     "target": "esnext",
     "moduleResolution": "node",
     "paths": {
-      "~/*": ["*"]
+      "/*": ["./*"]
     }
   },
   "include": ["./src/**/*"],

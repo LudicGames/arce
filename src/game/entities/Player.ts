@@ -12,14 +12,6 @@ export default class Player extends Entity {
 
     this.add(new PositionComponent(2, 2))
     this.add(new MovementComponent())
-    this.add(new RenderComponent(this.render))
     this.add(new PlayerStateComponent())
   }
-
-  render(ctx: CanvasRenderingContext2D, position: PositionComponent, state: PlayerStateComponent){
-    ctx.fillStyle = state.color
-    ctx.fillRect(position.x, position.y, state.size, state.size)
-  }
-
-
 }

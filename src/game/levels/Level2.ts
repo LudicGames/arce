@@ -1,24 +1,36 @@
 import Ludic, {Screen, Camera} from '@ludic/ludic'
-import {Engine, Entity} from '@ludic/ein'
+import {Engine, Entity, Component} from '@ludic/ein'
 
 // Systems
 import PlayerRenderSystem from '../systems/PlayerRenderSystem'
 import TileRenderSystem from '../systems/TileRenderSystem'
-import PlayerCreate from '../systems/PlayerCreate'
 import PlayerControlSystem from '../systems/PlayerControlSystem'
 import TileActivationSystem from '../systems/TileActivationSystem'
 
 // Entities
 import Player from '../entities/Player'
 import Tile from '../entities/Tile'
+import BaseLevel from './BaseLevel'
+import GamepadComponent from '../components/GamepadComponent';
+import MechComponent from '../components/MechComponent';
 
-export default class Level2 {
+interface LevelOptions {
+  playerMap: {[key: string]: string}
+}
+
+export default class Level2 extends BaseLevel {
   engine: Engine
   camera: Camera
 
   constructor(engine: Engine, camera: Camera){
+    super()
     this.engine = engine
     this.camera = camera
+  }
+
+  init(options: LevelOptions){
+    this.initSystems()
+    this.initEntities(options.playerMap)
   }
 
   initSystems(){
@@ -26,11 +38,11 @@ export default class Level2 {
     this.engine.addSystem(new TileRenderSystem(this.camera))
     this.engine.addSystem(new PlayerRenderSystem(this.camera))
     this.engine.addSystem(new TileActivationSystem())
-    this.engine.addSystem(new PlayerCreate())
   }
 
-  initEntities(){
+  initEntities(playerMap: LevelOptions['playerMap']){
     this.initTiles(3)
+    this.initPlayers(playerMap)
   }
   initTiles(size: number){
     const ptm = this.camera.pixelsToMeters
@@ -66,5 +78,14 @@ export default class Level2 {
       y = 0
       x += size * 3.1
     }
+  }
+
+  initPlayers(playerMap: LevelOptions['playerMap']){
+    Object.entries(playerMap).forEach(([index, type]) => {
+      const player = new Player()
+      player.add(new GamepadComponent(parseInt(index)))
+      player.add(new MechComponent(type))
+      this.engine.addEntity(player)
+    })
   }
 }
