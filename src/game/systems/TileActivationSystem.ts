@@ -1,4 +1,3 @@
-import intersects from 'intersects'
 import Ludic, { Camera } from '@ludic/ludic'
 import {ComponentMapper, Family, Entity, System, Engine} from '@ludic/ein'
 
