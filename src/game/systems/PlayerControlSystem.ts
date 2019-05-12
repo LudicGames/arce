@@ -3,6 +3,7 @@ import GamepadComponent from '../components/GamepadComponent';
 import PositionComponent from '../components/PositionComponent';
 import Ludic, { Vector2 } from '@ludic/ludic';
 import PlayerStateComponent from '../components/PlayerStateComponent';
+import TileStateComponent from '../components/TileStateComponent';
 
 /**
  * This system is in charge of translating gamepad inputs into
@@ -40,20 +41,34 @@ export default class PlayerControlSystem extends IteratingSystem {
         playerVector.y = -gamepad.ly
       }
 
-      if(gamepad.cross.pressed && !state.vibrating) {
-        // @ts-ignore - chrome uses this key instead of hapticActuator
-        if(gamepad.gamepad.vibrationActuator != null){
-          state.vibrating = true
-          // @ts-ignore
-          gamepad.vibrate({
-            duration: 150,
-            strongMagnitude: 0.0,
-            weakMagnitude: 1.0
-          }).then(()=>{
-            state.vibrating = false
-          })
+      // if(gamepad.cross.pressed && !state.vibrating) {
+      //   // @ts-ignore - chrome uses this key instead of hapticActuator
+      //   if(gamepad.gamepad.vibrationActuator != null){
+      //     state.vibrating = true
+      //     // @ts-ignore
+      //     gamepad.vibrate({
+      //       duration: 150,
+      //       strongMagnitude: 0.0,
+      //       weakMagnitude: 1.0
+      //     }).then(()=>{
+      //       state.vibrating = false
+      //     })
+      //   }
+      // }
+      if(state.currentTile != null){
+        if(gamepad.cross.buttonUp){
+          let tileState = state.currentTile.getComponent(TileStateComponent)
+          tileState.building = !tileState.building
         }
       }
+
+      // speed boost
+      if(gamepad.circle.buttonDown){
+        state.boosting = true
+      } else if(gamepad.circle.buttonUp){
+        state.boosting = false
+      }
+
       // normalize the player vector and apply speed multiplier
       playerVector.scale(state.speed)
       p.x += playerVector.x

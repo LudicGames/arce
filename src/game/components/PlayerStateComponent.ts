@@ -2,17 +2,19 @@ import { Component } from '@ludic/ein'
 import Tile from '../entities/Tile'
 
 export default class PlayerStateComponent extends Component {
-  speed: number
   size: number
   vibrating: boolean
   playerType: string
   color: string
   currentTile: Tile
+  boosting: boolean
+  boostMultiplier = 1.2
+
+  private _speed = 0.5
 
   constructor(size: number = 2, playerType: string = 'type1'){
     super()
 
-    this.speed = 0.5
     this.size = size
     this.vibrating = false
     this.playerType = playerType
@@ -22,5 +24,9 @@ export default class PlayerStateComponent extends Component {
     } else {
       this.color = 'orange'
     }
+  }
+
+  get speed(): number {
+    return this.boosting ? this._speed * this.boostMultiplier : this._speed
   }
 }
