@@ -5,7 +5,7 @@ import RenderComponent from '../components/RenderComponent'
 import TileStateComponent from '../components/TileStateComponent'
 
 export default class Tile extends Entity {
-  
+
   constructor(x: number, y: number, sideLength: number, tileType: string){
     super()
     this.add(new PositionComponent(x, y))

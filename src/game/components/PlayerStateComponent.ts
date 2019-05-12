@@ -1,4 +1,5 @@
 import { Component } from '@ludic/ein'
+import Tile from '../entities/Tile'
 
 export default class PlayerStateComponent extends Component {
   speed: number
@@ -6,6 +7,7 @@ export default class PlayerStateComponent extends Component {
   vibrating: boolean
   playerType: string
   color: string
+  currentTile: Tile
 
   constructor(size: number = 2, playerType: string = 'type1'){
     super()

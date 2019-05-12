@@ -37,42 +37,59 @@ export default class TileActivationSystem extends System {
       this.entities = this.engine.getEntitiesFor(this.family)
     }
 
-    let player = this.entities.find(entity => {
-      return !!this.psm.get(entity)
-    })
+    // Player entities
+    const players =  this.entities.filter(entity => !!this.psm.get(entity))
+    const tiles   =  this.entities.filter(entity => !!this.tsm.get(entity))
 
-    if(player){
-      const playerPos = this.pm.get(player)
-      const playerState = this.psm.get(player)
-
-      const xb = playerPos.x 	//top-left corner of box
-      const yb = playerPos.y 	//top-left corner of box
-      const wb = playerState.size 	//width of box
-      const hb = playerState.size  	//height of box
-
-      this.entities.forEach((entity: Entity) => {
-        // Only Tiles
-        let tileState: TileStateComponent = this.tsm.get(entity)
-        if(!!tileState){
-          const pos: PositionComponent = this.pm.get(entity)
-          let points = []	// [x1, y1, x2, y2, ... xn, yn] of polygon
-          let x = pos.x
-          let y = pos.y
-          let sideLength = tileState.sideLength
-
-          points.push(x + sideLength * Math.cos(0), y + sideLength * Math.sin(0))
-          for(let side = 0; side < 7; side++){
-            points.push(x + sideLength * Math.cos(side * 2 * Math.PI / 6))
-            points.push(y + sideLength * Math.sin(side * 2 * Math.PI / 6))
-          }
-
-          if(intersects.boxPolygon(xb, yb, wb, hb, points)){
-            // console.log("intersect")
-            tileState.active = true
-          } else {
-            tileState.active = false
-          }
+    if(players.length){
+      let playerInfo = players.map(player => {
+        const playerPos = this.pm.get(player)
+        const playerState = this.psm.get(player)
+        const centerPointX = playerPos.x + (playerState.size / 2)
+        const centerPointY = playerPos.y + (playerState.size / 2)
+        return {
+          player: player,
+          closestTile: null,
+          closestTileDistance: null,
+          cX: centerPointX,
+          cY: centerPointY,
         }
+      })
+
+      tiles.forEach((tile: Entity) => {
+        let tileState: TileStateComponent = this.tsm.get(tile)
+        let tilePos: PositionComponent = this.pm.get(tile)
+        let x = tilePos.x
+        let y = tilePos.y
+
+        playerInfo.forEach(p => {
+          // Calc distance from current Tile
+          let distance = Math.sqrt((Math.pow((x - p.cX), 2) + Math.pow((y - p.cY), 2)))
+          if(p.closestTileDistance == null || p.closestTileDistance > distance){
+            p.closestTileDistance = distance
+            p.closestTile = tile
+          }
+        })
+      })
+
+      // Set active tile if either player is closest
+      tiles.forEach(tile => {
+        let tileState: TileStateComponent = this.tsm.get(tile)
+        tileState.playersOn = []
+        tileState.active = false
+
+        playerInfo.forEach(p => {
+          if(p.closestTile == tile){
+            tileState.active = true
+            tileState.playersOn.push(p.player)
+          }
+        })
+      })
+
+      // Set the players active tile
+      playerInfo.forEach(p => {
+        const playerState = this.psm.get(p.player)
+        playerState.currentTile = p.closestTile
       })
     }
   }
