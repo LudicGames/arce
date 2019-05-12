@@ -4,15 +4,18 @@ import {Engine, Entity, Component} from '@ludic/ein'
 // Systems
 import PlayerRenderSystem from '../systems/PlayerRenderSystem'
 import TileRenderSystem from '../systems/TileRenderSystem'
+import CastleRenderSystem from '../systems/CastleRenderSystem'
 import PlayerControlSystem from '../systems/PlayerControlSystem'
 import TileActivationSystem from '../systems/TileActivationSystem'
 
 // Entities
 import Player from '../entities/Player'
 import Tile from '../entities/Tile'
+import Castle from '../entities/Castle'
+
 import BaseLevel from './BaseLevel'
-import GamepadComponent from '../components/GamepadComponent';
-import MechComponent from '../components/MechComponent';
+import GamepadComponent from '../components/GamepadComponent'
+import MechComponent from '../components/MechComponent'
 
 interface LevelOptions {
   playerMap: {[key: string]: string}
@@ -21,11 +24,13 @@ interface LevelOptions {
 export default class Level2 extends BaseLevel {
   engine: Engine
   camera: Camera
+  tiles: Tile[]
 
   constructor(engine: Engine, camera: Camera){
     super()
     this.engine = engine
     this.camera = camera
+    this.tiles = []
   }
 
   init(options: LevelOptions){
@@ -36,6 +41,7 @@ export default class Level2 extends BaseLevel {
   initSystems(){
     this.engine.addSystem(new PlayerControlSystem())
     this.engine.addSystem(new TileRenderSystem(this.camera))
+    this.engine.addSystem(new CastleRenderSystem(this.camera))
     this.engine.addSystem(new PlayerRenderSystem(this.camera))
     this.engine.addSystem(new TileActivationSystem())
   }
@@ -43,6 +49,7 @@ export default class Level2 extends BaseLevel {
   initEntities(playerMap: LevelOptions['playerMap']){
     this.initTiles(3)
     this.initPlayers(playerMap)
+    this.initCastle(this.tiles[1])
   }
   initTiles(size: number){
     const ptm = this.camera.pixelsToMeters
@@ -72,7 +79,9 @@ export default class Level2 extends BaseLevel {
       for(let j=0; j<totalY; j++){
         let extra = 0
         if(j % 2) extra = d * .775
-        this.engine.addEntity(new Tile(x+extra, y, size))
+        const tile = new Tile(x+extra, y, size)
+        this.engine.addEntity(tile)
+        this.tiles.push(tile)
         y += size * .89
       }
       y = 0
@@ -87,5 +96,10 @@ export default class Level2 extends BaseLevel {
       player.add(new MechComponent(type))
       this.engine.addEntity(player)
     })
+  }
+
+  initCastle(tile: Tile){
+    const castle = new Castle(tile)
+    this.engine.addEntity(castle)
   }
 }
