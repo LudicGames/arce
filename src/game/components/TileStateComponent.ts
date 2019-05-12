@@ -16,7 +16,7 @@ export default class TileStateComponent extends Component {
     this.playersOn: []
 
     if(this.tileType == 'build'){
-      this.color = 'rgba(230, 126, 34,1.0)'
+      this.color = 'rgba(230, 126, 34, .2)'
     } else {
       this.color = 'green'
     }
