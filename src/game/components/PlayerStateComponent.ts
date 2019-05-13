@@ -12,7 +12,7 @@ export default class PlayerStateComponent extends Component {
 
   private _speed = 0.5
 
-  constructor(size: number = 2, playerType: string = 'type1'){
+  constructor(size: number = 1, playerType: string = 'type1'){
     super()
 
     this.size = size

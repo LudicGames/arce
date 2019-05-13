@@ -56,6 +56,8 @@ export default class PlayerRenderSystem extends System {
     const mechComp = MechComponentMapper.get(player)
 
     ctx.fillStyle = mechComp.type
-    ctx.fillRect(pos.x, pos.y, state.size, state.size)
+    ctx.beginPath()
+    ctx.arc(pos.x, pos.y, state.size, 0, Math.PI * 2)
+    ctx.fill()
   }
 }

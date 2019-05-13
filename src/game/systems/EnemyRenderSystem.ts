@@ -1,14 +1,15 @@
+import Ludic, { Camera } from '@ludic/ludic'
 import {ComponentMapper, Family, Entity, System, Engine} from '@ludic/ein'
 import PositionComponent from '../components/PositionComponent'
-import TileStateComponent from '../components/TileStateComponent'
-import Ludic, { Camera } from '@ludic/ludic'
+import EnemyStateComponent from '../components/EnemyStateComponent'
+import Enemy from '../entities/Enemy'
 
-export default class TileRenderSystem extends System {
+export default class EnemyRenderSystem extends System {
   private pm: ComponentMapper<PositionComponent> = ComponentMapper.getFor(PositionComponent)
-  private tm: ComponentMapper<TileStateComponent> = ComponentMapper.getFor(TileStateComponent)
+  private sm: ComponentMapper<EnemyStateComponent> = ComponentMapper.getFor(EnemyStateComponent)
 
   public entities: Entity[]
-  public components = [TileStateComponent]
+  public components = [EnemyStateComponent]
   public family: Family
 
   camera: Camera
@@ -34,32 +35,20 @@ export default class TileRenderSystem extends System {
       this.entities = this.engine.getEntitiesFor(this.family)
     }
     ctx.save()
-    Ludic.canvas.clear()
     this.camera.update(ctx)
-    this.camera.drawAxes(ctx)
     this.entities.forEach((entity: Entity) => {
       ctx.save()
-
-      const pos: PositionComponent = this.pm.get(entity)
-      const state: TileStateComponent = this.tm.get(entity)
-
-      const x = pos.x
-      const y = pos.y
-      ctx.strokeStyle = state.color
-
-      if(state.active) ctx.fillStyle = state.color
-      ctx.lineWidth = .1
-
-      ctx.beginPath()
-      ctx.moveTo(x + state.sideLength * Math.cos(0), y + state.sideLength * Math.sin(0))
-      for(let side = 0; side < 7; side++) {
-        ctx.lineTo(x + state.sideLength * Math.cos(side * 2 * Math.PI / 6), y + state.sideLength * Math.sin(side * 2 * Math.PI / 6));
-      }
-      ctx.fill()
-      ctx.stroke()
-
+      this.renderEnemy(ctx, entity)
       ctx.restore()
     })
     ctx.restore()
+  }
+
+  renderEnemy(ctx: CanvasRenderingContext2D, enemy: Enemy){
+    const pos = this.pm.get(enemy)
+    const state = this.sm.get(enemy)
+
+    ctx.fillStyle = state.color
+    ctx.fillRect(pos.x, pos.y, state.size, state.size)
   }
 }
