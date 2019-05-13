@@ -5,6 +5,7 @@ import {Engine, Entity, Component} from '@ludic/ein'
 import PlayerRenderSystem from '../systems/PlayerRenderSystem'
 import TileRenderSystem from '../systems/TileRenderSystem'
 import CastleRenderSystem from '../systems/CastleRenderSystem'
+import EnemyRenderSystem from '../systems/EnemyRenderSystem'
 import PlayerControlSystem from '../systems/PlayerControlSystem'
 import TileActivationSystem from '../systems/TileActivationSystem'
 
@@ -33,6 +34,7 @@ export default class Level2 extends BaseLevel {
     this.engine = engine
     this.camera = camera
     this.tiles = []
+    this.enemies = []
   }
 
   init(options: LevelOptions){
@@ -44,6 +46,7 @@ export default class Level2 extends BaseLevel {
     this.engine.addSystem(new PlayerControlSystem())
     this.engine.addSystem(new TileRenderSystem(this.camera))
     this.engine.addSystem(new CastleRenderSystem(this.camera))
+    this.engine.addSystem(new EnemyRenderSystem(this.camera))
     this.engine.addSystem(new PlayerRenderSystem(this.camera))
     this.engine.addSystem(new TileActivationSystem())
   }
@@ -52,6 +55,7 @@ export default class Level2 extends BaseLevel {
     this.initTiles(3)
     this.initPlayers(playerMap)
     this.initCastle(this.tiles[1])
+    this.initEnemies(this.tiles[55])
   }
   initTiles(size: number){
     const ptm = this.camera.pixelsToMeters

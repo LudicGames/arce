@@ -6,13 +6,15 @@ export default class EnemyStateComponent extends Component {
   health: number
   speed: number
   color: string
+  size: number
 
-  constructor(currentTile: Tile, speed: number = .25, health: number = 10){
+  constructor(currentTile: Tile, speed: number = .25, health: number = 10, size: number = 1){
     super()
 
-    this.currentTile = tile
+    this.currentTile = currentTile
     this.speed = speed
     this.health = health
     this.color = 'red'
+    this.size = size
   }
 }
