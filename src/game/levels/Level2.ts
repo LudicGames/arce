@@ -12,6 +12,7 @@ import TileActivationSystem from '../systems/TileActivationSystem'
 import Player from '../entities/Player'
 import Tile from '../entities/Tile'
 import Castle from '../entities/Castle'
+import Enemy from '../entities/Enemy'
 
 import BaseLevel from './BaseLevel'
 import GamepadComponent from '../components/GamepadComponent'
@@ -25,6 +26,7 @@ export default class Level2 extends BaseLevel {
   engine: Engine
   camera: Camera
   tiles: Tile[]
+  enemies: Enemy[]
 
   constructor(engine: Engine, camera: Camera){
     super()
@@ -102,4 +104,13 @@ export default class Level2 extends BaseLevel {
     const castle = new Castle(tile)
     this.engine.addEntity(castle)
   }
+
+  initEnemies(tile: Tile, total: number = 1){
+    for(let i=0; i<total; i++){
+      const enemy = new Enemy(tile)
+      this.engine.addEntity(enemy)
+      this.enemies.push(enemy)
+    }
+  }
+
 }

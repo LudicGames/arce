@@ -57,7 +57,7 @@ export default class PlayerRenderSystem extends System {
 
     ctx.fillStyle = mechComp.type
     ctx.beginPath()
-    ctx.arc(pos.x, pos.y, state.size, 0, Math.PI * 2)
+    ctx.arc(pos.x + (state.size / 2), pos.y + (state.size / 2), state.size, 0, Math.PI * 2)
     ctx.fill()
   }
 }
