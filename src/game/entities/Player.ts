@@ -2,7 +2,6 @@ import { Entity } from '@ludic/ein'
 
 import MovementComponent from '../components/MovementComponent'
 import PositionComponent from '../components/PositionComponent'
-import RenderComponent from '../components/RenderComponent'
 import PlayerStateComponent from '../components/PlayerStateComponent'
 
 export default class Player extends Entity {

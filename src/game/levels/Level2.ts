@@ -2,11 +2,12 @@ import Ludic, {Screen, Camera} from '@ludic/ludic'
 import {Engine, Entity, Component} from '@ludic/ein'
 
 // Systems
+import PlayerControlSystem from '../systems/PlayerControlSystem'
 import PlayerRenderSystem from '../systems/PlayerRenderSystem'
 import TileRenderSystem from '../systems/TileRenderSystem'
 import CastleRenderSystem from '../systems/CastleRenderSystem'
 import EnemyRenderSystem from '../systems/EnemyRenderSystem'
-import PlayerControlSystem from '../systems/PlayerControlSystem'
+import EnemyMovementSystem from '../systems/EnemyMovementSystem'
 import TileActivationSystem from '../systems/TileActivationSystem'
 
 // Entities
@@ -48,6 +49,7 @@ export default class Level2 extends BaseLevel {
     this.engine.addSystem(new CastleRenderSystem(this.camera))
     this.engine.addSystem(new EnemyRenderSystem(this.camera))
     this.engine.addSystem(new PlayerRenderSystem(this.camera))
+    this.engine.addSystem(new EnemyMovementSystem())
     this.engine.addSystem(new TileActivationSystem())
   }
 
