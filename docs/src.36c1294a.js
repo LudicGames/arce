@@ -98,4 +98,4 @@ var e;!function(t,s){"object"==typeof exports&&"object"==typeof module?module.ex
 },{"@ludic/ludic":"jftt","./screens/GameScreen":"wAQi","./screens/CharacterSelectScreen":"pq7o"}],"9B6d":[function(require,module,exports) {
 "use strict";var e=r(require("/src/game/game"));function r(e){return e&&e.__esModule?e:{default:e}}new e.default({el:"#game"}).start();
 },{"/src/game/game":"9rwB"}]},{},["9B6d"], null)
-//# sourceMappingURL=docs/src.36c1294a.js.map
+//# sourceMappingURL=/src.36c1294a.js.map
