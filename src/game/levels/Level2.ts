@@ -4,11 +4,16 @@ import {Engine, Entity, Component} from '@ludic/ein'
 // Systems
 import PlayerControlSystem from '../systems/PlayerControlSystem'
 import PlayerRenderSystem from '../systems/PlayerRenderSystem'
+
 import TileRenderSystem from '../systems/TileRenderSystem'
+import TileActivationSystem from '../systems/TileActivationSystem'
+
 import CastleRenderSystem from '../systems/CastleRenderSystem'
+
 import EnemyRenderSystem from '../systems/EnemyRenderSystem'
 import EnemyMovementSystem from '../systems/EnemyMovementSystem'
-import TileActivationSystem from '../systems/TileActivationSystem'
+import EnemySpawnSystem from '../systems/EnemySpawnSystem'
+
 
 // Entities
 import Player from '../entities/Player'
@@ -51,13 +56,13 @@ export default class Level2 extends BaseLevel {
     this.engine.addSystem(new PlayerRenderSystem(this.camera))
     this.engine.addSystem(new EnemyMovementSystem())
     this.engine.addSystem(new TileActivationSystem())
+    this.engine.addSystem(new EnemySpawnSystem())
   }
 
   initEntities(playerMap: LevelOptions['playerMap']){
     this.initTiles(3)
     this.initPlayers(playerMap)
     this.initCastle(this.tiles[1])
-    this.initEnemies(this.tiles[55])
   }
   initTiles(size: number){
     const ptm = this.camera.pixelsToMeters
@@ -110,13 +115,4 @@ export default class Level2 extends BaseLevel {
     const castle = new Castle(tile)
     this.engine.addEntity(castle)
   }
-
-  initEnemies(tile: Tile, total: number = 1){
-    for(let i=0; i<total; i++){
-      const enemy = new Enemy(tile)
-      this.engine.addEntity(enemy)
-      this.enemies.push(enemy)
-    }
-  }
-
 }

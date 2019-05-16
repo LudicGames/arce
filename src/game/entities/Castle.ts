@@ -1,4 +1,5 @@
 import { Entity } from '@ludic/ein'
+
 import CastleStateComponent from '../components/CastleStateComponent'
 
 export default class Castle extends Entity {
