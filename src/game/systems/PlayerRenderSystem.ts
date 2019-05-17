@@ -35,9 +35,7 @@ export default class PlayerRenderSystem extends System {
       this.entities = this.engine.getEntitiesFor(this.family)
     }
     ctx.save()
-    // Ludic.canvas.clear()
     const {camera} = this.engine.getSingletonComponent(CameraComponentMapper)
-    camera.update(ctx)
     camera.drawAxes(ctx)
     this.entities.forEach((entity: Entity) => {
       ctx.save()

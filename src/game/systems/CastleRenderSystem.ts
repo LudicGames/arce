@@ -34,8 +34,6 @@ export default class CastleRenderSystem extends System {
       this.entities = this.engine.getEntitiesFor(this.family)
     }
     ctx.save()
-    const {camera} = this.engine.getSingletonComponent(CameraComponentMapper)
-    camera.update(ctx)
     this.entities.forEach((entity: Entity) => {
       const state: TileStateComponent = this.tm.get(entity)
       const pos: PositionComponent = this.pm.get(state.tile)

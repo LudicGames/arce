@@ -7,6 +7,7 @@ import Level3 from '../levels/Level3'
 import Player from '../entities/Player';
 import BaseLevel from '../levels/BaseLevel';
 import CameraComponent from '../components/CameraComponent';
+import CameraRenderSystem from '../systems/CameraRenderSystem';
 
 export default class GameScreen extends Screen {
   engine: Engine
@@ -28,6 +29,7 @@ export default class GameScreen extends Screen {
     camera.offset = new Vector2(0, camera.height)
     camera.pixelsToMeters = 20
     this.engine.addSingletonComponent(new CameraComponent(camera))
+    this.engine.addSystem(new CameraRenderSystem(0))
   }
 
   public onAddedToManager(manager: ScreenManager, finalData?: {[key: number]: string}) {
@@ -37,6 +39,9 @@ export default class GameScreen extends Screen {
   }
 
   update(delta: number){
-	  this.engine.update(delta)
+    Ludic.canvas.context.save()
+    Ludic.canvas.clear()
+    this.engine.update(delta)
+    Ludic.canvas.context.restore()
   }
 }
