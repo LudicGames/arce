@@ -6,21 +6,28 @@ import Level2 from '../levels/Level2'
 import Level3 from '../levels/Level3'
 import Player from '../entities/Player';
 import BaseLevel from '../levels/BaseLevel';
+import CameraComponent from '../components/CameraComponent';
 
 export default class GameScreen extends Screen {
   engine: Engine
   player: Player
-  camera: Camera
   level: BaseLevel
 
   constructor() {
     super()
     this.engine = new Engine()
-    this.camera = new Camera(Ludic.canvas)
+    // this.camera = new Camera(Ludic.canvas)
+
     // this.camera.centerWorldToCamera()
-    this.camera.offset = new Vector2(0, this.camera.height)
-    this.camera.pixelsToMeters = 20
-    this.level = new Level2(this.engine, this.camera)
+    this.createCamera()
+    this.level = new Level2(this.engine)
+  }
+
+  createCamera(){
+    const camera = new Camera(Ludic.canvas)
+    camera.offset = new Vector2(0, camera.height)
+    camera.pixelsToMeters = 20
+    this.engine.addSingletonComponent(new CameraComponent(camera))
   }
 
   public onAddedToManager(manager: ScreenManager, finalData?: {[key: number]: string}) {

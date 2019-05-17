@@ -3,6 +3,8 @@ import {ComponentMapper, Family, Entity, System, Engine} from '@ludic/ein'
 
 import PositionComponent from '../components/PositionComponent'
 import CastleStateComponent from '../components/CastleStateComponent'
+import { CameraComponentMapper } from '../components/mappers';
+import TileStateComponent from '../components/TileStateComponent';
 
 export default class CastleRenderSystem extends System {
   private pm: ComponentMapper<PositionComponent> = ComponentMapper.getFor(PositionComponent)
@@ -12,12 +14,9 @@ export default class CastleRenderSystem extends System {
   public components = [CastleStateComponent]
   public family: Family
 
-  camera: Camera
-
-  constructor(camera: Camera){
+  constructor(){
     super()
     this.family = Family.all(this.components).get()
-    this.camera = camera
   }
 
   public addedToEngine(engine: Engine): void {
@@ -35,7 +34,8 @@ export default class CastleRenderSystem extends System {
       this.entities = this.engine.getEntitiesFor(this.family)
     }
     ctx.save()
-    this.camera.update(ctx)
+    const {camera} = this.engine.getSingletonComponent(CameraComponentMapper)
+    camera.update(ctx)
     this.entities.forEach((entity: Entity) => {
       const state: TileStateComponent = this.tm.get(entity)
       const pos: PositionComponent = this.pm.get(state.tile)

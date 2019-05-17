@@ -28,51 +28,46 @@ export default class PlayerControlSystem extends IteratingSystem {
     const gamepad = Ludic.input.gamepad.get(g.index)
     
     if(p){
-      const playerVector = new Vector2(0,0)
-      // Update the position based on gamepad actions
-      if(gamepad.lx >= this.gamepadDeadzone) {
-        playerVector.x = gamepad.lx
-      } else if(gamepad.lx <= -this.gamepadDeadzone) {
-        playerVector.x = gamepad.lx
-      }
-      if(gamepad.ly >= this.gamepadDeadzone) {
-        playerVector.y = -gamepad.ly
-      } else if(gamepad.ly <= -this.gamepadDeadzone) {
-        playerVector.y = -gamepad.ly
+
+      // player can only move if they are not building
+      if(!state.building){
+        const playerVector = new Vector2(0,0)
+        // Update the position based on gamepad actions
+        if(gamepad.lx >= this.gamepadDeadzone) {
+          playerVector.x = gamepad.lx
+        } else if(gamepad.lx <= -this.gamepadDeadzone) {
+          playerVector.x = gamepad.lx
+        }
+        if(gamepad.ly >= this.gamepadDeadzone) {
+          playerVector.y = -gamepad.ly
+        } else if(gamepad.ly <= -this.gamepadDeadzone) {
+          playerVector.y = -gamepad.ly
+        }
+
+        // speed boost
+        if(gamepad.circle.buttonDown){
+          state.boosting = true
+        } else if(gamepad.circle.buttonUp){
+          state.boosting = false
+        }
+
+        // normalize the player vector and apply speed multiplier
+        playerVector.scale(state.speed)
+        p.x += playerVector.x
+        p.y += playerVector.y
       }
 
-      // if(gamepad.cross.pressed && !state.vibrating) {
-      //   // @ts-ignore - chrome uses this key instead of hapticActuator
-      //   if(gamepad.gamepad.vibrationActuator != null){
-      //     state.vibrating = true
-      //     // @ts-ignore
-      //     gamepad.vibrate({
-      //       duration: 150,
-      //       strongMagnitude: 0.0,
-      //       weakMagnitude: 1.0
-      //     }).then(()=>{
-      //       state.vibrating = false
-      //     })
-      //   }
-      // }
       if(state.currentTile != null){
+        let tileState = state.currentTile.getComponent(TileStateComponent)
         if(gamepad.cross.buttonUp){
-          let tileState = state.currentTile.getComponent(TileStateComponent)
           tileState.building = !tileState.building
+          state.building = true
+        }
+        if(state.building && gamepad.circle.buttonUp){
+          tileState.building = false
+          state.building = false
         }
       }
-
-      // speed boost
-      if(gamepad.circle.buttonDown){
-        state.boosting = true
-      } else if(gamepad.circle.buttonUp){
-        state.boosting = false
-      }
-
-      // normalize the player vector and apply speed multiplier
-      playerVector.scale(state.speed)
-      p.x += playerVector.x
-      p.y += playerVector.y
     }
   }
 }

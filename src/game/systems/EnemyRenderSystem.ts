@@ -3,6 +3,7 @@ import {ComponentMapper, Family, Entity, System, Engine} from '@ludic/ein'
 import PositionComponent from '../components/PositionComponent'
 import EnemyStateComponent from '../components/EnemyStateComponent'
 import Enemy from '../entities/Enemy'
+import { CameraComponentMapper } from '../components/mappers';
 
 export default class EnemyRenderSystem extends System {
   private pm: ComponentMapper<PositionComponent> = ComponentMapper.getFor(PositionComponent)
@@ -12,12 +13,9 @@ export default class EnemyRenderSystem extends System {
   public components = [EnemyStateComponent]
   public family: Family
 
-  camera: Camera
-
-  constructor(camera: Camera){
+  constructor(){
     super()
     this.family = Family.all(this.components).get()
-    this.camera = camera
   }
 
   public addedToEngine(engine: Engine): void {
@@ -35,7 +33,8 @@ export default class EnemyRenderSystem extends System {
       this.entities = this.engine.getEntitiesFor(this.family)
     }
     ctx.save()
-    this.camera.update(ctx)
+    const {camera} = this.engine.getSingletonComponent(CameraComponentMapper)
+    camera.update(ctx)
     this.entities.forEach((entity: Entity) => {
       ctx.save()
       this.renderEnemy(ctx, entity)

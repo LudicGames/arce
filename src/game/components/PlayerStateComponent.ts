@@ -9,6 +9,7 @@ export default class PlayerStateComponent extends Component {
   currentTile: Tile
   boosting: boolean
   boostMultiplier = 1.2
+  building: boolean = false
 
   private _speed = 0.5
 

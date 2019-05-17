@@ -2,6 +2,8 @@ import {ComponentMapper, Family, Entity, System, Engine} from '@ludic/ein'
 import PositionComponent from '../components/PositionComponent'
 import TileStateComponent from '../components/TileStateComponent'
 import Ludic, { Camera } from '@ludic/ludic'
+import CameraComponent from '../components/CameraComponent';
+import { CameraComponentMapper } from '../components/mappers';
 
 export default class TileRenderSystem extends System {
   private pm: ComponentMapper<PositionComponent> = ComponentMapper.getFor(PositionComponent)
@@ -11,12 +13,9 @@ export default class TileRenderSystem extends System {
   public components = [TileStateComponent]
   public family: Family
 
-  camera: Camera
-
-  constructor(camera: Camera){
+  constructor(){
     super()
     this.family = Family.all(this.components).get()
-    this.camera = camera
   }
 
   public addedToEngine(engine: Engine): void {
@@ -28,6 +27,10 @@ export default class TileRenderSystem extends System {
     this.entities = []
   }
 
+  get camera(){
+    return CameraComponentMapper.get(this.engine.getSingleton()).camera
+  }
+
   public update(deltaTime: number): void {
     const ctx = Ludic.canvas.context
     if(this.engine) {
@@ -35,6 +38,7 @@ export default class TileRenderSystem extends System {
     }
     ctx.save()
     Ludic.canvas.clear()
+    
     this.camera.update(ctx)
     this.camera.drawAxes(ctx)
     this.entities.forEach((entity: Entity) => {

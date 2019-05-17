@@ -24,6 +24,7 @@ import Enemy from '../entities/Enemy'
 import BaseLevel from './BaseLevel'
 import GamepadComponent from '../components/GamepadComponent'
 import MechComponent from '../components/MechComponent'
+import { CameraComponentMapper } from '../components/mappers';
 
 interface LevelOptions {
   playerMap: {[key: string]: string}
@@ -31,14 +32,12 @@ interface LevelOptions {
 
 export default class Level2 extends BaseLevel {
   engine: Engine
-  camera: Camera
   tiles: Tile[]
   enemies: Enemy[]
 
-  constructor(engine: Engine, camera: Camera){
+  constructor(engine: Engine){
     super()
     this.engine = engine
-    this.camera = camera
     this.tiles = []
     this.enemies = []
   }
@@ -50,10 +49,10 @@ export default class Level2 extends BaseLevel {
 
   initSystems(){
     this.engine.addSystem(new PlayerControlSystem())
-    this.engine.addSystem(new TileRenderSystem(this.camera))
-    this.engine.addSystem(new CastleRenderSystem(this.camera))
-    this.engine.addSystem(new EnemyRenderSystem(this.camera))
-    this.engine.addSystem(new PlayerRenderSystem(this.camera))
+    this.engine.addSystem(new TileRenderSystem())
+    this.engine.addSystem(new CastleRenderSystem())
+    this.engine.addSystem(new EnemyRenderSystem())
+    this.engine.addSystem(new PlayerRenderSystem())
     this.engine.addSystem(new EnemyMovementSystem())
     this.engine.addSystem(new TileActivationSystem())
     this.engine.addSystem(new EnemySpawnSystem())
@@ -65,9 +64,10 @@ export default class Level2 extends BaseLevel {
     this.initCastle(this.tiles[1])
   }
   initTiles(size: number){
-    const ptm = this.camera.pixelsToMeters
-    const h = this.camera.height / ptm
-    const w = this.camera.width / ptm
+    const camera = CameraComponentMapper.get(this.engine.getSingleton()).camera
+    const ptm = camera.pixelsToMeters
+    const h = camera.height / ptm
+    const w = camera.width / ptm
     const d = size * 2
 
     const totalY = Math.ceil(h / size) + 3

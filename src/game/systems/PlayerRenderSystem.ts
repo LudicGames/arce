@@ -3,7 +3,7 @@ import PositionComponent from '../components/PositionComponent'
 import RenderComponent from '../components/RenderComponent'
 import PlayerStateComponent from '../components/PlayerStateComponent'
 import Ludic, { Camera } from '@ludic/ludic'
-import { MechComponentMapper } from '../components/mappers';
+import { MechComponentMapper, CameraComponentMapper } from '../components/mappers';
 import Player from '../entities/Player';
 
 export default class PlayerRenderSystem extends System {
@@ -15,12 +15,9 @@ export default class PlayerRenderSystem extends System {
   public components = [PlayerStateComponent]
   public family: Family
 
-  camera: Camera
-
-  constructor(camera: Camera){
+  constructor(){
     super()
     this.family = Family.all(this.components).get()
-    this.camera = camera
   }
 
   public addedToEngine(engine: Engine): void {
@@ -39,8 +36,9 @@ export default class PlayerRenderSystem extends System {
     }
     ctx.save()
     // Ludic.canvas.clear()
-    this.camera.update(ctx)
-    this.camera.drawAxes(ctx)
+    const {camera} = this.engine.getSingletonComponent(CameraComponentMapper)
+    camera.update(ctx)
+    camera.drawAxes(ctx)
     this.entities.forEach((entity: Entity) => {
       ctx.save()
       this.renderPlayer(ctx, entity)
