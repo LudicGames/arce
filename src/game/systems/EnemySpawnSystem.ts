@@ -9,6 +9,17 @@ import EnemyStateComponent from '../components/EnemyStateComponent'
 
 import Enemy from '../entities/Enemy'
 
+export interface EnemyWave {
+  enemyGroups: EnemyGroup[]
+
+}
+
+export interface EnemyGroup {
+  enemyType: string
+  spawnTileIndex: number
+}
+
+
 export default class EnemySpawnSystem extends IntervalSystem {
   private pm: ComponentMapper<PositionComponent> = ComponentMapper.getFor(PositionComponent)
   private psm: ComponentMapper<PlayerStateComponent> = ComponentMapper.getFor(PlayerStateComponent)

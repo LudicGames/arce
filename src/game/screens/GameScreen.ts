@@ -2,12 +2,12 @@ import Ludic, {Screen, Camera, ScreenManager, Vector2} from '@ludic/ludic'
 import {Engine, Entity} from '@ludic/ein'
 
 import Level1 from '../levels/Level1'
-import Level2 from '../levels/Level2'
+import Level2 from '../levels/level2/level'
 import Level3 from '../levels/Level3'
-import Player from '../entities/Player';
-import BaseLevel from '../levels/BaseLevel';
-import CameraComponent from '../components/CameraComponent';
-import CameraRenderSystem from '../systems/CameraRenderSystem';
+import Player from '../entities/Player'
+import BaseLevel from '../levels/BaseLevel'
+import CameraComponent from '../components/CameraComponent'
+import CameraRenderSystem from '../systems/CameraRenderSystem'
 
 export default class GameScreen extends Screen {
   engine: Engine

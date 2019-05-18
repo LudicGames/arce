@@ -2,29 +2,29 @@ import Ludic, {Screen, Camera} from '@ludic/ludic'
 import {Engine, Entity, Component} from '@ludic/ein'
 
 // Systems
-import PlayerControlSystem from '../systems/PlayerControlSystem'
-import PlayerRenderSystem from '../systems/PlayerRenderSystem'
+import PlayerControlSystem from '../../systems/PlayerControlSystem'
+import PlayerRenderSystem from '../../systems/PlayerRenderSystem'
 
-import TileRenderSystem from '../systems/TileRenderSystem'
-import TileActivationSystem from '../systems/TileActivationSystem'
+import TileRenderSystem from '../../systems/TileRenderSystem'
+import TileActivationSystem from '../../systems/TileActivationSystem'
 
-import CastleRenderSystem from '../systems/CastleRenderSystem'
+import CastleRenderSystem from '../../systems/CastleRenderSystem'
 
-import EnemyRenderSystem from '../systems/EnemyRenderSystem'
-import EnemyMovementSystem from '../systems/EnemyMovementSystem'
-import EnemySpawnSystem from '../systems/EnemySpawnSystem'
+import EnemyRenderSystem from '../../systems/EnemyRenderSystem'
+import EnemyMovementSystem from '../../systems/EnemyMovementSystem'
+import EnemySpawnSystem from '../../systems/EnemySpawnSystem'
 
 
 // Entities
-import Player from '../entities/Player'
-import Tile from '../entities/Tile'
-import Castle from '../entities/Castle'
-import Enemy from '../entities/Enemy'
+import Player from '../../entities/Player'
+import Tile from '../../entities/Tile'
+import Castle from '../../entities/Castle'
+import Enemy from '../../entities/Enemy'
 
-import BaseLevel from './BaseLevel'
-import GamepadComponent from '../components/GamepadComponent'
-import MechComponent from '../components/MechComponent'
-import { CameraComponentMapper } from '../components/mappers';
+import BaseLevel from '../BaseLevel'
+import GamepadComponent from '../../components/GamepadComponent'
+import MechComponent from '../../components/MechComponent'
+import { CameraComponentMapper } from '../../components/mappers'
 
 interface LevelOptions {
   playerMap: {[key: string]: string}
