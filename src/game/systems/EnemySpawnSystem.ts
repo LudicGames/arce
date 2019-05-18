@@ -7,17 +7,12 @@ import PlayerStateComponent from '../components/PlayerStateComponent'
 import CastleStateComponent from '../components/CastleStateComponent'
 import EnemyStateComponent from '../components/EnemyStateComponent'
 
+import Player from '../entities/Player'
 import Enemy from '../entities/Enemy'
+import Tile from '../entities/Tile'
+import Castle from '../entities/Castle'
 
-export interface EnemyWave {
-  enemyGroups: EnemyGroup[]
-
-}
-
-export interface EnemyGroup {
-  enemyType: string
-  spawnTileIndex: number
-}
+import { EnemyWave, EnemyGroup } from '../utils/waves.ts'
 
 
 export default class EnemySpawnSystem extends IntervalSystem {
@@ -31,13 +26,17 @@ export default class EnemySpawnSystem extends IntervalSystem {
   public family: Family
   public engine: Engine
 
-  public spawnTileIndex: number
-  public spawnInterval: number
+  public waves: EnemyWave[]
+  public currentWave: EnemyWave
+  public interval: number
+  public intervalCount: number
 
-  constructor(spawnTileIndex: number = 33, spawnInterval: number = 1000){
-    super(spawnInterval)
-    this.spawnInterval = spawnInterval
-    this.spawnTileIndex = spawnTileIndex
+  constructor(waves: EnemyWave[], interval: number = 1000){
+    // TODO not sure about just running every 1sec here
+    super(interval)
+    this.waves = waves
+    this.interval =  interval
+    this.intervalCount = 0
     this.family = Family.all([]).get()
   }
 
@@ -49,25 +48,49 @@ export default class EnemySpawnSystem extends IntervalSystem {
     this.entities = []
   }
 
-  public updateInterval(): void {
-    const ctx = Ludic.canvas.context
+  public updateCurrentWave(){
+    const dt = this.interval * this.intervalCount
+    for(let i=0; i<this.waves.length; i++){
+      let wave = this.waves[i]
 
-    if(this.engine) {
-      this.entities = this.engine.getEntitiesFor(this.family)
+      // For the first wave
+      if(!this.currentWave && wave.start <= dt){
+        this.currentWave = wave
+        return
+      }
+
+      if(wave.start <= dt){
+        this.currentWave = wave
+      }
     }
+  }
 
-    const players = this.entities.filter(entity => !!this.psm.get(entity))
-    const tiles   = this.entities.filter(entity => !!this.tsm.get(entity))
-    const castles = this.entities.filter(entity => !!this.csm.get(entity))
-    const enemies = this.entities.filter(entity => !!this.esm.get(entity))
+  public updateInterval(): void {
+    this.intervalCount++
+    const dt = this.interval * this.intervalCount
+    this.updateCurrentWave()
+    if(!this.currentWave) return
 
-    console.log("spawn enemy")
+    this.entities = this.engine.getEntitiesFor(this.family)
+    const players: Player[] = this.entities.filter(entity => !!this.psm.get(entity))
+    const tiles: Tile[]     = this.entities.filter(entity => !!this.tsm.get(entity))
+    const castles: Castle[] = this.entities.filter(entity => !!this.csm.get(entity))
+    const enemies: Enemy[]  = this.entities.filter(entity => !!this.esm.get(entity))
 
-    const spawnTile = tiles[this.spawnTileIndex]
+    const currentWaveEnemies = enemies.filter(enemy => this.esm.get(enemy).wave == this.currentWave)
 
-    const enemy = new Enemy(spawnTile)
-    this.engine.addEntity(enemy)
-    // this.enemies.push(enemy)
+    this.currentWave.enemyGroups.forEach((currentGroup: EnemyGroup) => {
+      const currentGroupEnemies = currentWaveEnemies.filter(enemy => this.esm.get(enemy).group = currentGroup)
 
+      // Do we need to spawn more enemies for this group?
+      if(currentGroupEnemies.length < currentGroup.count){
+        const nextSpawnTime = this.currentWave.start + (currentGroupEnemies.length * currentGroup.spawnInterval)
+        if(nextSpawnTime == dt){
+          const spawnTile = tiles[currentGroup.spawnTileIndex]
+          const enemy = new Enemy(spawnTile, this.currentWave, currentGroup, currentGroup.type)
+          this.engine.addEntity(enemy)
+        }
+      }
+    })
   }
 }

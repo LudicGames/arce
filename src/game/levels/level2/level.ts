@@ -26,6 +26,10 @@ import GamepadComponent from '../../components/GamepadComponent'
 import MechComponent from '../../components/MechComponent'
 import { CameraComponentMapper } from '../../components/mappers'
 
+// Map and Waves
+import Map from './map.ts'
+import Waves from './waves.ts'
+
 interface LevelOptions {
   playerMap: {[key: string]: string}
 }
@@ -34,6 +38,8 @@ export default class Level2 extends BaseLevel {
   engine: Engine
   tiles: Tile[]
   enemies: Enemy[]
+  map: any
+  waves: any
 
   constructor(engine: Engine){
     super()
@@ -55,7 +61,7 @@ export default class Level2 extends BaseLevel {
     this.engine.addSystem(new PlayerRenderSystem())
     this.engine.addSystem(new EnemyMovementSystem())
     this.engine.addSystem(new TileActivationSystem())
-    this.engine.addSystem(new EnemySpawnSystem())
+    this.engine.addSystem(new EnemySpawnSystem(Waves))
   }
 
   initEntities(playerMap: LevelOptions['playerMap']){
@@ -63,6 +69,7 @@ export default class Level2 extends BaseLevel {
     this.initPlayers(playerMap)
     this.initCastle(this.tiles[1])
   }
+
   initTiles(size: number){
     const camera = CameraComponentMapper.get(this.engine.getSingleton()).camera
     const ptm = camera.pixelsToMeters
