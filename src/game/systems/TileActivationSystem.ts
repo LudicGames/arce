@@ -1,9 +1,11 @@
-import Ludic, { Camera } from '@ludic/ludic'
+import Ludic, { Camera, Vector2 } from '@ludic/ludic'
 import {ComponentMapper, Family, Entity, System, Engine} from '@ludic/ein'
 
 import PositionComponent from '../components/PositionComponent'
 import TileStateComponent from '../components/TileStateComponent'
 import PlayerStateComponent from '../components/PlayerStateComponent'
+
+import { Vector2Distance } from '../utils/Euclid'
 
 export default class TileActivationSystem extends System {
   private pm: ComponentMapper<PositionComponent> = ComponentMapper.getFor(PositionComponent)
@@ -63,7 +65,9 @@ export default class TileActivationSystem extends System {
 
         playerInfo.forEach(p => {
           // Calc distance from current Tile
-          let distance = Math.sqrt((Math.pow((x - p.cX), 2) + Math.pow((y - p.cY), 2)))
+          const p1 = new Vector2(p.cX, p.cY)
+          const p2 = new Vector2(x, y)
+          const distance = Vector2Distance(p1, p2)
           if(p.closestTileDistance == null || p.closestTileDistance > distance){
             p.closestTileDistance = distance
             p.closestTile = tile

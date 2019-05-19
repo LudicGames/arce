@@ -12,7 +12,7 @@ export default class EnemyStateComponent extends Component {
   wave: EnemyWave
   group: EnemyGroup
 
-  constructor(currentTile: Tile, wave: EnemyWave, group: EnemyGroup, type: string = "1", speed: number = .25, health: number = 10, size: number = 1){
+  constructor(currentTile: Tile, wave: EnemyWave, group: EnemyGroup, type: string = "1", speed: number = .1, health: number = 10, size: number = 1){
     super()
 
     this.currentTile = currentTile
