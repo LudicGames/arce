@@ -1,7 +1,9 @@
 import { Component } from '@ludic/ein'
 import Player from '../entities/Player'
+import { Coordinate } from '../utils/Map'
 
 export default class TileStateComponent extends Component {
+  coordinate: Coordinate
   active: boolean
   sideLength: number
   tileType: string
@@ -12,8 +14,9 @@ export default class TileStateComponent extends Component {
   private _color: string
   private _fill: string
 
-  constructor(active: boolean = false, sideLength: number = 3, tileType: string = 'build'){
+  constructor(coordinate: Coordinate, active: boolean = false, sideLength: number = 3, tileType: string = 'build'){
     super()
+    this.coordinate = coordinate
     this.active = active
     this.sideLength = sideLength
     this.tileType = tileType

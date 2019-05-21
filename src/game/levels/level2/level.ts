@@ -27,8 +27,8 @@ import MechComponent from '../../components/MechComponent'
 import { CameraComponentMapper } from '../../components/mappers'
 
 // Map and Waves
-import Map from './map.ts'
-import Waves from './waves.ts'
+import { generateMap, Map } from '../../utils/Map'
+import Waves from './waves'
 
 interface LevelOptions {
   playerMap: {[key: string]: string}
@@ -65,48 +65,14 @@ export default class Level2 extends BaseLevel {
   }
 
   initEntities(playerMap: LevelOptions['playerMap']){
-    this.initTiles(3)
+    this.initMap()
     this.initPlayers(playerMap)
     this.initCastle(this.tiles[1])
   }
 
-  initTiles(size: number){
-    const camera = CameraComponentMapper.get(this.engine.getSingleton()).camera
-    const ptm = camera.pixelsToMeters
-    const h = camera.height / ptm
-    const w = camera.width / ptm
-    const d = size * 2
-
-    const totalY = Math.ceil(h / size) + 3
-    const totalX = Math.ceil(w / (d + size))
-
-
-    // console.log("h: ", h)
-    // console.log("w: ", w)
-    // console.log("ptm: ", ptm)
-
-    // console.log("h/ptm: ", h/ptm)
-    // console.log("w/ptm: ", w/ptm)
-
-    // console.log("totalX: ", totalX)
-    // console.log("totalY: ", totalY)
-
-    let x = size / 2
-    let y = 0
-    let toggle = false
-
-    for(let i=0; i<totalX; i++){
-      for(let j=0; j<totalY; j++){
-        let extra = 0
-        if(j % 2) extra = d * .775
-        const tile = new Tile(x+extra, y, size)
-        this.engine.addEntity(tile)
-        this.tiles.push(tile)
-        y += size * .89
-      }
-      y = 0
-      x += size * 3.1
-    }
+  initMap(){
+    this.tiles = generateMap(CameraComponentMapper.get(this.engine.getSingleton()).camera)
+    this.tiles.forEach(tile => this.engine.addEntity(tile))
   }
 
   initPlayers(playerMap: LevelOptions['playerMap']){

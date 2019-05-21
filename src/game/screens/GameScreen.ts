@@ -28,6 +28,7 @@ export default class GameScreen extends Screen {
     const camera = new Camera(Ludic.canvas)
     camera.offset = new Vector2(0, camera.height)
     camera.pixelsToMeters = 20
+    camera.centerWorldToCamera()
     this.engine.addSingletonComponent(new CameraComponent(camera))
     this.engine.addSystem(new CameraRenderSystem(0))
   }

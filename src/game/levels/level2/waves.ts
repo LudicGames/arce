@@ -8,7 +8,7 @@ const waves: EnemyWave[] = [
         type: '1',
         count: 5,
         spawnInterval: 1000,
-        spawnTileIndex: 33
+        spawnTileIndex: 4
       }
     ]
   },
@@ -19,7 +19,7 @@ const waves: EnemyWave[] = [
         type: '2',
         count: 2,
         spawnInterval: 1000,
-        spawnTileIndex: 85
+        spawnTileIndex: 5
       }
     ]
   },
@@ -30,7 +30,7 @@ const waves: EnemyWave[] = [
         type: '1',
         count: 2,
         spawnInterval: 1000,
-        spawnTileIndex: 133
+        spawnTileIndex: 3
       }
     ]
   },
