@@ -3,7 +3,6 @@ import {Engine, Entity} from '@ludic/ein'
 
 import Level1 from '../levels/Level1'
 import Level2 from '../levels/level2/level'
-import Level3 from '../levels/Level3'
 import Player from '../entities/Player'
 import BaseLevel from '../levels/BaseLevel'
 import CameraComponent from '../components/CameraComponent'
@@ -28,7 +27,7 @@ export default class GameScreen extends Screen {
     const camera = new Camera(Ludic.canvas)
     camera.offset = new Vector2(0, camera.height)
     camera.pixelsToMeters = 20
-    camera.centerWorldToCamera()
+    // camera.centerWorldToCamera();
     this.engine.addSingletonComponent(new CameraComponent(camera))
     this.engine.addSystem(new CameraRenderSystem(0))
   }
