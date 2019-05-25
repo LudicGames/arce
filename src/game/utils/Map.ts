@@ -1,12 +1,25 @@
 import Ludic, {Screen, Camera, Vector2 } from '@ludic/ludic'
 import Tile from '../entities/Tile'
-import Hex, { OffsetCoordinate } from './Hex'
+import Castle from '../entities/Tile'
+import Hex, { OffsetCoordinate, CubeCoordinate } from './Hex'
 
-export interface Map {
-
+export interface MapTile {
+  cubeCoordinate?: CubeCoordinate
+  offsetCoordinate?: OffsetCoordinate
+  tileType?: string
 }
 
-export const generateMap = function(camera: Camera): Tile[]{
+export interface Map {
+  tiles?: MapTile[]
+  castles?: [
+    {
+      cubeCoordinate: CubeCoordinate
+    }
+  ]
+  playerSpawnPoints?: CubeCoordinate[]
+}
+
+export const generateMap = function(camera: Camera, mapConfig: Map): Tile[]{
   const ptm = camera.pixelsToMeters
 
   const mapH = Math.ceil(camera.height / ptm)
@@ -20,7 +33,6 @@ export const generateMap = function(camera: Camera): Tile[]{
   const w = totalXTiles * 1.5
   const hexSideLength = mapW / w
 
-
   let tiles: Tile[] = []
   for(let x=0; x <= 16; x++){
     for(let y=0; y >= -9; y--){
@@ -28,7 +40,9 @@ export const generateMap = function(camera: Camera): Tile[]{
       let hex = new Hex(offsetCoordinate, hexSideLength)
 
       // TODO add things like tile.type, color, from a map.json file
-      tiles.push(new Tile(hex))
+      let tileConfig = mapConfig.tiles.find(t => (t.offsetCoordinate.q == offsetCoordinate.q && t.offsetCoordinate.r == offsetCoordinate.r))
+      let tileType = tileConfig ? tileConfig.tileType : '1'
+      tiles.push(new Tile(hex, tileType))
     }
   }
 

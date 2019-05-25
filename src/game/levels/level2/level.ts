@@ -27,8 +27,9 @@ import MechComponent from '../../components/MechComponent'
 import { CameraComponentMapper } from '../../components/mappers'
 
 // Map and Waves
-import { generateMap, Map } from '../../utils/Map'
+import { generateMap } from '../../utils/Map'
 import Waves from './waves'
+import mapConfig from './mapConfig'
 
 interface LevelOptions {
   playerMap: {[key: string]: string}
@@ -74,7 +75,7 @@ export default class Level2 extends BaseLevel {
   }
 
   initMap(){
-    this.tiles = generateMap(CameraComponentMapper.get(this.engine.getSingleton()).camera)
+    this.tiles = generateMap(CameraComponentMapper.get(this.engine.getSingleton()).camera, mapConfig)
     this.tiles.forEach(tile => this.engine.addEntity(tile))
   }
 
