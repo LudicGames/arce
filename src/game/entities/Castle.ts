@@ -1,4 +1,5 @@
 import { Entity } from '@ludic/ein'
+import Tile from './Tile'
 
 import CastleStateComponent from '../components/CastleStateComponent'
 

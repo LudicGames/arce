@@ -46,6 +46,9 @@ export default class Level2 extends BaseLevel {
     this.engine = engine
     this.tiles = []
     this.enemies = []
+
+    // Hack for now
+    Ludic.debug = true
   }
 
   init(options: LevelOptions){

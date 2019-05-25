@@ -1,11 +1,10 @@
 import { Component } from '@ludic/ein'
 import Player from '../entities/Player'
-import { Coordinate } from '../utils/Map'
+import Hex from '../utils/Hex'
 
 export default class TileStateComponent extends Component {
-  coordinate: Coordinate
+  hex: Hex
   active: boolean
-  sideLength: number
   tileType: string
   // color: string
   playersOn: Player[]
@@ -14,11 +13,10 @@ export default class TileStateComponent extends Component {
   private _color: string
   private _fill: string
 
-  constructor(coordinate: Coordinate, active: boolean = false, sideLength: number = 3, tileType: string = 'build'){
+  constructor(hex: Hex, active: boolean = false, tileType: string = 'build'){
     super()
-    this.coordinate = coordinate
+    this.hex = hex
     this.active = active
-    this.sideLength = sideLength
     this.tileType = tileType
     this.playersOn = []
 

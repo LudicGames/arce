@@ -3,8 +3,8 @@ import {ComponentMapper, Family, Entity, System, Engine} from '@ludic/ein'
 
 import PositionComponent from '../components/PositionComponent'
 import CastleStateComponent from '../components/CastleStateComponent'
-import { CameraComponentMapper } from '../components/mappers';
-import TileStateComponent from '../components/TileStateComponent';
+import { CameraComponentMapper } from '../components/mappers'
+import TileStateComponent from '../components/TileStateComponent'
 
 export default class CastleRenderSystem extends System {
   private pm: ComponentMapper<PositionComponent> = ComponentMapper.getFor(PositionComponent)

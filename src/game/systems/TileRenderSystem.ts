@@ -41,25 +41,25 @@ export default class TileRenderSystem extends System {
       const y = pos.y
       ctx.strokeStyle = state.color
 
-
       ctx.fillStyle = state.fill
       ctx.lineWidth = .1
 
       ctx.beginPath()
-      ctx.moveTo(x + state.sideLength * Math.cos(0), y + state.sideLength * Math.sin(0))
+      ctx.moveTo(x + state.hex.sideLength * Math.cos(0), y + state.hex.sideLength * Math.sin(0))
       for(let side = 0; side < 7; side++) {
-        ctx.lineTo(x + state.sideLength * Math.cos(side * 2 * Math.PI / 6), y + state.sideLength * Math.sin(side * 2 * Math.PI / 6));
+        ctx.lineTo(x + state.hex.sideLength * Math.cos(side * 2 * Math.PI / 6), y + state.hex.sideLength * Math.sin(side * 2 * Math.PI / 6))
       }
       ctx.fill()
       ctx.stroke()
 
-      ctx.save()
-      // ctx.rotate(-Math.PI )
-      ctx.font = '1px serif'
-      ctx.fillStyle = 'black'
-      ctx.scale(1, -1)
-      ctx.fillText(`${state.coordinate.x}  ${state.coordinate.y}  ${state.coordinate.z}`, x - 1.5, -y)
-      ctx.restore()
+      if(Ludic.debug){
+        ctx.save()
+        ctx.font = '1px serif'
+        ctx.fillStyle = 'black'
+        ctx.scale(1, -1)
+        ctx.fillText(`${state.hex.cubeCoordinate.x}  ${state.hex.cubeCoordinate.y}  ${state.hex.cubeCoordinate.z}`, x - 1.5, -y)
+        ctx.restore()
+      }
 
       ctx.restore()
     })
