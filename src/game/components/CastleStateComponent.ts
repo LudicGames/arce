@@ -1,15 +1,15 @@
 import { Component } from '@ludic/ein'
-import Tile from '../entities/Tile'
+import Hex from '../utils/Hex'
 
 export default class CastleStateComponent extends Component {
-  tile: Tile
+  hex: Hex
   health: number
   size: number
 
-  constructor(tile: Tile, health: number = 10){
+  constructor(hex: Hex, health: number = 10){
     super()
 
-    this.tile = tile
+    this.hex = hex
     this.health = health
     this.size = 2
   }

@@ -69,14 +69,8 @@ export default class Level2 extends BaseLevel {
   }
 
   initEntities(playerMap: LevelOptions['playerMap']){
-    this.initMap()
+    generateMap(CameraComponentMapper.get(this.engine.getSingleton()).camera, this.engine, mapConfig)
     this.initPlayers(playerMap)
-    this.initCastle(this.tiles[1])
-  }
-
-  initMap(){
-    this.tiles = generateMap(CameraComponentMapper.get(this.engine.getSingleton()).camera, mapConfig)
-    this.tiles.forEach(tile => this.engine.addEntity(tile))
   }
 
   initPlayers(playerMap: LevelOptions['playerMap']){
@@ -86,10 +80,5 @@ export default class Level2 extends BaseLevel {
       player.add(new MechComponent(type))
       this.engine.addEntity(player)
     })
-  }
-
-  initCastle(tile: Tile){
-    const castle = new Castle(tile)
-    this.engine.addEntity(castle)
   }
 }

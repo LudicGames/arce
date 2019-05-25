@@ -1,11 +1,11 @@
 import { Entity } from '@ludic/ein'
-import Tile from './Tile'
+import Hex from '../utils/Hex'
 
 import CastleStateComponent from '../components/CastleStateComponent'
 
 export default class Castle extends Entity {
-  constructor(tile: Tile){
+  constructor(hex: Hex){
     super()
-    this.add(new CastleStateComponent(tile))
+    this.add(new CastleStateComponent(hex))
   }
 }

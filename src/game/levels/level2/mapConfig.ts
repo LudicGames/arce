@@ -20,6 +20,7 @@ const mapConfig: Map = {
     { offsetCoordinate: {q:4,  r: -2}, tileType: '4' },
     { offsetCoordinate: {q:3,  r: -2}, tileType: '4' },
   ],
+  castles: [{offsetCoordinate: {q:2,  r: -1}}],
   playerSpawnPoints: [
     {x: 1, y: 1, z: -2},
     {x: 3, y: -1, z: -2},

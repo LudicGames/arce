@@ -51,9 +51,7 @@ export default class EnemyMovementSystem extends System {
       const cv = new Vector2(0, -.1)
       const castle = castles[0]
       const castleState = this.csm.get(castle)
-      const castleTile: Tile = tiles.find(tile => castleState.tile == tile)
-      const castleTilePosition = this.pm.get(castleTile)
-      const castleVec: Vector2 = new Vector2(castleTilePosition.x, castleTilePosition.y)
+      const castleVec: Vector2 = castleState.hex.position
 
       enemies.forEach(enemy => {
         let enemyPosition = this.pm.get(enemy)
