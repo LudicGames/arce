@@ -1,9 +1,10 @@
 import { Component } from '@ludic/ein'
-import Tile from '../entities/Tile'
+
 import { EnemyWave, EnemyGroup } from '../utils/waves'
+import Hex from '../utils/Hex'
 
 export default class EnemyStateComponent extends Component {
-  currentTile: Tile
+  hex: Hex
   health: number
   speed: number
   color: string
@@ -12,10 +13,10 @@ export default class EnemyStateComponent extends Component {
   wave: EnemyWave
   group: EnemyGroup
 
-  constructor(currentTile: Tile, wave: EnemyWave, group: EnemyGroup, type: string = "1", speed: number = .1, health: number = 10, size: number = 1){
+  constructor(hex: Hex, wave: EnemyWave, group: EnemyGroup, type: string = "1", speed: number = .1, health: number = 10, size: number = 1){
     super()
 
-    this.currentTile = currentTile
+    this.hex = hex
     this.wave = wave
     this.group = group
     this.type = type

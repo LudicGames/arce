@@ -28,7 +28,7 @@ import { CameraComponentMapper } from '../../components/mappers'
 
 // Map and Waves
 import { generateMap } from '../../utils/Map'
-import Waves from './waves'
+import WavesConfig from './wavesConfig'
 import mapConfig from './mapConfig'
 
 interface LevelOptions {
@@ -65,6 +65,6 @@ export default class Level2 extends BaseLevel {
     this.engine.addSystem(new PlayerRenderSystem())
     this.engine.addSystem(new EnemyMovementSystem())
     this.engine.addSystem(new TileActivationSystem())
-    this.engine.addSystem(new EnemySpawnSystem(Waves))
+    this.engine.addSystem(new EnemySpawnSystem(WavesConfig))
   }
 }

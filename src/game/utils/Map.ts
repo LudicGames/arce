@@ -70,7 +70,7 @@ export const generateMap = function(camera: Camera, engine: Engine, mapConfig: M
 
   // Players
   Object.entries(playerMap).forEach(([index, type]) => {
-    let spawnPoint = mapConfig.playerSpawnPoints[index]
+    let spawnPoint = mapConfig.playerSpawnPoints[parseInt(index)]
     let hex = new Hex(spawnPoint, hexSideLength)
     const player = new Player(hex)
     player.add(new GamepadComponent(parseInt(index)))

@@ -1,14 +1,15 @@
-import { EnemyWave, EnemyGroup } from '../../utils/waves.ts'
+import { EnemyWave, EnemyGroup } from '../../utils/Waves'
 
-const waves: EnemyWave[] = [
+const WavesConfig: EnemyWave[] = [
   {
     start: 1000,
     enemyGroups: [
       {
+        start: 0,
         type: '1',
         count: 5,
         spawnInterval: 1000,
-        spawnTileIndex: 4
+        spawnCoordinate: {q: 14, r: -7}
       }
     ]
   },
@@ -16,10 +17,11 @@ const waves: EnemyWave[] = [
     start: 10000,
     enemyGroups: [
       {
+        start: 0,
         type: '2',
         count: 2,
         spawnInterval: 1000,
-        spawnTileIndex: 5
+        spawnCoordinate: {q: 14, r: -7}
       }
     ]
   },
@@ -27,13 +29,14 @@ const waves: EnemyWave[] = [
     start: 20000,
     enemyGroups: [
       {
+        start: 0,
         type: '1',
         count: 2,
         spawnInterval: 1000,
-        spawnTileIndex: 3
+        spawnCoordinate: {q: 9, r: -8}
       }
     ]
   },
 ]
 
-export default waves
+export default WavesConfig

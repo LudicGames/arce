@@ -1,3 +1,5 @@
+import Hex, { OffsetCoordinate, CubeCoordinate } from './Hex'
+
 export interface EnemyWave {
   start: number
   enemyGroups: EnemyGroup[]
@@ -5,8 +7,8 @@ export interface EnemyWave {
 
 export interface EnemyGroup {
   start: number
-  total: number
+  count: number
   type: string
-  spawnTileIndex: number
+  spawnCoordinate: OffsetCoordinate
   spawnInterval: number
 }

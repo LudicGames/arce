@@ -13,7 +13,7 @@ import Tile from '../entities/Tile'
 import Castle from '../entities/Castle'
 
 import { EnemyWave, EnemyGroup } from '../utils/waves'
-
+import Hex from '../utils/Hex'
 
 export default class EnemySpawnSystem extends IntervalSystem {
   private pm: ComponentMapper<PositionComponent> = ComponentMapper.getFor(PositionComponent)
@@ -79,6 +79,8 @@ export default class EnemySpawnSystem extends IntervalSystem {
 
     const currentWaveEnemies = enemies.filter(enemy => this.esm.get(enemy).wave == this.currentWave)
 
+    const hexSideLength = this.tsm.get(tiles[0]).hex.sideLength
+
     this.currentWave.enemyGroups.forEach((currentGroup: EnemyGroup) => {
       const currentGroupEnemies = currentWaveEnemies.filter(enemy => this.esm.get(enemy).group = currentGroup)
 
@@ -86,8 +88,8 @@ export default class EnemySpawnSystem extends IntervalSystem {
       if(currentGroupEnemies.length < currentGroup.count){
         const nextSpawnTime = this.currentWave.start + (currentGroupEnemies.length * currentGroup.spawnInterval)
         if(nextSpawnTime == dt){
-          const spawnTile = tiles[currentGroup.spawnTileIndex]
-          const enemy = new Enemy(spawnTile, this.currentWave, currentGroup, currentGroup.type)
+          let hex = new Hex(currentGroup.spawnCoordinate, hexSideLength)
+          const enemy = new Enemy(hex, this.currentWave, currentGroup, currentGroup.type)
           this.engine.addEntity(enemy)
         }
       }
