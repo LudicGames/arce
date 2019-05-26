@@ -13,6 +13,7 @@ import Tile from '../entities/Tile'
 import Castle from '../entities/Castle'
 
 import { Vector2Normalize } from '../utils/Euclid'
+import Hex, { CubeCoordinate, OffsetCoordinate } from '../utils/Hex'
 
 export default class EnemyMovementSystem extends System {
   private pm: ComponentMapper<PositionComponent> = ComponentMapper.getFor(PositionComponent)
@@ -39,6 +40,11 @@ export default class EnemyMovementSystem extends System {
     this.entities = []
   }
 
+  public moveToHexCenter(currentPosition: Vector2, hex: Hex, speed: number): Vector2 {
+    let diffVec = new Vector2(hex.position.x - currentPosition.x, hex.position.y - currentPosition.y)
+    diffVec = Vector2Normalize(diffVec)
+    return new Vector2(diffVec.x * speed, diffVec.y * speed)
+  }
 
   public update(deltaTime: number): void {
     this.entities = this.engine.getEntitiesFor(this.family)
@@ -55,16 +61,56 @@ export default class EnemyMovementSystem extends System {
 
       enemies.forEach(enemy => {
         let enemyPosition = this.pm.get(enemy)
-        const enemyState = this.esm.get(enemy)
-        const enemyVec = new Vector2(enemyPosition.x, enemyPosition.y)
+        const state = this.esm.get(enemy)
+        const pos = new Vector2(enemyPosition.x, enemyPosition.y)
+        const hex = state.hex
 
-        let diffVec = new Vector2(castleVec.x - enemyVec.x, castleVec.y - castleVec.x)
-        diffVec = Vector2Normalize(diffVec)
-        diffVec = new Vector2(diffVec.x * enemyState.speed, diffVec.y * enemyState.speed)
+        // console.log("px: ", pos.x)
+        // console.log("py: ", pos.y)
+        // console.log("hx: ", hex.position.x)
+        // console.log("hy: ", hex.position.y)
 
-        enemyPosition.x += diffVec.x
-        enemyPosition.y += diffVec.y
+        // If we are not in the center of our current hex, go there
+        if(Math.abs(hex.position.x - pos.x) > .05 || Math.abs(hex.position.y - pos.y) > .05){
+          const diffVec: Vector2 = this.moveToHexCenter(pos, hex, state.speed)
+          enemyPosition.x += diffVec.x
+          enemyPosition.y += diffVec.y
+        } else {
+          // Now that we have made it to the center of our curret Hex, move to a new one
+          state.previousHex = hex
 
+          // Get neighbor hexes
+          const neighbors: CubeCoordinate[] = Hex.getCubeNeighbors(hex.cubeCoordinate)
+
+          // Get corresponding tiles that can be moved to
+          const neighborTiles: Tile[] = tiles.filter(tile => {
+            let tileState = this.tsm.get(tile)
+
+            // Enemies can't move to tileType = '1'
+            if(tileState.tileType == '1'){
+              return false
+            }
+
+            // Don't move backwards (for now)
+            if(tileState.hex.offsetCoordinate.q == hex.offsetCoordinate.q && tileState.hex.offsetCoordinate.r == hex.offsetCoordinate.r){
+              return false
+            }
+
+            let cord = tileState.hex.cubeCoordinate
+            let found = false
+            neighbors.forEach(n => {
+              if(n.x == cord.x && n.y == cord.y && n.z == cord.z){
+                found = true
+              }
+            })
+            return found
+          })
+
+
+          // Set the current hex to be a neighbor tile
+          // TODO use A* algo to select one of the neighborTiles
+          state.hex = this.tsm.get(neighborTiles[0]).hex
+        }
       })
     }
   }

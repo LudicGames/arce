@@ -50,5 +50,26 @@ export default class Hex {
     return new Vector2(x, y)
   }
 
+  static getCubeNeighbors(coordinate: CubeCoordinate): CubeCoordinate[] {
+    const cubeDirections = [
+      {x:  1,  y: -1,  z:  0},
+      {x:  1,  y:  0,  z: -1},
+      {x:  0,  y:  1,  z: -1},
+      {x:  0,  y: -1,  z:  1},
+      {x: -1,  y:  1,  z:  0},
+      {x: -1,  y:  0,  z:  1},
+    ]
+    return cubeDirections.map(direction => {
+      return Hex.sumCubeCoordinates(coordinate, direction)
+    })
+  }
+
+  static sumCubeCoordinates(c1: CubeCoordinate, c2: CubeCoordinate): CubeCoordinate {
+    return {
+      x: c1.x + c2.x,
+      y: c1.y + c2.y,
+      z: c1.z + c2.z
+    }
+  }
 
 }

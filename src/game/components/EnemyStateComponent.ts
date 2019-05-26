@@ -1,6 +1,6 @@
 import { Component } from '@ludic/ein'
-
 import { EnemyWave, EnemyGroup } from '../utils/waves'
+
 import Hex from '../utils/Hex'
 
 export default class EnemyStateComponent extends Component {
@@ -12,6 +12,7 @@ export default class EnemyStateComponent extends Component {
   type: string
   wave: EnemyWave
   group: EnemyGroup
+  previousHex: Hex
 
   constructor(hex: Hex, wave: EnemyWave, group: EnemyGroup, type: string = "1", speed: number = .1, health: number = 10, size: number = 1){
     super()

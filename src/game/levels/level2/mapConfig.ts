@@ -19,6 +19,7 @@ const mapConfig: Map = {
     { offsetCoordinate: {q:5,  r: -2}, tileType: '2' },
     { offsetCoordinate: {q:4,  r: -2}, tileType: '2' },
     { offsetCoordinate: {q:3,  r: -2}, tileType: '2' },
+    { offsetCoordinate: {q:2,  r: -1}, tileType: '2' },
 
     { offsetCoordinate: {q:9,  r: -8}, tileType: '2' },
     { offsetCoordinate: {q:9,  r: -7}, tileType: '2' },
