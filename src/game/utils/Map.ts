@@ -1,8 +1,12 @@
 import Ludic, {Screen, Camera, Vector2 } from '@ludic/ludic'
 import { Engine } from '@ludic/ein'
 
+import Player from '../entities/Player'
 import Tile from '../entities/Tile'
 import Castle from '../entities/Castle'
+
+import GamepadComponent from '../components/GamepadComponent'
+import MechComponent from '../components/MechComponent'
 
 import Hex, { OffsetCoordinate, CubeCoordinate } from './Hex'
 
@@ -18,10 +22,16 @@ export interface Map {
       offsetCoordinate?: OffsetCoordinate
     }
   ]
-  playerSpawnPoints?: CubeCoordinate[]
+  playerSpawnPoints: OffsetCoordinate[]
 }
 
-export const generateMap = function(camera: Camera, engine: Engine, mapConfig: Map): Tile[]{
+// TODO consolidate this
+interface LevelOptions {
+  playerMap: {[key: string]: string}
+}
+
+
+export const generateMap = function(camera: Camera, engine: Engine, mapConfig: Map, playerMap: LevelOptions['playerMap']): void {
   const ptm = camera.pixelsToMeters
 
   const mapH = Math.ceil(camera.height / ptm)
@@ -57,4 +67,15 @@ export const generateMap = function(camera: Camera, engine: Engine, mapConfig: M
     let castle = new Castle(hex)
     engine.addEntity(castle)
   })
+
+  // Players
+  Object.entries(playerMap).forEach(([index, type]) => {
+    let spawnPoint = mapConfig.playerSpawnPoints[index]
+    let hex = new Hex(spawnPoint, hexSideLength)
+    const player = new Player(hex)
+    player.add(new GamepadComponent(parseInt(index)))
+    player.add(new MechComponent(type))
+    engine.addEntity(player)
+  })
+
 }

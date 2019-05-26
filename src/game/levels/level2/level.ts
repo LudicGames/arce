@@ -54,7 +54,7 @@ export default class Level2 extends BaseLevel {
 
   init(options: LevelOptions){
     this.initSystems()
-    this.initEntities(options.playerMap)
+    generateMap(CameraComponentMapper.get(this.engine.getSingleton()).camera, this.engine, mapConfig, options.playerMap)
   }
 
   initSystems(){
@@ -66,19 +66,5 @@ export default class Level2 extends BaseLevel {
     this.engine.addSystem(new EnemyMovementSystem())
     this.engine.addSystem(new TileActivationSystem())
     this.engine.addSystem(new EnemySpawnSystem(Waves))
-  }
-
-  initEntities(playerMap: LevelOptions['playerMap']){
-    generateMap(CameraComponentMapper.get(this.engine.getSingleton()).camera, this.engine, mapConfig)
-    this.initPlayers(playerMap)
-  }
-
-  initPlayers(playerMap: LevelOptions['playerMap']){
-    Object.entries(playerMap).forEach(([index, type]) => {
-      const player = new Player()
-      player.add(new GamepadComponent(parseInt(index)))
-      player.add(new MechComponent(type))
-      this.engine.addEntity(player)
-    })
   }
 }

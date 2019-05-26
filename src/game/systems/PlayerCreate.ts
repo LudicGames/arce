@@ -5,6 +5,8 @@ import GamepadComponent from '../components/GamepadComponent'
 import FillComponent from '../components/FillComponent'
 import PlayerStateComponent from '../components/PlayerStateComponent'
 
+import Hex from '../utils/Hex'
+
 export default class PlayerCreate extends System {
 
   players = new Map<string, Player>()
@@ -42,7 +44,7 @@ export default class PlayerCreate extends System {
   }
 
   createPlayer(gamepad: Gamepad){
-    const player = new Player()
+    const player = new Player(new Hex({q: 1, r: 1}, 1))
     player.add(new FillComponent(this.playerColors[gamepad.index]))
     player.add(new GamepadComponent(gamepad.index))
     player.add(new PlayerStateComponent())

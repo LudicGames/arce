@@ -22,8 +22,8 @@ const mapConfig: Map = {
   ],
   castles: [{offsetCoordinate: {q:2,  r: -1}}],
   playerSpawnPoints: [
-    {x: 1, y: 1, z: -2},
-    {x: 3, y: -1, z: -2},
+    {q:1, r: -2},
+    {q:3, r: -1},
   ]
 }
 

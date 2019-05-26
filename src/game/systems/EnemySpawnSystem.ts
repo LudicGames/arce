@@ -12,7 +12,7 @@ import Enemy from '../entities/Enemy'
 import Tile from '../entities/Tile'
 import Castle from '../entities/Castle'
 
-import { EnemyWave, EnemyGroup } from '../utils/waves.ts'
+import { EnemyWave, EnemyGroup } from '../utils/waves'
 
 
 export default class EnemySpawnSystem extends IntervalSystem {
