@@ -6,11 +6,11 @@ export default class CastleStateComponent extends Component {
   health: number
   size: number
 
-  constructor(hex: Hex, health: number = 10){
+  constructor(hex: Hex, health: number = 10, size: number = 2){
     super()
 
     this.hex = hex
     this.health = health
-    this.size = 2
+    this.size = size
   }
 }

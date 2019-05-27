@@ -1,10 +1,9 @@
 import {ComponentMapper, Family, Entity, System, Engine} from '@ludic/ein'
 
 import Hex from '../utils/Hex'
-import { EnemyWave, EnemyGroup } from '../utils/waves'
+import { EnemyWave, EnemyGroup } from '../utils/Waves'
 
 import PositionComponent from '../components/PositionComponent'
-import MovementComponent from '../components/MovementComponent'
 import EnemyStateComponent from '../components/EnemyStateComponent'
 
 export default class Enemy extends Entity {
@@ -12,7 +11,6 @@ export default class Enemy extends Entity {
     super()
 
     this.add(new PositionComponent(hex.position.x, hex.position.y))
-    this.add(new MovementComponent())
     this.add(new EnemyStateComponent(hex, wave, group, type))
   }
 }

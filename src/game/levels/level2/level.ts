@@ -9,6 +9,7 @@ import TileRenderSystem from '../../systems/TileRenderSystem'
 import TileActivationSystem from '../../systems/TileActivationSystem'
 
 import CastleRenderSystem from '../../systems/CastleRenderSystem'
+import CastleDamageSystem from '../../systems/CastleDamageSystem'
 
 import EnemyRenderSystem from '../../systems/EnemyRenderSystem'
 import EnemyMovementSystem from '../../systems/EnemyMovementSystem'
@@ -66,5 +67,6 @@ export default class Level2 extends BaseLevel {
     this.engine.addSystem(new EnemyMovementSystem())
     this.engine.addSystem(new TileActivationSystem())
     this.engine.addSystem(new EnemySpawnSystem(WavesConfig))
+    this.engine.addSystem(new CastleDamageSystem())
   }
 }
