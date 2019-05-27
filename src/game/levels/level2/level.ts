@@ -50,7 +50,7 @@ export default class Level2 extends BaseLevel {
     this.enemies = []
 
     // Hack for now
-    Ludic.debug = true
+    // Ludic.debug = true
   }
 
   init(options: LevelOptions){
