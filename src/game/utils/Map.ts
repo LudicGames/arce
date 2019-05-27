@@ -53,8 +53,12 @@ export const generateMap = function(camera: Camera, engine: Engine, mapConfig: M
       let hex = new Hex(offsetCoordinate, hexSideLength)
 
       // TODO add things like tile.type, color, from a map.json file
-      let tileConfig = mapConfig.tiles.find(t => (t.offsetCoordinate.q == offsetCoordinate.q && t.offsetCoordinate.r == offsetCoordinate.r))
-      let tileType = tileConfig ? tileConfig.tileType : '1'
+      let tileType = '1'
+      if(mapConfig.tiles){
+        let tileConfig = mapConfig.tiles.find(t => (t.offsetCoordinate.q == offsetCoordinate.q && t.offsetCoordinate.r == offsetCoordinate.r))
+        tileType = tileConfig ? tileConfig.tileType : '1'
+      }
+
       let tile = new Tile(hex, tileType)
       engine.addEntity(tile)
       tiles.push(tile)
@@ -62,11 +66,13 @@ export const generateMap = function(camera: Camera, engine: Engine, mapConfig: M
   }
 
   // Castles
-  mapConfig.castles.forEach(c => {
-    let hex = new Hex(c.offsetCoordinate, hexSideLength)
-    let castle = new Castle(hex)
-    engine.addEntity(castle)
-  })
+  if(mapConfig.castles){
+    mapConfig.castles.forEach(c => {
+      let hex = new Hex(c.offsetCoordinate, hexSideLength)
+      let castle = new Castle(hex)
+      engine.addEntity(castle)
+    })
+  }
 
   // Players
   Object.entries(playerMap).forEach(([index, type]) => {

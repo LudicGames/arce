@@ -1,7 +1,7 @@
 import Ludic, {Screen, Camera, ScreenManager, Vector2} from '@ludic/ludic'
 import {Engine, Entity} from '@ludic/ein'
 
-import Level1 from '../levels/level1/level'
+import MapGenerator from '../levels/MapGenerator'
 import Player from '../entities/Player'
 import BaseLevel from '../levels/BaseLevel'
 import CameraComponent from '../components/CameraComponent'
@@ -19,7 +19,7 @@ export default class GameScreen extends Screen {
 
     // this.camera.centerWorldToCamera()
     this.createCamera()
-    this.level = new Level1(this.engine)
+    this.level = new MapGenerator(this.engine)
   }
 
   createCamera(){

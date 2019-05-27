@@ -1,6 +1,7 @@
 import Ludic, { LudicOptions, ScreenManager, ScreenManagerListener, Screen, GamepadController } from '@ludic/ludic'
 import GameScreen from './screens/GameScreen'
-import CharacterSelectScreen from './screens/CharacterSelectScreen';
+import MapGeneratorScreen from './screens/MapGeneratorScreen'
+import CharacterSelectScreen from './screens/CharacterSelectScreen'
 
 export default class Arce extends Ludic implements ScreenManagerListener {
   public screenManager: ScreenManager
@@ -20,6 +21,7 @@ export default class Arce extends Ludic implements ScreenManagerListener {
     if(screen instanceof CharacterSelectScreen){
       // replace this screen with a game screen
       this.screenManager.addScreen(new GameScreen(), true)
+      // this.screenManager.addScreen(new MapGeneratorScreen(), true)
     }
   }
   onScreenAdded(screen: Screen, manager: ScreenManager, replace: boolean): void {
