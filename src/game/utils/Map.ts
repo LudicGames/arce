@@ -11,7 +11,8 @@ import MechComponent from '../components/MechComponent'
 import Hex, { OffsetCoordinate, CubeCoordinate } from './Hex'
 
 export interface MapTile {
-  offsetCoordinate?: OffsetCoordinate
+  q: number,
+  r: number,
   tileType?: string
 }
 
@@ -19,7 +20,8 @@ export interface Map {
   tiles?: MapTile[]
   castles?: [
     {
-      offsetCoordinate?: OffsetCoordinate
+      q: number,
+      r: number
     }
   ]
   playerSpawnPoints: OffsetCoordinate[]
@@ -45,17 +47,19 @@ export const generateMap = function(camera: Camera, engine: Engine, mapConfig: M
   const w = totalXTiles * 1.5
   const hexSideLength = mapW / w
 
+
   // Tiles
   let tiles: Tile[] = []
-  for(let x=0; x <= 16; x++){
-    for(let y=0; y >= -9; y--){
-      let offsetCoordinate: OffsetCoordinate = {q: x, r: y}
-      let hex = new Hex(offsetCoordinate, hexSideLength)
+  for(let q=0; q <= 16; q++){
+    for(let r=0; r >= -9; r--){
+
+      let cube = Hex.offsetToCube({q, r})
+      let hex = new Hex(cube.x, cube.y, cube.z, hexSideLength)
 
       // TODO add things like tile.type, color, from a map.json file
       let tileType = '1'
       if(mapConfig.tiles){
-        let tileConfig = mapConfig.tiles.find(t => (t.offsetCoordinate.q == offsetCoordinate.q && t.offsetCoordinate.r == offsetCoordinate.r))
+        let tileConfig = mapConfig.tiles.find(t => (t.q == hex.q && t.r == hex.r))
         tileType = tileConfig ? tileConfig.tileType : '1'
       }
 
@@ -68,7 +72,7 @@ export const generateMap = function(camera: Camera, engine: Engine, mapConfig: M
   // Castles
   if(mapConfig.castles){
     mapConfig.castles.forEach(c => {
-      let hex = new Hex(c.offsetCoordinate, hexSideLength)
+      let hex = new Hex(c.q, c.r, (-c.q - c.r), hexSideLength)
       let castle = new Castle(hex)
       engine.addEntity(castle)
     })
@@ -77,7 +81,7 @@ export const generateMap = function(camera: Camera, engine: Engine, mapConfig: M
   // Players
   Object.entries(playerMap).forEach(([index, type]) => {
     let spawnPoint = mapConfig.playerSpawnPoints[parseInt(index)]
-    let hex = new Hex(spawnPoint, hexSideLength)
+    let hex = new Hex(spawnPoint.q, spawnPoint.r, (-spawnPoint.q - spawnPoint.r), hexSideLength)
     const player = new Player(hex)
     player.add(new GamepadComponent(parseInt(index)))
     player.add(new MechComponent(type))
