@@ -9,7 +9,7 @@ const WavesConfig: EnemyWave[] = [
         type: '1',
         count: 1,
         spawnInterval: 1000,
-        spawnCoordinate: {q: 14, r: -7}
+        spawnCoordinate: {x:14, y: 0, z: -14}
       }
     ]
   },

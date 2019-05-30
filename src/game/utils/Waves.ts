@@ -9,6 +9,6 @@ export interface EnemyGroup {
   start: number
   count: number
   type: string
-  spawnCoordinate: OffsetCoordinate
+  spawnCoordinate: CubeCoordinate
   spawnInterval: number
 }

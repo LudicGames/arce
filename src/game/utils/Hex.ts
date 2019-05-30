@@ -28,9 +28,12 @@ export default class Hex {
   sideLength: number
 
   constructor(x: number, y: number, z: number, sideLength: number){
+    // if((x + y + z) !== 0){ throw "x + y + z needs to = 0"}
     this.x = x
-    this.z = z
     this.y = y
+    this.z = z
+    this.q = x
+    this.r = z
     this.sideLength = sideLength
   }
 

@@ -89,7 +89,7 @@ export default class EnemySpawnSystem extends IntervalSystem {
         const nextSpawnTime = this.currentWave.start + (currentGroupEnemies.length * currentGroup.spawnInterval)
         if(nextSpawnTime == dt){
           let spawnPos = currentGroup.spawnCoordinate
-          let hex = new Hex(spawnPos.q, spawnPos.r, (-spawnPos.q - spawnPos.r), hexSideLength)
+          let hex = new Hex(spawnPos.x, spawnPos.y, spawnPos.z, hexSideLength)
           const enemy = new Enemy(hex, this.currentWave, currentGroup, currentGroup.type)
           this.engine.addEntity(enemy)
         }

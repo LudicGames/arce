@@ -110,11 +110,6 @@ export default class EnemyMovementSystem extends System {
           // Set the current hex to be a neighbor tile
           // TODO use A* algo to select one of the neighborTiles
           if(neighborTiles.length){
-
-            console.log("current: ", JSON.stringify(currentHex))
-            console.log("neighbors: ", neighborHexes)
-            console.log("next: ", this.tsm.get(neighborTiles[0]).hex)
-
             state.previousHex = currentHex
             state.currentHex = this.tsm.get(neighborTiles[0]).hex
           }
