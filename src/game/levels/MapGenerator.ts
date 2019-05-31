@@ -2,7 +2,7 @@ import Ludic, {Screen, Camera} from '@ludic/ludic'
 import {Engine, Entity, Component} from '@ludic/ein'
 
 // Systems
-import PlayerControlSystem from '../systems/PlayerControlSystem'
+import PlayerMapControlSystem from '../systems/PlayerMapControlSystem'
 import PlayerRenderSystem from '../systems/PlayerRenderSystem'
 
 import TileRenderSystem from '../systems/TileRenderSystem'
@@ -28,7 +28,7 @@ import MechComponent from '../components/MechComponent'
 import { CameraComponentMapper } from '../components/mappers'
 
 // Map and Waves
-import { generateMap } from '../utils/Map'
+import { generateMap, Map } from '../utils/Map'
 
 interface LevelOptions {
   playerMap: {[key: string]: string}
@@ -53,17 +53,19 @@ export default class Level2 extends BaseLevel {
 
   init(options: LevelOptions){
     this.initSystems()
-    let mapConfig = {
+    const mapConfig: Map = {
+      tiles: [],
+      castles:[],
       playerSpawnPoints: [
-        {q:1, r: -2},
-        {q:3, r: -1},
+        {x:1, y: 1, z: -2},
+        {x:3, y: -1, z: 2},
       ]
     }
     generateMap(CameraComponentMapper.get(this.engine.getSingleton()).camera, this.engine, mapConfig, options.playerMap)
   }
 
   initSystems(){
-    this.engine.addSystem(new PlayerControlSystem())
+    this.engine.addSystem(new PlayerMapControlSystem(this.engine))
     this.engine.addSystem(new TileRenderSystem())
     this.engine.addSystem(new CastleRenderSystem())
     this.engine.addSystem(new PlayerRenderSystem())
