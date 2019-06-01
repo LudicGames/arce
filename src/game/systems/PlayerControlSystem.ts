@@ -26,22 +26,22 @@ export default class PlayerControlSystem extends IteratingSystem {
     const g = this.gamepadMapper.get(ent)
     const state = this.playerStateMapper.get(ent)
     const gamepad = Ludic.input.gamepad.get(g.index)
-    
+
     if(p){
 
       // player can only move if they are not building
       if(!state.building){
         const playerVector = new Vector2(0,0)
         // Update the position based on gamepad actions
-        if(gamepad.lx >= this.gamepadDeadzone) {
-          playerVector.x = gamepad.lx
-        } else if(gamepad.lx <= -this.gamepadDeadzone) {
-          playerVector.x = gamepad.lx
+        if(gamepad.lx.value >= this.gamepadDeadzone) {
+          playerVector.x = gamepad.lx.value
+        } else if(gamepad.lx.value <= -this.gamepadDeadzone) {
+          playerVector.x = gamepad.lx.value
         }
-        if(gamepad.ly >= this.gamepadDeadzone) {
+        if(gamepad.ly.value >= this.gamepadDeadzone) {
           playerVector.y = -gamepad.ly
-        } else if(gamepad.ly <= -this.gamepadDeadzone) {
-          playerVector.y = -gamepad.ly
+        } else if(gamepad.ly.value <= -this.gamepadDeadzone) {
+          playerVector.y = -gamepad.ly.value
         }
 
         // speed boost

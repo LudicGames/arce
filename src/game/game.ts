@@ -20,8 +20,8 @@ export default class Arce extends Ludic implements ScreenManagerListener {
   onScreenFinished(screen: Screen, manager: ScreenManager, finalData: Screen['_finalData']): void {
     if(screen instanceof CharacterSelectScreen){
       // replace this screen with a game screen
-      // this.screenManager.addScreen(new GameScreen(), true)
-      this.screenManager.addScreen(new MapGeneratorScreen(), true)
+      this.screenManager.addScreen(new GameScreen(), true)
+      // this.screenManager.addScreen(new MapGeneratorScreen(), true)
     }
   }
   onScreenAdded(screen: Screen, manager: ScreenManager, replace: boolean): void {

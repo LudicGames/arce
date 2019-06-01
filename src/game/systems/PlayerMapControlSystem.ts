@@ -54,8 +54,17 @@ export default class PlayerMapControlSystem extends IteratingSystem {
       ]
     }
 
-    console.log(JSON.stringify(map))
-    // fs.writeFile("newMapConfig.json", JSON.stringify(map), ()=>{})
+    this.downloadObjectAsJson(map, "mapConfig.json")
+  }
+
+  downloadObjectAsJson(exportObj: any, exportName: string){
+    var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
+    var downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href",     dataStr);
+    downloadAnchorNode.setAttribute("download", exportName + ".json");
+    document.body.appendChild(downloadAnchorNode); // required for firefox
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
   }
 
   processEntity(ent: Entity, deltaTime: number) {
@@ -67,15 +76,15 @@ export default class PlayerMapControlSystem extends IteratingSystem {
     if(p){
       const playerVector = new Vector2(0,0)
       // Update the position based on gamepad actions
-      if(gamepad.lx >= this.gamepadDeadzone) {
-        playerVector.x = gamepad.lx
-      } else if(gamepad.lx <= -this.gamepadDeadzone) {
-        playerVector.x = gamepad.lx
+      if(gamepad.lx.value >= this.gamepadDeadzone) {
+        playerVector.x = gamepad.lx.value
+      } else if(gamepad.lx.value <= -this.gamepadDeadzone) {
+        playerVector.x = gamepad.lx.value
       }
-      if(gamepad.ly >= this.gamepadDeadzone) {
-        playerVector.y = -gamepad.ly
-      } else if(gamepad.ly <= -this.gamepadDeadzone) {
-        playerVector.y = -gamepad.ly
+      if(gamepad.ly.value >= this.gamepadDeadzone) {
+        playerVector.y = -gamepad.ly.value
+      } else if(gamepad.ly.value <= -this.gamepadDeadzone) {
+        playerVector.y = -gamepad.ly.value
       }
 
       // speed boost
@@ -92,9 +101,10 @@ export default class PlayerMapControlSystem extends IteratingSystem {
 
 
       if(state.currentTile != null){
+
         let tileState = state.currentTile.getComponent(TileStateComponent)
-        let x = gamepad.rx
-        let y = gamepad.ry
+        let x = gamepad.rx.value
+        let y = gamepad.ry.value
 
         if(x > 0 && y > 0){
           tileState.tileType = "1"
