@@ -32,6 +32,7 @@ import { generateMap } from '../../utils/Map'
 import WavesConfig from './wavesConfig'
 import mapConfig from './mapConfig'
 
+
 interface LevelOptions {
   playerMap: {[key: string]: string}
 }

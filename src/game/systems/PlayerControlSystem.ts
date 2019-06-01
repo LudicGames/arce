@@ -39,7 +39,7 @@ export default class PlayerControlSystem extends IteratingSystem {
           playerVector.x = gamepad.lx.value
         }
         if(gamepad.ly.value >= this.gamepadDeadzone) {
-          playerVector.y = -gamepad.ly
+          playerVector.y = -gamepad.ly.value
         } else if(gamepad.ly.value <= -this.gamepadDeadzone) {
           playerVector.y = -gamepad.ly.value
         }
