@@ -25,6 +25,7 @@ export default class EnemyMovementSystem extends System {
   public entities: Entity[]
   public family: Family
   public engine: Engine
+  public distanceMap: any
 
   constructor(){
     super()
@@ -40,6 +41,49 @@ export default class EnemyMovementSystem extends System {
     this.entities = []
   }
 
+  getNeighborTiles(tiles: Tile[], tile: Tile){
+    let state = this.tsm.get(tile)
+    let hex = state.hex
+    let neighborHexes: Hex[] = Hex.allNeighbors(hex)
+    return tiles.filter((t: Tile) => {
+      let ts = this.tsm.get(t)
+      let found = false
+
+      if(ts.tileType != '1'){
+        return false
+      }
+
+      neighborHexes.forEach((nh: Hex) => {
+        if(Hex.equal(nh, ts.hex)){
+          found = true
+        }
+      })
+      return found
+    })
+  }
+
+  generatePathMap(tiles: Tile[], castleTile: Tile){
+    let frontier: Tile[] = []
+    frontier.push(castleTile)
+    let cameFrom = new Map()
+    cameFrom.set(castleTile, null)
+
+    while(frontier.length){
+      let current: Tile = frontier.shift()
+      let neighborTiles: Tile[] = this.getNeighborTiles(tiles, current)
+
+      neighborTiles.forEach((t: Tile) => {
+        if(!cameFrom.get(t)){
+          frontier.push(t)
+          cameFrom.set(t, current)
+        }
+      })
+    }
+    // console.log("cameFrom: ", cameFrom)
+
+    return cameFrom
+  }
+
   public moveToHexCenter(currentPosition: Vector2, hex: Hex, speed: number): Vector2 {
     let diffVec = new Vector2(hex.position.x - currentPosition.x, hex.position.y - currentPosition.y)
     diffVec = Vector2Normalize(diffVec)
@@ -53,11 +97,22 @@ export default class EnemyMovementSystem extends System {
     const castles: Castle[] = this.entities.filter(entity => !!this.csm.get(entity))
     const enemies: Enemy[]  = this.entities.filter(entity => !!this.esm.get(entity))
 
+
     if(castles.length){
       const cv = new Vector2(0, -.1)
       const castle = castles[0]
       const castleState = this.csm.get(castle)
-      const castleVec: Vector2 = castleState.hex.position
+      const castleHex: Hex = castleState.hex
+      const castleVec: Vector2 = castleHex.position
+
+      let castleTile: Tile = tiles.find((t: Tile) => {
+        let state = this.tsm.get(t)
+        let hex = state.hex
+        return Hex.equal(castleHex, hex)
+      })
+
+      let pathMap = this.generatePathMap(tiles, castleTile)
+
 
       enemies.forEach(enemy => {
         let enemyPosition = this.pm.get(enemy)
@@ -66,10 +121,14 @@ export default class EnemyMovementSystem extends System {
         const currentHex = state.currentHex
         const previousHex = state.previousHex
 
-        // console.log("px: ", pos.x)
-        // console.log("py: ", pos.y)
-        // console.log("hx: ", hex.position.x)
-        // console.log("hy: ", hex.position.y)
+        const currentTile = tiles.find((t: Tile) => {
+          let tileState = this.tsm.get(t)
+          if(Hex.equal(tileState.hex, currentHex)){
+            return true
+          } else {
+            return false
+          }
+        })
 
         // If we are not in the center of our current hex, go there
         if(Math.abs(currentHex.position.x - pos.x) > .05 || Math.abs(currentHex.position.y - pos.y) > .05){
@@ -78,41 +137,9 @@ export default class EnemyMovementSystem extends System {
           enemyPosition.y += diffVec.y
         } else {
 
-          // Get neighbor hexes
-          const neighborHexes: Hex[] = Hex.allNeighbors(currentHex)
-
-          // Get corresponding tiles that can be moved to
-          const neighborTiles: Tile[] = tiles.filter(tile => {
-            let tileState = this.tsm.get(tile)
-            let tileHex = tileState.hex
-
-            // Enemies can't move to tileType = '1'
-            if(tileState.tileType == '1'){
-              return false
-            }
-
-            // Don't move backwards (for now)
-            if(previousHex && Hex.equal(tileHex, previousHex)){
-              return false
-            }
-
-            let found = false
-            neighborHexes.forEach(h => {
-              if(Hex.equal(h, tileHex)){
-                found = true
-              }
-            })
-            return found
-          })
-
-
-          // console.log("neighborTiles: ", neighborTiles)
-          // Set the current hex to be a neighbor tile
-          // TODO use A* algo to select one of the neighborTiles
-          if(neighborTiles.length){
-            state.previousHex = currentHex
-            state.currentHex = this.tsm.get(neighborTiles[0]).hex
-          }
+          // Go to the next Hex
+          let next = pathMap.get(currentTile)
+          state.currentHex = this.tsm.get(next).hex
         }
       })
     }

@@ -57,7 +57,7 @@ export default class TileRenderSystem extends System {
         ctx.font = '1px serif'
         ctx.fillStyle = 'black'
         ctx.scale(1, -1)
-        ctx.fillText(`${state.hex.x}  ${state.hex.y}  ${state.hex.z}`, x - 1.5, -y)
+        // ctx.fillText(`${state.hex.x}  ${state.hex.y}  ${state.hex.z}`, x - 1.5, -y)
         // ctx.fillText(`q: ${state.hex.q} r:${state.hex.r}`, x - 1.5, -y)
         ctx.restore()
       }
