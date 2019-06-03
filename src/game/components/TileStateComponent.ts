@@ -31,8 +31,9 @@ export default class TileStateComponent extends Component {
     this.playersOn = []
   }
 
-  get color(): string {
-    return this.building ? 'green' : 'rgba(230, 126, 34, 0.2)'
+  get color(): Color {
+    let tc = TILE_COLORS[this.tileType]
+    return new Color(tc.r, tc.g, tc.b, tc.a)
   }
 
   get fill(): string {

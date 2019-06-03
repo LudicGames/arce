@@ -39,7 +39,9 @@ export default class TileRenderSystem extends System {
 
       const x = pos.x
       const y = pos.y
-      ctx.strokeStyle = state.color
+      let color = state.color
+      color.a = .2
+      ctx.strokeStyle = color.toString()
 
       ctx.fillStyle = state.fill
       ctx.lineWidth = .1
