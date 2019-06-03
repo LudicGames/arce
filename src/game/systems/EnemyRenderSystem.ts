@@ -45,6 +45,6 @@ export default class EnemyRenderSystem extends System {
     const state = this.sm.get(enemy)
 
     ctx.fillStyle = state.color
-    ctx.fillRect(pos.x, pos.y, state.size, state.size)
+    ctx.fillRect(pos.x - state.size / 2, pos.y - state.size / 2, state.size, state.size)
   }
 }

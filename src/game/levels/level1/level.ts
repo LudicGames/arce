@@ -1,26 +1,32 @@
 import Ludic, {Screen, Camera} from '@ludic/ludic'
 import {Engine, Entity, Component} from '@ludic/ein'
 
-// Systems
+// Player Systems
 import PlayerControlSystem from '../../systems/PlayerControlSystem'
 import PlayerRenderSystem from '../../systems/PlayerRenderSystem'
 
+// Tile Systems
 import TileRenderSystem from '../../systems/TileRenderSystem'
 import TileActivationSystem from '../../systems/TileActivationSystem'
 
+// Castle Systems
 import CastleRenderSystem from '../../systems/CastleRenderSystem'
 import CastleDamageSystem from '../../systems/CastleDamageSystem'
 
+// Enemy Systems
 import EnemyRenderSystem from '../../systems/EnemyRenderSystem'
 import EnemyMovementSystem from '../../systems/EnemyMovementSystem'
 import EnemySpawnSystem from '../../systems/EnemySpawnSystem'
 
+// Tower Systems
+import TowerRenderSystem from '../../systems/TowerRenderSystem'
 
 // Entities
 import Player from '../../entities/Player'
 import Tile from '../../entities/Tile'
 import Castle from '../../entities/Castle'
 import Enemy from '../../entities/Enemy'
+import Tower from '../../entities/Tower'
 
 import BaseLevel from '../BaseLevel'
 import GamepadComponent from '../../components/GamepadComponent'
@@ -60,11 +66,15 @@ export default class Level2 extends BaseLevel {
   }
 
   initSystems(){
-    this.engine.addSystem(new PlayerControlSystem())
+    // Render
     this.engine.addSystem(new TileRenderSystem())
-    this.engine.addSystem(new CastleRenderSystem())
     this.engine.addSystem(new EnemyRenderSystem())
+    this.engine.addSystem(new CastleRenderSystem())
+    this.engine.addSystem(new TowerRenderSystem())
     this.engine.addSystem(new PlayerRenderSystem())
+
+
+    this.engine.addSystem(new PlayerControlSystem())
     this.engine.addSystem(new EnemyMovementSystem())
     this.engine.addSystem(new TileActivationSystem())
     this.engine.addSystem(new EnemySpawnSystem(WavesConfig))

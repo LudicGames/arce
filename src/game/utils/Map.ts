@@ -44,8 +44,8 @@ export const generateMap = function(camera: Camera, engine: Engine, mapConfig: M
 
   // Tiles
   let tiles: Tile[] = []
-  for(let q=0; q <= 16; q++){
-    for(let r=0; r >= -9; r--){
+  for(let q=0; q <= totalXTiles; q++){
+    for(let r=0; r >= -totalYTiles; r--){
 
       let cube = Hex.offsetToCube({q, r})
       let hex = new Hex(cube.x, cube.y, cube.z, hexSideLength)
