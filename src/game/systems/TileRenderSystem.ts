@@ -44,7 +44,7 @@ export default class TileRenderSystem extends System {
       ctx.strokeStyle = color.toString()
 
       ctx.fillStyle = state.fill
-      ctx.lineWidth = .1
+      ctx.lineWidth = .15
 
       ctx.beginPath()
       ctx.moveTo(x + state.hex.sideLength * Math.cos(0), y + state.hex.sideLength * Math.sin(0))
@@ -57,9 +57,10 @@ export default class TileRenderSystem extends System {
       if(Ludic.debug){
         ctx.save()
         ctx.font = '1px serif'
-        ctx.fillStyle = 'black'
+        ctx.fillStyle = 'white'
         ctx.scale(1, -1)
         // ctx.fillText(`${state.hex.x}  ${state.hex.y}  ${state.hex.z}`, x - 1.5, -y)
+        // ctx.fillText(`q: ${state.hex.offsetCoordinate.q}  r: ${state.hex.offsetCoordinate.r}`, x - 1.5, -y)
         // ctx.fillText(`q: ${state.hex.q} r:${state.hex.r}`, x - 1.5, -y)
         ctx.restore()
       }

@@ -41,6 +41,18 @@ export default class Hex {
     return Hex.cubeCoordinateToVector2({x: this.x, y: this.y, z: this.z}, this.sideLength)
   }
 
+  get cubeCoordinate(): CubeCoordinate {
+    return {
+      x: this.x,
+      y: this.y,
+      z: this.z
+    }
+  }
+
+  get offsetCoordinate(): OffsetCoordinate {
+    return Hex.cubeToOffset(this.cubeCoordinate)
+  }
+
   static add(a: Hex, b:Hex): Hex {
     return new Hex(a.x + b.x, a.y + b.y, a.z + b.z, a.sideLength + b.sideLength)
   }
@@ -122,11 +134,18 @@ export default class Hex {
     return Math.sqrt((area / ((3 * Math.sqrt(3)) / 2)))
   }
 
-  static offsetToCube(offsetCoordinate: OffsetCoordinate){
+  static offsetToCube(offsetCoordinate: OffsetCoordinate): CubeCoordinate {
     var x = offsetCoordinate.q
     var z = offsetCoordinate.r - (offsetCoordinate.q - (offsetCoordinate.q&1)) / 2
     var y = -x-z
     return {x, y, z}
+  }
+
+  static cubeToOffset(cube: CubeCoordinate): OffsetCoordinate{
+    return {
+      q:cube.x,
+      r: cube.z + (cube.x - (cube.x&1)) / 2
+    }
   }
 
   static cubeCoordinateToVector2(coordinate: CubeCoordinate, size: number): Vector2 {

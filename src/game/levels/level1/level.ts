@@ -21,6 +21,8 @@ import EnemySpawnSystem from '../../systems/EnemySpawnSystem'
 // Tower Systems
 import TowerRenderSystem from '../../systems/TowerRenderSystem'
 
+import BackgroundRenderSystem from '../../systems/BackgroundRenderSystem'
+
 // Entities
 import Player from '../../entities/Player'
 import Tile from '../../entities/Tile'
@@ -67,12 +69,12 @@ export default class Level2 extends BaseLevel {
 
   initSystems(){
     // Render
+    this.engine.addSystem(new BackgroundRenderSystem())
     this.engine.addSystem(new TileRenderSystem())
     this.engine.addSystem(new EnemyRenderSystem())
     this.engine.addSystem(new CastleRenderSystem())
     this.engine.addSystem(new TowerRenderSystem())
     this.engine.addSystem(new PlayerRenderSystem())
-
 
     this.engine.addSystem(new PlayerControlSystem())
     this.engine.addSystem(new EnemyMovementSystem())
