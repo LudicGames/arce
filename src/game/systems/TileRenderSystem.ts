@@ -1,7 +1,9 @@
+import Ludic from '@ludic/ludic'
 import {ComponentMapper, Family, Entity, System, Engine} from '@ludic/ein'
 import PositionComponent from '../components/PositionComponent'
 import TileStateComponent from '../components/TileStateComponent'
-import Ludic from '@ludic/ludic'
+
+import Hex from '../utils/Hex'
 
 export default class TileRenderSystem extends System {
   private pm: ComponentMapper<PositionComponent> = ComponentMapper.getFor(PositionComponent)
