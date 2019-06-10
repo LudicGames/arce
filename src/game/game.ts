@@ -13,8 +13,10 @@ export default class Arce extends Ludic implements ScreenManagerListener {
 
     this.screenManager = new ScreenManager()
     this.screenManager.addScreenEventListener(this)
-    // this.screenManager.addScreen(new GameScreen())
-    this.screenManager.addScreen(new CharacterSelectScreen())
+    this.screenManager.addScreen(new GameScreen(), false, {
+      0: 'orange'
+    })
+    // this.screenManager.addScreen(new CharacterSelectScreen())
   }
 
   onScreenFinished(screen: Screen, manager: ScreenManager, finalData: Screen['_finalData']): void {

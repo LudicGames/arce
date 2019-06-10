@@ -6,6 +6,7 @@ import Player from '../entities/Player'
 import BaseLevel from '../levels/BaseLevel'
 import CameraComponent from '../components/CameraComponent'
 import CameraRenderSystem from '../systems/CameraRenderSystem'
+import TowerMenuSystem from '../systems/TowerMenuSystem';
 
 export default class GameScreen extends Screen {
   engine: Engine
@@ -29,6 +30,7 @@ export default class GameScreen extends Screen {
     // camera.centerWorldToCamera();
     this.engine.addSingletonComponent(new CameraComponent(camera))
     this.engine.addSystem(new CameraRenderSystem(0))
+    this.engine.addSystem(new TowerMenuSystem())
   }
 
   public onAddedToManager(manager: ScreenManager, finalData?: {[key: number]: string}) {

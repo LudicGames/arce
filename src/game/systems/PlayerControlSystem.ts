@@ -1,9 +1,10 @@
-import { System, Family, Entity, ComponentMapper, IteratingSystem } from '@ludic/ein'
+import { System, Family, Entity, ComponentMapper, IteratingSystem, ComponentType } from '@ludic/ein'
 import GamepadComponent from '../components/GamepadComponent';
 import PositionComponent from '../components/PositionComponent';
 import Ludic, { Vector2 } from '@ludic/ludic';
 import PlayerStateComponent from '../components/PlayerStateComponent';
 import TileStateComponent from '../components/TileStateComponent';
+import TowerMenuComponent from '../components/TowerMenuComponent';
 
 /**
  * This system is in charge of translating gamepad inputs into
@@ -14,6 +15,7 @@ export default class PlayerControlSystem extends IteratingSystem {
   positionMapper = new ComponentMapper(PositionComponent)
   gamepadMapper = new ComponentMapper(GamepadComponent)
   playerStateMapper = new ComponentMapper(PlayerStateComponent)
+  towerMenuMapper = new ComponentMapper(TowerMenuComponent)
 
   gamepadDeadzone = 0.3
 
@@ -62,10 +64,14 @@ export default class PlayerControlSystem extends IteratingSystem {
         if(gamepad.cross.buttonUp){
           tileState.building = !tileState.building
           state.building = true
+          const {component} = this.towerMenuMapper.get(ent) || ent.addAndReturn(new TowerMenuComponent())
+          component.visible = true
         }
         if(state.building && gamepad.circle.buttonUp){
           tileState.building = false
           state.building = false
+          const {component} = this.towerMenuMapper.get(ent)
+          component.visible = false
         }
       }
     }
