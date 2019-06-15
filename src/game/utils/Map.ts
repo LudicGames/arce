@@ -1,5 +1,5 @@
 import Ludic, {Screen, Camera, Vector2 } from '@ludic/ludic'
-import { Engine } from '@ludic/ein'
+import { Engine, ComponentMapper } from '@ludic/ein'
 
 import Player from '../entities/Player'
 import Tile from '../entities/Tile'
@@ -7,6 +7,7 @@ import Castle from '../entities/Castle'
 
 import GamepadComponent from '../components/GamepadComponent'
 import MechComponent from '../components/MechComponent'
+import TileStateComponent from '../components/TileStateComponent'
 
 import Hex, { OffsetCoordinate, CubeCoordinate } from './Hex'
 

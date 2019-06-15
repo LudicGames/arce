@@ -29,9 +29,8 @@ export default class TileRenderSystem extends System {
 
   public update(deltaTime: number): void {
     const ctx = Ludic.canvas.context
-    if(this.engine) {
-      this.entities = this.engine.getEntitiesFor(this.family)
-    }
+    this.entities = this.engine.getEntitiesFor(this.family)
+
     ctx.save()
     this.entities.forEach((entity: Entity) => {
       ctx.save()
@@ -41,12 +40,14 @@ export default class TileRenderSystem extends System {
 
       const x = pos.x
       const y = pos.y
+
+      ctx.lineWidth = .15
       let color = state.color
       color.a = .2
-      ctx.strokeStyle = color.toString()
 
       ctx.fillStyle = state.fill
-      ctx.lineWidth = .15
+
+      ctx.strokeStyle = color.toString()
 
       ctx.beginPath()
       ctx.moveTo(x + state.hex.sideLength * Math.cos(0), y + state.hex.sideLength * Math.sin(0))
@@ -66,6 +67,7 @@ export default class TileRenderSystem extends System {
         // ctx.fillText(`q: ${state.hex.q} r:${state.hex.r}`, x - 1.5, -y)
         ctx.restore()
       }
+
 
       ctx.restore()
     })
