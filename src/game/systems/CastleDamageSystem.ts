@@ -1,9 +1,7 @@
 import Ludic, { Camera } from '@ludic/ludic'
 import {ComponentMapper, Family, Entity, System, Engine} from '@ludic/ein'
 
-import CastleStateComponent from '../components/CastleStateComponent'
-import EnemyStateComponent from '../components/EnemyStateComponent'
-import PositionComponent from '../components/PositionComponent'
+import { CastleState, EnemyState, Position } from './components'
 
 import Player from '../entities/Player'
 import Enemy from '../entities/Enemy'

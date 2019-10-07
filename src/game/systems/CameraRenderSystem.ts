@@ -1,6 +1,5 @@
-import { System } from '@ludic/ein'
 import Ludic from '@ludic/ludic';
-import { CameraComponentMapper } from '../components/mappers'
+import { System } from 'ecsy'
 
 export default class CameraRenderSystem extends System {
 

@@ -13,8 +13,9 @@
   "dependencies": {
     "@ludic/ein": "github:Ludic/ein",
     "@ludic/ludic": "github:Ludic/ludic",
-    "ludic-ui": "github:Ludic/ludic-ui",
-    "lit-html": "^1.1.2"
+    "ecsy": "^0.1.4",
+    "lit-html": "^1.1.2",
+    "ludic-ui": "github:Ludic/ludic-ui"
   },
   "devDependencies": {
     "@types/node": "^12.7.11",
