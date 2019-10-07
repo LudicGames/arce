@@ -1,12 +1,8 @@
 // import { Family, Entity, ComponentMapper, IteratingSystem, ComponentType } from '@ludic/ein'
-import GamepadComponent from '../components/GamepadComponent';
-import PositionComponent from '../components/PositionComponent';
-import Ludic, { Vector2 } from '@ludic/ludic';
-import PlayerStateComponent from '../components/PlayerStateComponent';
-import TileStateComponent from '../components/TileStateComponent';
-import TowerMenuComponent from '../components/TowerMenuComponent';
+import { GamepadComponent, PositionComponent, PlayerStateComponent, TileStateComponent, TowerMenuComponent } from '../components'
+import Ludic, { Vector2 } from '@ludic/ludic'
 import { System, Entity } from 'ecsy'
-import { QueryType } from '/src/ecsy';
+import { QueryType } from '/src/ecsy'
 
 /**
  * This system is in charge of translating gamepad inputs into

@@ -1,8 +1,6 @@
 import { Entity } from '@ludic/ein'
 
-import MovementComponent from '../components/MovementComponent'
-import PositionComponent from '../components/PositionComponent'
-import PlayerStateComponent from '../components/PlayerStateComponent'
+import { MovementComponent, PositionComponent, PlayerStateComponent} from '../components'
 
 import Hex from '../utils/Hex'
 

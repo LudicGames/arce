@@ -3,8 +3,7 @@ import { Engine } from '@ludic/ein';
 import CharacterSelectSystem from '../systems/characterSelect/CharacterSelectSystem';
 import PlayerCreate from '../systems/PlayerCreate';
 import CharacterSelectRenderer from '../systems/characterSelect/CharacterSelectRenderer';
-import PositionComponent from '../components/PositionComponent';
-import MechComponent from '../components/MechComponent';
+import { PositionComponent, MechComponent } from '../components'
 
 export default class CharacterSelectScreen extends Screen {
   engine: Engine
@@ -37,17 +36,17 @@ export default class CharacterSelectScreen extends Screen {
     mech1.add(new PositionComponent(-10, 2))
     mech1.add(new MechComponent('red'))
     this.engine.addEntity(mech1)
-    
+
     const mech2 = this.engine.createEntity()
     mech2.add(new PositionComponent(-4, 2))
     mech2.add(new MechComponent('green'))
     this.engine.addEntity(mech2)
-    
+
     const mech3 = this.engine.createEntity()
     mech3.add(new PositionComponent(2, 2))
     mech3.add(new MechComponent('blue'))
     this.engine.addEntity(mech3)
-    
+
     const mech4 = this.engine.createEntity()
     mech4.add(new PositionComponent(8, 2))
     mech4.add(new MechComponent('orange'))

@@ -1,7 +1,7 @@
 import Ludic from '@ludic/ludic';
 import { System } from 'ecsy'
-import CameraComponent from '../components/CameraComponent';
-import { QueryType } from '/src/ecsy';
+import { CameraComponent } from '../components'
+import { QueryType } from '/src/ecsy'
 
 class CameraRenderSystem extends System {
 

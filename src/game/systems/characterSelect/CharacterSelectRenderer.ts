@@ -1,8 +1,6 @@
 import { System, Family, Entity, ComponentMapper } from '@ludic/ein'
-import GamepadComponent from '../../components/GamepadComponent';
+import { GamepadComponent, PositionComponent, MechComponent } from '../../components'
 import Ludic, { Camera } from '@ludic/ludic';
-import PositionComponent from '../../components/PositionComponent';
-import MechComponent from '../../components/MechComponent';
 
 export default class CharacterSelectRenderer extends System {
 
@@ -50,7 +48,7 @@ export default class CharacterSelectRenderer extends System {
     // render the player indicator
     this.getEntities().forEach((entity: Entity) => {
       ctx.save()
-    
+
       const pos = this.positionMapper.get(entity)
       const gamepad = this.gamepadMapper.get(entity)
       const mechComp = this.mechMapper.get(entity)

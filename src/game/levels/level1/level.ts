@@ -31,8 +31,14 @@ import Enemy from '../../entities/Enemy'
 import Tower from '../../entities/Tower'
 
 import BaseLevel from '../BaseLevel'
-import GamepadComponent from '../../components/GamepadComponent'
-import MechComponent from '../../components/MechComponent'
+import {
+  GamepadComponent,
+  MechComponent,
+  PositionComponent,
+  MovementComponent,
+  PlayerStateComponent
+} from '../../components'
+
 import { CameraComponentMapper } from '../../components/mappers'
 
 // Map and Waves
@@ -40,9 +46,6 @@ import { generateMap } from '../../utils/Map'
 import WavesConfig from './wavesConfig'
 import mapConfig from './mapConfig'
 import { World } from 'ecsy'
-import PositionComponent from '../../components/PositionComponent'
-import MovementComponent from '../../components/MovementComponent'
-import PlayerStateComponent from '../../components/PlayerStateComponent'
 
 
 interface LevelOptions {

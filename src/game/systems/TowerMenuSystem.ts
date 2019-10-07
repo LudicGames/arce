@@ -1,13 +1,15 @@
 import { Family, Entity, ComponentMapper, IteratingSystem } from '@ludic/ein'
-import GamepadComponent from '../components/GamepadComponent';
-import PositionComponent from '../components/PositionComponent';
-import Ludic, { Vector2 } from '@ludic/ludic';
-import PlayerStateComponent from '../components/PlayerStateComponent';
-import TileStateComponent from '../components/TileStateComponent';
-import TowerMenu from '../ui/towerMenu'
-import TowerMenuComponent from '../components/TowerMenuComponent';
-import CameraComponent from '../components/CameraComponent';
+import {
+  GamepadComponent,
+  PositionComponent,
+  PlayerStateComponent,
+  TileStateComponent,
+  TowerMenuComponent,
+  CameraComponent
+} from '../components'
 
+import Ludic, { Vector2 } from '@ludic/ludic';
+import TowerMenu from '../ui/towerMenu'
 import { System } from 'ecsy'
 
 /**
@@ -35,10 +37,10 @@ export default class TowerMenuSystem extends System {
     const pos = this.positionMapper.get(ent)
 
     const {camera} = this.engine.getSingletonComponent(CameraComponent)
-    
+
     if(component.enabled){
       component.position = camera.getPixelPointFromWorldPoint(new Vector2(pos.x, pos.y))
     }
-    
+
   }
 }

@@ -1,9 +1,7 @@
 import { System } from '@ludic/ein'
 import Ludic from '@ludic/ludic'
 import Player from '../entities/Player'
-import GamepadComponent from '../components/GamepadComponent'
-import FillComponent from '../components/FillComponent'
-import PlayerStateComponent from '../components/PlayerStateComponent'
+import { GamepadComponent, FillComponent, PlayerStateComponent } from '../components'
 
 import Hex from '../utils/Hex'
 

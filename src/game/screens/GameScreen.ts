@@ -4,9 +4,9 @@ import {Engine, Entity} from '@ludic/ein'
 import Level1 from '../levels/level1/level'
 import Player from '../entities/Player'
 import BaseLevel from '../levels/BaseLevel'
-import CameraComponent from '../components/CameraComponent'
+import { CameraComponent } from '../components'
 import CameraRenderSystem from '../systems/CameraRenderSystem'
-import TowerMenuSystem from '../systems/TowerMenuSystem';
+import TowerMenuSystem from '../systems/TowerMenuSystem'
 import { World } from 'ecsy'
 
 export default class GameScreen extends Screen {

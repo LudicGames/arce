@@ -1,11 +1,7 @@
-import PositionComponent from '../components/PositionComponent'
-import RenderComponent from '../components/RenderComponent'
-import PlayerStateComponent from '../components/PlayerStateComponent'
 import Ludic from '@ludic/ludic'
+import { PositionComponent, RenderComponent, PlayerStateComponent, CameraComponent, MechComponent } from '../components'
 import { System, World, Entity } from 'ecsy'
 import { QueryType } from '/src/ecsy'
-import CameraComponent from '../components/CameraComponent';
-import MechComponent from '../components/MechComponent';
 
 export default class PlayerRenderSystem extends System {
 
@@ -18,7 +14,7 @@ export default class PlayerRenderSystem extends System {
 
   execute(deltaTime: number): void {
     const ctx = Ludic.canvas.context
-    
+
     ctx.save()
     const camera = this.queries.camera.results[0].getComponent(CameraComponent).value
     camera.drawAxes(ctx)
