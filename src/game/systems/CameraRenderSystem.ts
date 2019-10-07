@@ -1,10 +1,26 @@
 import Ludic from '@ludic/ludic';
 import { System } from 'ecsy'
+import CameraComponent from '../components/CameraComponent';
+import { QueryType } from '/src/ecsy';
 
-export default class CameraRenderSystem extends System {
+class CameraRenderSystem extends System {
 
-  update(){
-    const {camera} = this.engine.getSingletonComponent(CameraComponentMapper)
-    camera.update(Ludic.canvas.context)
+  queries!: {
+    camera: QueryType
+  }
+
+  execute(){
+    // const {camera} = this.engine.getSingletonComponent(CameraComponentMapper)
+    this.queries.camera.results.forEach(ent => {
+      const camera = ent.getComponent(CameraComponent).value
+      camera.update(Ludic.canvas.context)
+    })
   }
 }
+
+// @ts-ignore
+CameraRenderSystem.queries = {
+  camera: {components: [CameraComponent]},
+}
+
+export default CameraRenderSystem

@@ -1,4 +1,4 @@
-import { UIComponent } from 'ludic-ui'
+import { UIComponent } from '@ludic/ludic-ui'
 import { styleMap } from 'lit-html/directives/style-map'
 import { html as litHtml, TemplateResult } from 'lit-html'
 import { Vector2 } from '@ludic/ludic'

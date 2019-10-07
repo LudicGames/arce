@@ -39,6 +39,10 @@ import { CameraComponentMapper } from '../../components/mappers'
 import { generateMap } from '../../utils/Map'
 import WavesConfig from './wavesConfig'
 import mapConfig from './mapConfig'
+import { World } from 'ecsy'
+import PositionComponent from '../../components/PositionComponent'
+import MovementComponent from '../../components/MovementComponent'
+import PlayerStateComponent from '../../components/PlayerStateComponent'
 
 
 interface LevelOptions {
@@ -46,13 +50,13 @@ interface LevelOptions {
 }
 
 export default class Level2 extends BaseLevel {
-  engine: Engine
+  engine: World
   tiles: Tile[]
   enemies: Enemy[]
   map: any
   waves: any
 
-  constructor(engine: Engine){
+  constructor(engine: World){
     super()
     this.engine = engine
     this.tiles = []
@@ -64,22 +68,34 @@ export default class Level2 extends BaseLevel {
 
   init(options: LevelOptions){
     this.initSystems()
-    generateMap(CameraComponentMapper.get(this.engine.getSingleton()).camera, this.engine, mapConfig, options.playerMap)
+    // generateMap(CameraComponentMapper.get(this.engine.getSingleton()).camera, this.engine, mapConfig, options.playerMap)
+
+    // partial taken from fn above:
+    Object.entries(options.playerMap).forEach(([index, type]) => {
+      let spawnPoint = mapConfig.playerSpawnPoints[parseInt(index)]
+      // let hex = new Hex(spawnPoint.x, spawnPoint.y, spawnPoint.z, hexSideLength)
+      const player = this.engine.createEntity()
+      player.addComponent(PositionComponent, {x: 10, y: 10})
+      player.addComponent(MovementComponent)
+      player.addComponent(PlayerStateComponent)
+      player.addComponent(GamepadComponent, {index: parseInt(index)})
+      player.addComponent(MechComponent, {type})
+    })
   }
 
   initSystems(){
     // Render
-    this.engine.addSystem(new BackgroundRenderSystem())
-    this.engine.addSystem(new TileRenderSystem())
-    this.engine.addSystem(new EnemyRenderSystem())
-    this.engine.addSystem(new CastleRenderSystem())
-    this.engine.addSystem(new TowerRenderSystem())
-    this.engine.addSystem(new PlayerRenderSystem())
+    // this.engine.addSystem(new BackgroundRenderSystem())
+    // this.engine.addSystem(new TileRenderSystem())
+    // this.engine.addSystem(new EnemyRenderSystem())
+    // this.engine.addSystem(new CastleRenderSystem())
+    // this.engine.addSystem(new TowerRenderSystem())
+    this.engine.registerSystem(PlayerRenderSystem)
 
-    this.engine.addSystem(new PlayerControlSystem())
-    this.engine.addSystem(new EnemyMovementSystem())
-    this.engine.addSystem(new TileActivationSystem())
-    this.engine.addSystem(new EnemySpawnSystem(WavesConfig))
-    this.engine.addSystem(new CastleDamageSystem())
+    this.engine.registerSystem(PlayerControlSystem)
+    // this.engine.addSystem(new EnemyMovementSystem())
+    // this.engine.addSystem(new TileActivationSystem())
+    // this.engine.addSystem(new EnemySpawnSystem(WavesConfig))
+    // this.engine.addSystem(new CastleDamageSystem())
   }
 }

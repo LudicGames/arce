@@ -7,15 +7,16 @@ import BaseLevel from '../levels/BaseLevel'
 import CameraComponent from '../components/CameraComponent'
 import CameraRenderSystem from '../systems/CameraRenderSystem'
 import TowerMenuSystem from '../systems/TowerMenuSystem';
+import { World } from 'ecsy'
 
 export default class GameScreen extends Screen {
-  engine: Engine
+  engine: World
   player: Player
   level: BaseLevel
 
   constructor() {
     super()
-    this.engine = new Engine()
+    this.engine = new World()
     // this.camera = new Camera(Ludic.canvas)
 
     // this.camera.centerWorldToCamera()
@@ -27,10 +28,16 @@ export default class GameScreen extends Screen {
     const camera = new Camera(Ludic.canvas)
     camera.offset = new Vector2(0, camera.height)
     camera.pixelsToMeters = 20
+
+    const cameraEntity = this.engine.createEntity()
+    cameraEntity.addComponent(CameraComponent, {value: camera})
     // camera.centerWorldToCamera();
-    this.engine.addSingletonComponent(new CameraComponent(camera))
-    this.engine.addSystem(new CameraRenderSystem(0))
-    this.engine.addSystem(new TowerMenuSystem())
+    // console.log(this.engine)
+    // this.engine.addSingletonComponent(new CameraComponent(camera))
+    // this.engine.addSystem(new CameraRenderSystem())
+    this.engine.registerSystem(CameraRenderSystem)
+    // this.engine.addSystem(new TowerMenuSystem())
+    this.engine.registerSystem(TowerMenuSystem)
   }
 
   public onAddedToManager(manager: ScreenManager, finalData?: {[key: number]: string}) {
@@ -39,10 +46,11 @@ export default class GameScreen extends Screen {
     })
   }
 
-  update(delta: number){
+  update(delta: number, time: number){
     Ludic.canvas.context.save()
     Ludic.canvas.clear()
-    this.engine.update(delta)
+    // this.engine.update(delta)
+    this.engine.execute(delta, time)
     Ludic.canvas.context.restore()
   }
 }

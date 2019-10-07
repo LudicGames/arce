@@ -1,4 +1,4 @@
-import { Component } from '@ludic/ein'
+import { Component } from 'ecsy'
 import Tile from '../entities/Tile'
 
 export default class PlayerStateComponent extends Component {

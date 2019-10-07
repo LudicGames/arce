@@ -141,13 +141,6 @@ export class PlayerState {
   }
 }
 
-export class CameraComponent {
-  camera: Camera
-  constructor(camera: Camera) {
-    this.camera = camera
-  }
-}
-
 export class Fill {
   fillStyle: string | CanvasGradient | CanvasPattern
   constructor(fillStyle: Fill['fillStyle']){

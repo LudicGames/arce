@@ -1,9 +1,9 @@
-import { Component } from '@ludic/ein'
+import { Component } from 'ecsy'
 
 export default class GamepadComponent extends Component {
   index: number
-  constructor(index: number){
+  constructor(){
     super()
-    this.index = index
+    this.index = -1
   }
 }

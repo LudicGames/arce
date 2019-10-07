@@ -39,6 +39,6 @@ export default class Arce extends Ludic implements ScreenManagerListener {
 
   update(time: number, delta: number){
     super.update(time, delta)
-    this.screenManager.update(delta)
+    this.screenManager.update(delta, time)
   }
 }

@@ -6,16 +6,17 @@
   "scripts": {
     "dev": "parcel -p 8080 index.html --no-autoinstall --no-cache",
     "build": "parcel build index.html --out-dir docs",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "link": "npm link @ludic/ludic @ludic/ludic-ui"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@ludic/ein": "github:Ludic/ein",
     "@ludic/ludic": "github:Ludic/ludic",
+    "@ludic-ui": "github:Ludic/ludic-ui",
     "ecsy": "^0.1.4",
-    "lit-html": "^1.1.2",
-    "ludic-ui": "github:Ludic/ludic-ui"
+    "lit-html": "^1.1.2"
   },
   "devDependencies": {
     "@types/node": "^12.7.11",

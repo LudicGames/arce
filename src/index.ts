@@ -1,6 +1,6 @@
 import Game from '/src/game/game'
 
-import LudicUI from 'ludic-ui'
+import LudicUI from '@ludic/ludic-ui'
 import {render} from '/src/game/ui/litRenderer'
 
 

@@ -1,43 +1,28 @@
-import {ComponentMapper, Family, Entity, System, Engine} from '@ludic/ein'
 import PositionComponent from '../components/PositionComponent'
 import RenderComponent from '../components/RenderComponent'
 import PlayerStateComponent from '../components/PlayerStateComponent'
-import Ludic, { Camera } from '@ludic/ludic'
-import { MechComponentMapper, CameraComponentMapper } from '../components/mappers';
-import Player from '../entities/Player';
+import Ludic from '@ludic/ludic'
+import { System, World, Entity } from 'ecsy'
+import { QueryType } from '/src/ecsy'
+import CameraComponent from '../components/CameraComponent';
+import MechComponent from '../components/MechComponent';
 
 export default class PlayerRenderSystem extends System {
-  private rm: ComponentMapper<RenderComponent> = ComponentMapper.getFor(RenderComponent)
-  private pm: ComponentMapper<PositionComponent> = ComponentMapper.getFor(PositionComponent)
-  private sm: ComponentMapper<PlayerStateComponent> = ComponentMapper.getFor(PlayerStateComponent)
 
-  public entities: Entity[]
-  public components = [PlayerStateComponent]
-  public family: Family
+  engine: World
 
-  constructor(){
-    super()
-    this.family = Family.all(this.components).get()
+  queries: {
+    entities: QueryType
+    camera: QueryType
   }
 
-  public addedToEngine(engine: Engine): void {
-    this.entities = engine.getEntitiesFor(this.family)
-    this.engine = engine
-  }
-
-  public removedFromEngine(engine: Engine): void {
-    this.entities = []
-  }
-
-  public update(deltaTime: number): void {
+  execute(deltaTime: number): void {
     const ctx = Ludic.canvas.context
-    if(this.engine) {
-      this.entities = this.engine.getEntitiesFor(this.family)
-    }
+    
     ctx.save()
-    const {camera} = this.engine.getSingletonComponent(CameraComponentMapper)
+    const camera = this.queries.camera.results[0].getComponent(CameraComponent).value
     camera.drawAxes(ctx)
-    this.entities.forEach((entity: Entity) => {
+    this.queries.entities.results.forEach((entity: Entity) => {
       ctx.save()
       this.renderPlayer(ctx, entity)
       ctx.restore()
@@ -45,15 +30,20 @@ export default class PlayerRenderSystem extends System {
     ctx.restore()
   }
 
-  renderPlayer(ctx: CanvasRenderingContext2D, player: Player){
-    const r = this.rm.get(player)
-    const pos = this.pm.get(player)
-    const state = this.sm.get(player)
-    const mechComp = MechComponentMapper.get(player)
+  renderPlayer(ctx: CanvasRenderingContext2D, player: Entity){
+    const pos = player.getComponent(PositionComponent)
+    const state = player.getComponent(PlayerStateComponent)
+    const mechComp = player.getComponent(MechComponent)
 
     ctx.fillStyle = mechComp.type
     ctx.beginPath()
     ctx.arc(pos.x + (state.size / 2), pos.y + (state.size / 2), state.size, 0, Math.PI * 2)
     ctx.fill()
   }
+}
+
+// @ts-ignore
+PlayerRenderSystem.queries = {
+  entities: { components: [PlayerStateComponent]},
+  camera: { components: [CameraComponent]},
 }

@@ -1,10 +1,10 @@
-import { Component } from '@ludic/ein'
+import { Component } from 'ecsy'
 
 export default class MechComponent extends Component {
   type: string
 
-  constructor(type: string) {
+  constructor() {
     super()
-    this.type = type
+    this.type = ''
   }
 }

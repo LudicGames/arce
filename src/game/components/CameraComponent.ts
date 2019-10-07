@@ -1,10 +1,10 @@
-import { Component } from '@ludic/ein'
+import { Component } from 'ecsy'
 import { Camera } from '@ludic/ludic'
 
 export default class CameraComponent extends Component {
-  camera: Camera
-  constructor(camera: Camera) {
+  value: Camera
+  constructor() {
     super()
-    this.camera = camera
+    this.value = null
   }
 }

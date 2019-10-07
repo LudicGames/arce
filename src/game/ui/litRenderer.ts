@@ -1,4 +1,4 @@
-import { UIComponent } from 'ludic-ui'
+import { UIComponent } from '@ludic/ludic-ui'
 import { render as litRender, html, TemplateResult } from 'lit-html'
 
 export const render = function render(comp: UIComponent, container: HTMLElement){

@@ -1,12 +1,12 @@
-import { Component } from '@ludic/ein'
+import { Component } from 'ecsy'
 
 export default class PositionComponent extends Component {
-	public x: number
-	public y: number
+	x: number
+	y: number
 
-  constructor(x: number, y: number){
+  constructor(){
     super()
-    this.x = x
-    this.y = y
+    this.x = 0
+    this.y = 0
   }
 }

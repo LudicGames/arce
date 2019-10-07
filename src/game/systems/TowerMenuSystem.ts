@@ -1,4 +1,4 @@
-import { System, Family, Entity, ComponentMapper, IteratingSystem } from '@ludic/ein'
+import { Family, Entity, ComponentMapper, IteratingSystem } from '@ludic/ein'
 import GamepadComponent from '../components/GamepadComponent';
 import PositionComponent from '../components/PositionComponent';
 import Ludic, { Vector2 } from '@ludic/ludic';
@@ -8,11 +8,13 @@ import TowerMenu from '../ui/towerMenu'
 import TowerMenuComponent from '../components/TowerMenuComponent';
 import CameraComponent from '../components/CameraComponent';
 
+import { System } from 'ecsy'
+
 /**
  * This system is in charge of translating gamepad inputs into
  * player movement.
  */
-export default class TowerMenuSystem extends IteratingSystem {
+export default class TowerMenuSystem extends System {
 
   gamepadMapper = new ComponentMapper(GamepadComponent)
   playerStateMapper = new ComponentMapper(PlayerStateComponent)
@@ -22,7 +24,7 @@ export default class TowerMenuSystem extends IteratingSystem {
   gamepadDeadzone = 0.3
 
   constructor(){
-    super(Family.all([GamepadComponent, PositionComponent, PlayerStateComponent, TowerMenuComponent]).get())
+    super()
   }
 
   processEntity(ent: Entity, deltaTime: number) {
