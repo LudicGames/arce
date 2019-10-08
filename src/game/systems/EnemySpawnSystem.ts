@@ -1,12 +1,8 @@
 import Ludic, { Camera, Vector2 } from '@ludic/ludic'
-import {ComponentMapper, Family, Entity, IntervalSystem, Engine} from '@ludic/ein'
+import { System, World, Entity } from 'ecsy'
+import { QueryType } from '/src/ecsy'
 
-import PositionComponent from '../components/PositionComponent'
-import TileStateComponent from '../components/TileStateComponent'
-import PlayerStateComponent from '../components/PlayerStateComponent'
-import CastleStateComponent from '../components/CastleStateComponent'
-import EnemyStateComponent from '../components/EnemyStateComponent'
-
+import { PositionComponent, TileStateComponent, PlayerStateComponent, CastleStateComponent, EnemyStateComponent } from '../components'
 import Player from '../entities/Player'
 import Enemy from '../entities/Enemy'
 import Tile from '../entities/Tile'
@@ -15,38 +11,20 @@ import Castle from '../entities/Castle'
 import { EnemyWave, EnemyGroup } from '../utils/waves'
 import Hex from '../utils/Hex'
 
-export default class EnemySpawnSystem extends IntervalSystem {
-  private pm: ComponentMapper<PositionComponent> = ComponentMapper.getFor(PositionComponent)
-  private psm: ComponentMapper<PlayerStateComponent> = ComponentMapper.getFor(PlayerStateComponent)
-  private tsm: ComponentMapper<TileStateComponent> = ComponentMapper.getFor(TileStateComponent)
-  private csm: ComponentMapper<CastleStateComponent> = ComponentMapper.getFor(CastleStateComponent)
-  private esm: ComponentMapper<EnemyStateComponent> = ComponentMapper.getFor(EnemyStateComponent)
-
-  public entities: Entity[]
-  public family: Family
-  public engine: Engine
-
-  public waves: EnemyWave[]
-  public currentWave: EnemyWave
-  public interval: number
-  public intervalCount: number
+export default class EnemySpawnSystem extends System {
+  engine: World
+  waves: EnemyWave[]
+  currentWave: EnemyWave
+  interval: number
+  intervalCount: number
 
   constructor(waves: EnemyWave[], interval: number = 1000){
-    // TODO not sure about just running every 1sec here
     super(interval)
     this.waves = waves
     this.interval =  interval
     this.intervalCount = 0
-    this.family = Family.all([]).get()
   }
 
-  public addedToEngine(engine: Engine): void {
-    this.entities = engine.getEntitiesFor(this.family)
-  }
-
-  public removedFromEngine(engine: Engine): void {
-    this.entities = []
-  }
 
   public updateCurrentWave(){
     const dt = this.interval * this.intervalCount

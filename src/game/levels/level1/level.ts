@@ -1,5 +1,4 @@
 import Ludic, {Screen, Camera} from '@ludic/ludic'
-import {Engine, Entity, Component} from '@ludic/ein'
 
 // Player Systems
 import PlayerControlSystem from '../../systems/PlayerControlSystem'
@@ -52,7 +51,7 @@ interface LevelOptions {
   playerMap: {[key: string]: string}
 }
 
-export default class Level2 extends BaseLevel {
+export default class Level1 extends BaseLevel {
   engine: World
   tiles: Tile[]
   enemies: Enemy[]

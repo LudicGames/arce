@@ -2,7 +2,6 @@ import { System, Family, EntityListener, Entity, ComponentMapper, Signal, Listen
 import Ludic from '@ludic/ludic'
 import Player from '/src/game/entities/Player'
 import { GamepadComponent, PlayerStateComponent, MechComponent, PositionComponent } from '/src/game/components'
-import { MechComponentMapper, GamepadComponentMapper } from '/src/game/components/mappers'
 
 export default class CharacterSelectSystem extends System implements EntityListener {
 

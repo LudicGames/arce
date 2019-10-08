@@ -1,5 +1,4 @@
 import Ludic, {Screen, Camera, ScreenManager, Vector2} from '@ludic/ludic'
-import {Engine, Entity} from '@ludic/ein'
 
 import Level1 from '../levels/level1/level'
 import Player from '../entities/Player'
@@ -49,7 +48,6 @@ export default class GameScreen extends Screen {
   update(delta: number, time: number){
     Ludic.canvas.context.save()
     Ludic.canvas.clear()
-    // this.engine.update(delta)
     this.engine.execute(delta, time)
     Ludic.canvas.context.restore()
   }
