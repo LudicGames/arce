@@ -1,4 +1,5 @@
 import Ludic, { Camera, Vector2 } from '@ludic/ludic'
+import { Component, TagComponent } from 'ecsy'
 
 import TowerMenu from './ui/towerMenu'
 
@@ -9,21 +10,23 @@ import Color from './utils/Color'
 import Player from './entities/Player'
 import Tile from './entities/Tile'
 
-export class CameraComponent  {
+export class CameraComponent  extends Component {
   value: Camera
-  constructor() {
+  constructor(){
+    super()
     this.value = null
   }
 }
 
 
 // TODO break this up into multiple components and a component flag isCastle
-export class CastleStateComponent {
+export class CastleStateComponent extends Component {
   hex: Hex
   health: number
   size: number
 
   constructor(hex: Hex, health: number = 10, size: number = 2){
+    super()
     this.hex = hex
     this.health = health
     this.size = size
@@ -31,7 +34,7 @@ export class CastleStateComponent {
 }
 
 // TODO break this up into multiple components and a component flag isEnemy
-export class EnemyStateComponent {
+export class EnemyStateComponent extends Component {
   currentHex: Hex
   previousHex: Hex
   health: number
@@ -43,6 +46,7 @@ export class EnemyStateComponent {
   group: EnemyGroup
 
   constructor(hex: Hex, wave: EnemyWave, group: EnemyGroup, type: string = "1", speed: number = .1, health: number = 10, size: number = 1){
+    super()
     this.currentHex = hex
     this.previousHex = null
     this.wave = wave
@@ -57,7 +61,7 @@ export class EnemyStateComponent {
 
 
 // TODO break this up into multiple components and a component flag isPlayer
-export class PlayerStateComponent {
+export class PlayerStateComponent extends Component {
   size: number
   vibrating: boolean
   playerType: string
@@ -70,6 +74,7 @@ export class PlayerStateComponent {
   private _speed = 0.5
 
   constructor(size: number = 1, playerType: string = 'type1'){
+    super()
     this.size = size
     this.vibrating = false
     this.playerType = playerType
@@ -87,43 +92,48 @@ export class PlayerStateComponent {
 }
 
 
-export class FillComponent {
+export class FillComponent extends Component {
   fillStyle: string | CanvasGradient | CanvasPattern
   constructor(fillStyle: FillComponent['fillStyle']){
+    super()
     this.fillStyle = fillStyle
   }
 }
 
-export class GamepadComponent {
+export class GamepadComponent extends Component {
   index: number
   constructor(){
+    super()
     this.index = -1
   }
 }
 
-export class MechComponent {
+export class MechComponent extends Component {
   type: string
 
   constructor(){
+    super()
     this.type = ''
   }
 }
 
-export class MovementComponent {
+export class MovementComponent extends Component {
 	public velocity: Vector2 = new Vector2()
 	public accel: Vector2 = new Vector2()
 
   constructor(velocity: Vector2, accel: Vector2){
+    super()
     this.velocity = velocity
     this.accel = accel
   }
 }
 
-export class PositionComponent {
+export class PositionComponent extends Component {
 	x: number
 	y: number
 
   constructor(){
+    super()
     this.x = 0
     this.y = 0
   }
@@ -131,10 +141,11 @@ export class PositionComponent {
 
 export type RenderFn = (ctx: CanvasRenderingContext2D, ...args: any[]) => void
 
-export class RenderComponent  {
+export class RenderComponent  extends Component {
 	public renderFn: RenderFn
 
   constructor(renderFn: RenderFn){
+    super()
     this.renderFn = renderFn
   }
 }
@@ -150,7 +161,7 @@ const TILE_COLORS = {
 
 export type TileType =  "1" | "2" | "3" | "4" | "5"
 
-export class TileStateComponent {
+export class TileStateComponent extends Component {
   hex: Hex
   active: boolean
   tileType: string
@@ -161,6 +172,7 @@ export class TileStateComponent {
   private _fill: string
 
   constructor(hex: Hex, tileType: TileType = '1', active: boolean = false){
+    super()
     this.hex = hex
     this.active = active
     this.tileType = tileType
@@ -187,8 +199,9 @@ export class TileStateComponent {
 
 
 const MAP = new WeakMap<TowerMenuComponent, TowerMenu>()
-export class TowerMenuComponent {
+export class TowerMenuComponent extends Component {
   constructor(component?: TowerMenu){
+    super()
     MAP.set(this, component || new TowerMenu())
     Ludic.ui.add(this.component)
   }
@@ -199,13 +212,14 @@ export class TowerMenuComponent {
 }
 
 // TODO break this up into multiple components and a component flag isCastle
-export class TowerStateComponent {
+export class TowerStateComponent extends Component {
   hex: Hex
   type: string
   color: string
   size: number
 
   constructor(hex: Hex, type: string = "1"){
+    super()
     this.hex = hex
     this.type = type
 
@@ -218,3 +232,9 @@ export class TowerStateComponent {
     }
   }
 }
+
+export class isPlayer extends TagComponent {}
+export class isTower extends TagComponent {}
+export class isTile extends TagComponent {}
+export class isCastle extends TagComponent {}
+export class isEnemy extends TagComponent {}

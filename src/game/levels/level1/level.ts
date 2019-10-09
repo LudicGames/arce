@@ -29,7 +29,6 @@ import Castle from '../../entities/Castle'
 import Enemy from '../../entities/Enemy'
 import Tower from '../../entities/Tower'
 
-import BaseLevel from '../BaseLevel'
 import {
   GamepadComponent,
   MechComponent,
@@ -51,7 +50,7 @@ interface LevelOptions {
   playerMap: {[key: string]: string}
 }
 
-export default class Level1 extends BaseLevel {
+export default class Level1 {
   engine: World
   tiles: Tile[]
   enemies: Enemy[]
@@ -59,7 +58,6 @@ export default class Level1 extends BaseLevel {
   waves: any
 
   constructor(engine: World){
-    super()
     this.engine = engine
     this.tiles = []
     this.enemies = []
