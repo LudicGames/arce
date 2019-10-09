@@ -4,7 +4,7 @@ import { Component, TagComponent } from 'ecsy'
 import TowerMenu from './ui/towerMenu'
 
 import { EnemyWave, EnemyGroup } from './utils/Waves'
-import Hex from './utils/Hex'
+
 import Color from './utils/Color'
 
 import Player from './entities/Player'
@@ -21,13 +21,11 @@ export class CameraComponent  extends Component {
 
 // TODO break this up into multiple components and a component flag isCastle
 export class CastleStateComponent extends Component {
-  hex: Hex
   health: number
   size: number
 
-  constructor(hex: Hex, health: number = 10, size: number = 2){
+  constructor(health: number = 10, size: number = 2){
     super()
-    this.hex = hex
     this.health = health
     this.size = size
   }
@@ -35,8 +33,6 @@ export class CastleStateComponent extends Component {
 
 // TODO break this up into multiple components and a component flag isEnemy
 export class EnemyStateComponent extends Component {
-  currentHex: Hex
-  previousHex: Hex
   health: number
   speed: number
   color: string
@@ -45,10 +41,8 @@ export class EnemyStateComponent extends Component {
   wave: EnemyWave
   group: EnemyGroup
 
-  constructor(hex: Hex, wave: EnemyWave, group: EnemyGroup, type: string = "1", speed: number = .1, health: number = 10, size: number = 1){
+  constructor(wave: EnemyWave, group: EnemyGroup, type: string = "1", speed: number = .1, health: number = 10, size: number = 1){
     super()
-    this.currentHex = hex
-    this.previousHex = null
     this.wave = wave
     this.group = group
     this.type = type
@@ -162,7 +156,6 @@ const TILE_COLORS = {
 export type TileType =  "1" | "2" | "3" | "4" | "5"
 
 export class TileStateComponent extends Component {
-  hex: Hex
   active: boolean
   tileType: string
   playersOn: Player[]
@@ -171,9 +164,8 @@ export class TileStateComponent extends Component {
   private _color: string
   private _fill: string
 
-  constructor(hex: Hex, tileType: TileType = '1', active: boolean = false){
+  constructor(tileType: TileType = '1', active: boolean = false){
     super()
-    this.hex = hex
     this.active = active
     this.tileType = tileType
     this.playersOn = []
@@ -213,14 +205,12 @@ export class TowerMenuComponent extends Component {
 
 // TODO break this up into multiple components and a component flag isCastle
 export class TowerStateComponent extends Component {
-  hex: Hex
   type: string
   color: string
   size: number
 
-  constructor(hex: Hex, type: string = "1"){
+  constructor(type: string = "1"){
     super()
-    this.hex = hex
     this.type = type
 
     if(type === "1"){
@@ -232,6 +222,7 @@ export class TowerStateComponent extends Component {
     }
   }
 }
+
 
 export class isPlayer extends TagComponent {}
 export class isTower extends TagComponent {}

@@ -37,8 +37,6 @@ import {
   PlayerStateComponent
 } from '../../components'
 
-import { CameraComponentMapper } from '../../components/mappers'
-
 // Map and Waves
 import { generateMap } from '../../utils/Map'
 import WavesConfig from './wavesConfig'
