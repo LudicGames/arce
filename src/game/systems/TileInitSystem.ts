@@ -27,20 +27,34 @@ export default class TileInitSystem extends System {
     const mapW: number = Math.ceil(camera.width / ptm)
     const mapArea: number = mapH * mapW
 
-    const totalXTiles: number = 30
-    // const totalYTiles: number = 13
-    // const totalTiles: number =  totalXTiles * totalYTiles // 144
+    const rings: number = 6
+    let totalTiles: number = 1
+    for(let i=1; i<=rings; i++){totalTiles+= 6 * i}
+    console.log("totalTiles: ", totalTiles)
 
+    // Not perfect, need to do basic trig
+    const size: number = mapH / ((2*rings) * 2)
 
-    const w: number = totalXTiles * 1.5
-    const hexSideLength: number = mapW / w
+    const start = rings * -1
+    for(let x=start; x<=rings; x++){
+      for(let y=start; y<=rings; y++){
+        for(let z=start; z<=rings; z++){
+          if(x+y+z === 0){
+            this.world.createEntity()
+              .addComponent(isTileComponent)
+              .addComponent(SizeComponent, {value: size})
+              .addComponent(CubeCoordinateComponent, {x, y, z})
+          }
+        }
+      }
+    }
 
-    map.tiles.forEach((tile: MapTile) => {
-      this.world.createEntity()
-        .addComponent(isTileComponent)
-        .addComponent(SizeComponent, {value: hexSideLength})
-        .addComponent(CubeCoordinateComponent, tile.coords)
-    })
+    // map.tiles.forEach((tile: MapTile) => {
+    //   this.world.createEntity()
+    //     .addComponent(isTileComponent)
+    //     .addComponent(SizeComponent, {value: size})
+    //     .addComponent(CubeCoordinateComponent, tile.coords)
+    // })
 
     // this System only runs once
     this.enabled = false

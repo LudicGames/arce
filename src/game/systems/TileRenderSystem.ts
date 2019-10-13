@@ -39,8 +39,8 @@ export default class TileRenderSystem extends System {
     const y: number = pos.y
 
     ctx.lineWidth = .15
-    ctx.fillStyle = "blue"
-    ctx.strokeStyle = "red"
+    ctx.fillStyle = "rgba(55, 4, 72, .8)"
+    ctx.strokeStyle = "rgba(255, 74, 82, 1)"
 
 
     ctx.beginPath()
@@ -57,7 +57,7 @@ export default class TileRenderSystem extends System {
     //   ctx.font = '1px serif'
     //   ctx.fillStyle = 'white'
     //   ctx.scale(1, -1)
-    //   // ctx.fillText(`${state.hex.x}  ${state.hex.y}  ${state.hex.z}`, x - 1.5, -y)
+    //   ctx.fillText(`${coords.x}  ${coords.y}  ${coords.z}`, x - 1.5, -y)
     //   // ctx.fillText(`q: ${state.hex.offsetCoordinate.q}  r: ${state.hex.offsetCoordinate.r}`, x - 1.5, -y)
     //   // ctx.fillText(`q: ${state.hex.q} r:${state.hex.r}`, x - 1.5, -y)
     //   ctx.restore()
