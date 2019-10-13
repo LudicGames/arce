@@ -131,52 +131,6 @@ export class RenderComponent  extends Component {
   }
 }
 
-
-const TILE_COLORS = {
-  '1': {r:46,  g:204, b:113, a:0},
-  '2': {r:52,  g:152, b:219, a:0},
-  '3': {r:155, g: 89, b:182, a:0},
-  '4': {r:241, g:196, b:15,  a:0},
-  '5': {r:231, g:76,  b:60,  a:0}
-}
-
-export type TileType =  "1" | "2" | "3" | "4" | "5"
-
-export class TileStateComponent extends Component {
-  active: boolean
-  tileType: string
-  playersOn: Player[]
-  building: boolean = false
-
-  private _color: string
-  private _fill: string
-
-  constructor(tileType: TileType = '1', active: boolean = false){
-    super()
-    this.active = active
-    this.tileType = tileType
-    this.playersOn = []
-  }
-
-  get color(): Color {
-    let tc = TILE_COLORS[this.tileType]
-    return new Color(tc.r, tc.g, tc.b, tc.a)
-  }
-
-  get fill(): string {
-    let tc = TILE_COLORS[this.tileType]
-    let baseColor: Color = new Color(tc.r, tc.g, tc.b, tc.a)
-    if(this.active){
-      baseColor.a = .4
-    } else {
-      baseColor.a = .1
-    }
-
-    return baseColor.toString()
-  }
-}
-
-
 const MAP = new WeakMap<TowerMenuComponent, TowerMenu>()
 export class TowerMenuComponent extends Component {
   constructor(component?: TowerMenu){
@@ -190,34 +144,11 @@ export class TowerMenuComponent extends Component {
   }
 }
 
-// TODO break this up into multiple components and a component flag isCastle
-export class TowerStateComponent extends Component {
-  type: string
-  color: string
-  size: number
-
-  constructor(type: string = "1"){
-    super()
-    this.type = type
-
-    if(type === "1"){
-      this.color = 'blue'
-      this.size = 1
-    } else {
-      this.color = 'red'
-      this.size = .5
-    }
-  }
-}
-
-
 export class isPlayerComponent extends TagComponent {}
 export class isTowerComponent extends TagComponent {}
 export class isTileComponent extends TagComponent {}
 export class isCastleComponent extends TagComponent {}
 export class isEnemyComponent extends TagComponent {}
-
-
 
 export class MapConfigComponent extends Component {
   value: any
