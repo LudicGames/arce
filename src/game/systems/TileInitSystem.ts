@@ -27,18 +27,13 @@ export default class TileInitSystem extends System {
     const mapW: number = Math.ceil(camera.width / ptm)
     const mapArea: number = mapH * mapW
 
-    const totalXTiles: number = 23
-    const totalYTiles: number = 13
-    const totalTiles: number =  totalXTiles * totalYTiles // 144
+    const totalXTiles: number = 30
+    // const totalYTiles: number = 13
+    // const totalTiles: number =  totalXTiles * totalYTiles // 144
+
 
     const w: number = totalXTiles * 1.5
     const hexSideLength: number = mapW / w
-
-    // const minQ: number = 1
-    // const maxQ: number = 22
-
-    // const minR: number = -9
-    // const maxR: number = -2
 
     map.tiles.forEach((tile: MapTile) => {
       this.world.createEntity()

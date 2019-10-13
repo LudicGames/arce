@@ -30,7 +30,7 @@ export default class GameScreen extends Screen {
 
     const cameraEntity = this.engine.createEntity()
     cameraEntity.addComponent(CameraComponent, {value: camera})
-    // camera.centerWorldToCamera();
+    camera.centerWorldToCamera()
     // console.log(this.engine)
     // this.engine.addSingletonComponent(new CameraComponent(camera))
     // this.engine.addSystem(new CameraRenderSystem())
