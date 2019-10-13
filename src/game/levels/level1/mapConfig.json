@@ -160,9 +160,11 @@
   ],
   "castles": [
     {
-      "x": 2,
-      "y": 2,
-      "z": -4
+      "coords": {
+        "x": 2,
+        "y": 2,
+        "z": -4
+      }
     }
   ],
   "playerSpawnPoints": [

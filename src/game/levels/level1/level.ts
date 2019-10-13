@@ -1,16 +1,14 @@
 import Ludic, {Screen, Camera} from '@ludic/ludic'
 
 // Player Systems
-import PlayerControlSystem from '../../systems/PlayerControlSystem'
-import PlayerRenderSystem from '../../systems/PlayerRenderSystem'
+import { PlayerControlSystem, PlayerRenderSystem } from '../../systems'
 
 // Tile Systems
-import { TileInitSystem } from '../../systems'
-import TileRenderSystem from '../../systems/TileRenderSystem'
+import { TileInitSystem, TileRenderSystem } from '../../systems'
 import TileActivationSystem from '../../systems/TileActivationSystem'
 
 // Castle Systems
-import CastleRenderSystem from '../../systems/CastleRenderSystem'
+import { CastleInitSystem, CastleRenderSystem } from '../../systems'
 import CastleDamageSystem from '../../systems/CastleDamageSystem'
 
 // Enemy Systems
@@ -22,13 +20,6 @@ import EnemySpawnSystem from '../../systems/EnemySpawnSystem'
 import TowerRenderSystem from '../../systems/TowerRenderSystem'
 
 import BackgroundRenderSystem from '../../systems/BackgroundRenderSystem'
-
-// Entities
-import Player from '../../entities/Player'
-import Tile from '../../entities/Tile'
-import Castle from '../../entities/Castle'
-import Enemy from '../../entities/Enemy'
-import Tower from '../../entities/Tower'
 
 import {
   GamepadComponent,
@@ -53,15 +44,11 @@ interface LevelOptions {
 
 export default class Level1 {
   engine: World
-  tiles: Tile[]
-  enemies: Enemy[]
   map: any
   waves: any
 
   constructor(engine: World){
     this.engine = engine
-    this.tiles = []
-    this.enemies = []
 
     // Hack for now
     Ludic.debug = true
@@ -71,14 +58,7 @@ export default class Level1 {
     // Add the map
     const map = this.engine.createEntity().addComponent(MapConfigComponent, {value: mapConfig})
 
-
     this.initSystems()
-
-
-    // generateMap(CameraComponentMapper.get(this.engine.getSingleton()).camera, this.engine, mapConfig, options.playerMap)
-
-
-
 
     // Add the Players
     // partial taken from fn above:
@@ -93,20 +73,19 @@ export default class Level1 {
       player.addComponent(MechComponent, {type})
     })
 
-
   }
 
   initSystems(){
     // Init
     this.engine.registerSystem(TileInitSystem)
+    this.engine.registerSystem(CastleInitSystem)
 
     // Render
     // this.engine.addSystem(new BackgroundRenderSystem())
-
     // this.engine.addSystem(new EnemyRenderSystem())
-    // this.engine.addSystem(new CastleRenderSystem())
     // this.engine.addSystem(new TowerRenderSystem())
     this.engine.registerSystem(TileRenderSystem)
+    this.engine.registerSystem(CastleRenderSystem)
     this.engine.registerSystem(PlayerRenderSystem)
 
 

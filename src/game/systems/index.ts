@@ -6,8 +6,10 @@ export { default as PlayerControlSystem } from './PlayerControlSystem'
 
 
 // Castle
+export { default as CastleInitSystem } from './CastleInitSystem'
+export { default as CastleRenderSystem } from './CastleRenderSystem'
 // export { default as CastleDamageSystem } from './CastleDamageSystem'
-// export { default as CastleRenderSystem } from './CastleRenderSystem'
+
 
 
 // Enemy
@@ -18,7 +20,7 @@ export { default as PlayerControlSystem } from './PlayerControlSystem'
 
 // Tile
 export { default as TileInitSystem } from './TileInitSystem'
-// export { default as TileRenderSystem } from './TileRenderSystem'
+export { default as TileRenderSystem } from './TileRenderSystem'
 // export { default as TileActivationSystem } from './TileActivationSystem'
 
 // Tower

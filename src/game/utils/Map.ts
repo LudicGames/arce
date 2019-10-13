@@ -9,15 +9,20 @@ import { GamepadComponent, MechComponent, TileStateComponent } from '../componen
 
 import { Hex, OffsetCoordinate, CubeCoordinate } from './Hex'
 
+
+export interface Map {
+  tiles: MapTile[]
+  castles: MapCastle[]
+  playerSpawnPoints: CubeCoordinate[]
+}
+
 export interface MapTile {
   coords: CubeCoordinate
   tileType?: string
 }
 
-export interface Map {
-  tiles: MapTile[]
-  castles: CubeCoordinate[]
-  playerSpawnPoints: CubeCoordinate[]
+export interface MapCastle {
+  coords: CubeCoordinate
 }
 
 // TODO consolidate this

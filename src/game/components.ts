@@ -18,19 +18,6 @@ export class CameraComponent  extends Component {
   }
 }
 
-
-// TODO break this up into multiple components and a component flag isCastle
-export class CastleStateComponent extends Component {
-  health: number
-  size: number
-
-  constructor(health: number = 10, size: number = 2){
-    super()
-    this.health = health
-    this.size = size
-  }
-}
-
 // TODO break this up into multiple components and a component flag isEnemy
 export class EnemyStateComponent extends Component {
   health: number
@@ -255,6 +242,16 @@ export class SizeComponent extends Component {
   }
 }
 
+export class HealthComponent extends Component {
+  value: number
+  constructor(){
+    super()
+  }
+
+  reset(){
+    this.value = 0
+  }
+}
 
 export class CubeCoordinateComponent extends Component {
   x: number
