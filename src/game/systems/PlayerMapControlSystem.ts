@@ -1,15 +1,11 @@
 import Ludic, { Vector2 } from '@ludic/ludic'
 import { Engine, System, Family, Entity, ComponentMapper, IteratingSystem } from '@ludic/ein'
 
-import GamepadComponent from '../components/GamepadComponent'
-import PositionComponent from '../components/PositionComponent'
-import PlayerStateComponent from '../components/PlayerStateComponent'
-import TileStateComponent from '../components/TileStateComponent'
+import { GamepadComponent, PositionComponent, PlayerStateComponent, TileStateComponent } from '../components'
 
 import Tile from '../entities/Tile'
-
 import { Map, MapTile } from '../utils/Map'
-import Hex, { OffsetCoordinate, CubeCoordinate } from '../utils/Hex'
+import { Hex, OffsetCoordinate, CubeCoordinate } from '../utils/Hex'
 /**
  * This system is in charge of translating gamepad inputs into
  * player movement.

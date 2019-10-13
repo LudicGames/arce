@@ -5,14 +5,12 @@ import Player from '../entities/Player'
 import Tile from '../entities/Tile'
 import Castle from '../entities/Castle'
 
-import GamepadComponent from '../components/GamepadComponent'
-import MechComponent from '../components/MechComponent'
-import TileStateComponent from '../components/TileStateComponent'
+import { GamepadComponent, MechComponent, TileStateComponent } from '../components'
 
-import Hex, { OffsetCoordinate, CubeCoordinate } from './Hex'
+import { Hex, OffsetCoordinate, CubeCoordinate } from './Hex'
 
 export interface MapTile {
-  pos: CubeCoordinate
+  coords: CubeCoordinate
   tileType?: string
 }
 

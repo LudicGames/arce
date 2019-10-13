@@ -5,6 +5,7 @@ import PlayerControlSystem from '../../systems/PlayerControlSystem'
 import PlayerRenderSystem from '../../systems/PlayerRenderSystem'
 
 // Tile Systems
+import { TileInitSystem } from '../../systems'
 import TileRenderSystem from '../../systems/TileRenderSystem'
 import TileActivationSystem from '../../systems/TileActivationSystem'
 
@@ -34,7 +35,9 @@ import {
   MechComponent,
   PositionComponent,
   MovementComponent,
-  PlayerStateComponent
+  PlayerStateComponent,
+  MapConfigComponent,
+  CameraComponent
 } from '../../components'
 
 // Map and Waves
@@ -65,9 +68,19 @@ export default class Level1 {
   }
 
   init(options: LevelOptions){
+    // Add the map
+    const map = this.engine.createEntity().addComponent(MapConfigComponent, {value: mapConfig})
+
+
     this.initSystems()
+
+
     // generateMap(CameraComponentMapper.get(this.engine.getSingleton()).camera, this.engine, mapConfig, options.playerMap)
 
+
+
+
+    // Add the Players
     // partial taken from fn above:
     Object.entries(options.playerMap).forEach(([index, type]) => {
       let spawnPoint = mapConfig.playerSpawnPoints[parseInt(index)]
@@ -79,16 +92,23 @@ export default class Level1 {
       player.addComponent(GamepadComponent, {index: parseInt(index)})
       player.addComponent(MechComponent, {type})
     })
+
+
   }
 
   initSystems(){
+    // Init
+    this.engine.registerSystem(TileInitSystem)
+
     // Render
     // this.engine.addSystem(new BackgroundRenderSystem())
-    // this.engine.addSystem(new TileRenderSystem())
+
     // this.engine.addSystem(new EnemyRenderSystem())
     // this.engine.addSystem(new CastleRenderSystem())
     // this.engine.addSystem(new TowerRenderSystem())
+    this.engine.registerSystem(TileRenderSystem)
     this.engine.registerSystem(PlayerRenderSystem)
+
 
     this.engine.registerSystem(PlayerControlSystem)
     // this.engine.addSystem(new EnemyMovementSystem())

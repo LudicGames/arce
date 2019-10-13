@@ -224,8 +224,50 @@ export class TowerStateComponent extends Component {
 }
 
 
-export class isPlayer extends TagComponent {}
-export class isTower extends TagComponent {}
-export class isTile extends TagComponent {}
-export class isCastle extends TagComponent {}
-export class isEnemy extends TagComponent {}
+export class isPlayerComponent extends TagComponent {}
+export class isTowerComponent extends TagComponent {}
+export class isTileComponent extends TagComponent {}
+export class isCastleComponent extends TagComponent {}
+export class isEnemyComponent extends TagComponent {}
+
+
+
+export class MapConfigComponent extends Component {
+  value: any
+  constructor(){
+    super()
+  }
+
+  reset(){
+    this.value = null
+  }
+}
+
+
+export class SizeComponent extends Component {
+  value: number
+  constructor(){
+    super()
+  }
+
+  reset(){
+    this.value = 0
+  }
+}
+
+
+export class CubeCoordinateComponent extends Component {
+  x: number
+  y: number
+  z: number
+
+  constructor(){
+    super()
+  }
+
+  reset(){
+    this.x = 0
+    this.y = 0
+    this.z = 0
+  }
+}
