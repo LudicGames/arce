@@ -1,13 +1,9 @@
-import { UIComponent } from '@ludic/ludic-ui'
 import { styleMap } from 'lit-html/directives/style-map'
-import { html as litHtml, TemplateResult } from 'lit-html'
+import { html, TemplateResult } from 'lit-html'
 import { Vector2 } from '@ludic/ludic'
-import { LitHtml } from './litRenderer';
-// import { TemplateResult } from 'lit-html';
-// import { TemplateResult } from 'lit-html';
 
 
-export default class TowerMenu extends UIComponent {
+export default class TowerMenu {
 
   position = new Vector2()
   visible = true
@@ -20,7 +16,7 @@ export default class TowerMenu extends UIComponent {
     }
   }
 
-  render(html: any): any {
+  render() {
     return html`
       <style>
         .tower-menu {

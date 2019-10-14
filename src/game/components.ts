@@ -89,6 +89,8 @@ export class GamepadComponent extends Component {
   }
 }
 
+export class InputFocus extends TagComponent { }
+
 export class MechComponent extends Component {
   type: string
 
@@ -131,16 +133,15 @@ export class RenderComponent  extends Component {
   }
 }
 
-const MAP = new WeakMap<TowerMenuComponent, TowerMenu>()
-export class TowerMenuComponent extends Component {
-  constructor(component?: TowerMenu){
-    super()
-    MAP.set(this, component || new TowerMenu())
-    Ludic.ui.add(this.component)
+export class TowerMenuComponent {
+  value: TowerMenu
+  name: string | null
+  constructor(){
+    this.reset()
   }
-
-  get component(){
-    return MAP.get(this)
+  reset(){
+    this.value = new TowerMenu()
+    this.name = null
   }
 }
 

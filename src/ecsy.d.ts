@@ -23,4 +23,6 @@ import { Entity } from 'ecsy';
 export interface QueryType {
   components: any[]
   results: Entity[]
+  added?: Entity[]
+  removed?: Entity[]
 }

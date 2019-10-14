@@ -5,7 +5,6 @@ import Player from '../entities/Player'
 import BaseLevel from '../levels/BaseLevel'
 import { CameraComponent } from '../components'
 import CameraRenderSystem from '../systems/CameraRenderSystem'
-import TowerMenuSystem from '../systems/TowerMenuSystem'
 import { World } from 'ecsy'
 
 export default class GameScreen extends Screen {
@@ -36,7 +35,6 @@ export default class GameScreen extends Screen {
     // this.engine.addSystem(new CameraRenderSystem())
     this.engine.registerSystem(CameraRenderSystem)
     // this.engine.addSystem(new TowerMenuSystem())
-    this.engine.registerSystem(TowerMenuSystem)
   }
 
   public onAddedToManager(manager: ScreenManager, finalData?: {[key: number]: string}) {

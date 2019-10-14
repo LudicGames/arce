@@ -1,8 +1,9 @@
 // import { Family, Entity, ComponentMapper, IteratingSystem, ComponentType } from '@ludic/ein'
-import { GamepadComponent, PositionComponent, PlayerStateComponent, TileStateComponent, TowerMenuComponent } from '../components'
+import { GamepadComponent, PositionComponent, PlayerStateComponent, TileStateComponent, TowerMenuComponent, InputFocus } from '../components'
 import Ludic, { Vector2 } from '@ludic/ludic'
-import { System, Entity } from 'ecsy'
+import { System, Entity, World, Not } from 'ecsy'
 import { QueryType } from '/src/ecsy'
+import TowerMenu from '../ui/towerMenu'
 
 /**
  * This system is in charge of translating gamepad inputs into
@@ -15,10 +16,14 @@ export default class PlayerControlSystem extends System {
   // playerStateMapper = new ComponentMapper(PlayerStateComponent)
   // towerMenuMapper = new ComponentMapper(TowerMenuComponent)
 
+  world!: World
+
   gamepadDeadzone = 0.3
 
   queries!: {
     players: QueryType
+    playersWithoutFocus: QueryType
+    towerMenusWithoutFocus: QueryType
   }
 
   // constructor(){
@@ -26,7 +31,7 @@ export default class PlayerControlSystem extends System {
   // }
 
   execute(deltaTime: number) {
-    this.queries.players.results.forEach((ent: Entity) => {
+    this.queries.players.results.forEach((ent: Entity, ix) => {
       const p = ent.getComponent(PositionComponent)
       const g = ent.getComponent(GamepadComponent)
       const state = ent.getComponent(PlayerStateComponent)
@@ -62,21 +67,34 @@ export default class PlayerControlSystem extends System {
           p.y += playerVector.y
         }
 
-        // if(state.currentTile != null){
-        //   let tileState = state.currentTile.getComponent(TileStateComponent)
-        //   if(gamepad.cross.buttonUp){
-        //     tileState.building = !tileState.building
-        //     state.building = true
-        //     const {component} = this.towerMenuMapper.get(ent) || ent.addAndReturn(new TowerMenuComponent())
-        //     component.visible = true
-        //   }
-        //   if(state.building && gamepad.circle.buttonUp){
-        //     tileState.building = false
-        //     state.building = false
-        //     const {component} = this.towerMenuMapper.get(ent)
-        //     component.visible = false
-        //   }
+        if(gamepad.cross.buttonUp){
+          // state.building = true
+          // create the tower menu and give it player control
+          
+          this.world.createEntity().addComponent(InputFocus).addComponent(TowerMenuComponent).addComponent(GamepadComponent, g).addComponent(PositionComponent, p)
+          ent.removeComponent(InputFocus)
+          // ent.addComponent(TowerMenuComponent)
+          // const {component} = this.towerMenuMapper.get(ent) || ent.addAndReturn(new TowerMenuComponent())
+          // component.visible = true
+        }
+        // if(state.building && gamepad.circle.buttonUp){
+        //   state.building = false
+        //   ent.removeComponent(TowerMenuComponent)
+        //   // const {component} = this.towerMenuMapper.get(ent)
+        //   // component.visible = false
         // }
+      }
+    })
+
+    // whenever a tower menu loses we want to give it back to the player
+    this.queries.towerMenusWithoutFocus.added.forEach(ent => {
+      // find a player without focus and assign focus back
+      console.log('return focus')
+      const gamepadIndex = ent.getComponent(GamepadComponent).index
+      const player = this.queries.playersWithoutFocus.results.find(ent => ent.getComponent(GamepadComponent).index == gamepadIndex)
+      if(player != null){
+        console.log('add input focus to player')
+        player.addComponent(InputFocus)
       }
     })
   }
@@ -84,5 +102,12 @@ export default class PlayerControlSystem extends System {
 
 // @ts-ignore
 PlayerControlSystem.queries = {
-  players: {components: [GamepadComponent, PositionComponent, PlayerStateComponent]},
+  players: {components: [GamepadComponent, PositionComponent, PlayerStateComponent, InputFocus]},
+  playersWithoutFocus: {components: [PlayerStateComponent, GamepadComponent, Not(InputFocus)]},
+  towerMenusWithoutFocus: {
+    components: [TowerMenuComponent, GamepadComponent, Not(InputFocus)],
+    listen: {
+      added: true,
+    },
+  },
 }

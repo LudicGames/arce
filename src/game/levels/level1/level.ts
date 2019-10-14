@@ -17,7 +17,8 @@ import EnemyMovementSystem from '../../systems/EnemyMovementSystem'
 import EnemySpawnSystem from '../../systems/EnemySpawnSystem'
 
 // Tower Systems
-import TowerRenderSystem from '../../systems/TowerRenderSystem'
+import TowerMenuControlSystem from '../../systems/TowerMenuControlSystem'
+import TowerMenuRenderSystem from '../../systems/TowerMenuRenderSystem'
 
 import BackgroundRenderSystem from '../../systems/BackgroundRenderSystem'
 
@@ -27,8 +28,7 @@ import {
   PositionComponent,
   MovementComponent,
   PlayerStateComponent,
-  MapConfigComponent,
-  CameraComponent
+  InputFocus
 } from '../../components'
 
 // Map and Waves
@@ -36,6 +36,7 @@ import { generateMap } from '../../utils/Map'
 import WavesConfig from './wavesConfig'
 import mapConfig from './mapConfig'
 import { World } from 'ecsy'
+import UIRenderSystem from '../../systems/UIRenderSystem'
 
 
 interface LevelOptions {
@@ -63,13 +64,14 @@ export default class Level1 {
     // Add the Players
     // partial taken from fn above:
     Object.entries(options.playerMap).forEach(([index, type]) => {
-      let spawnPoint = mapConfig.playerSpawnPoints[parseInt(index)]
+      // let spawnPoint = mapConfig.playerSpawnPoints[parseInt(index)]
       // let hex = new Hex(spawnPoint.x, spawnPoint.y, spawnPoint.z, hexSideLength)
       const player = this.engine.createEntity()
       player.addComponent(PositionComponent, {x: 10, y: 10})
       player.addComponent(MovementComponent)
       player.addComponent(PlayerStateComponent)
       player.addComponent(GamepadComponent, {index: parseInt(index)})
+      player.addComponent(InputFocus)
       player.addComponent(MechComponent, {type})
     })
 
@@ -90,6 +92,8 @@ export default class Level1 {
 
 
     this.engine.registerSystem(PlayerControlSystem)
+    this.engine.registerSystem(TowerMenuRenderSystem)
+    this.engine.registerSystem(TowerMenuControlSystem)
     // this.engine.addSystem(new EnemyMovementSystem())
     // this.engine.addSystem(new TileActivationSystem())
     // this.engine.addSystem(new EnemySpawnSystem(WavesConfig))
