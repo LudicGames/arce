@@ -162,6 +162,16 @@ export class MapConfigComponent extends Component {
   }
 }
 
+export class PlayerConfigComponent extends Component {
+  value: any
+  constructor(){
+    super()
+  }
+
+  reset(){
+    this.value = null
+  }
+}
 
 export class SizeComponent extends Component {
   value: number

@@ -1,7 +1,7 @@
 import Ludic, {Screen, Camera} from '@ludic/ludic'
 
 // Player Systems
-import { PlayerControlSystem, PlayerRenderSystem } from '../../systems'
+import { PlayerInitSystem, PlayerControlSystem, PlayerRenderSystem } from '../../systems'
 
 // Tile Systems
 import { TileInitSystem, TileRenderSystem } from '../../systems'
@@ -28,6 +28,7 @@ import {
   PositionComponent,
   MovementComponent,
   PlayerStateComponent,
+  PlayerConfigComponent,
   MapConfigComponent,
   CameraComponent,
   InputFocus,
@@ -57,31 +58,21 @@ export default class Level1 {
   }
 
   init(options: LevelOptions){
-    // Add the map
-    const map = this.engine.createEntity().addComponent(MapConfigComponent, {value: mapConfig})
+
+    // Add the player config
+    this.engine.createEntity().addComponent(PlayerConfigComponent, {value: options.playerMap})
+
+    // Add the map config
+    this.engine.createEntity().addComponent(MapConfigComponent, {value: mapConfig})
 
     this.initSystems()
-
-    // Add the Players
-    // partial taken from fn above:
-    Object.entries(options.playerMap).forEach(([index, type]) => {
-      // let spawnPoint = mapConfig.playerSpawnPoints[parseInt(index)]
-      // let hex = new Hex(spawnPoint.x, spawnPoint.y, spawnPoint.z, hexSideLength)
-      const player = this.engine.createEntity()
-      player.addComponent(PositionComponent, {x: 10, y: 10})
-      player.addComponent(MovementComponent)
-      player.addComponent(PlayerStateComponent)
-      player.addComponent(GamepadComponent, {index: parseInt(index)})
-      player.addComponent(InputFocus)
-      player.addComponent(MechComponent, {type})
-    })
-
   }
 
   initSystems(){
     // Init
     this.engine.registerSystem(TileInitSystem)
     this.engine.registerSystem(CastleInitSystem)
+    this.engine.registerSystem(PlayerInitSystem)
 
     // Render
     // this.engine.addSystem(new BackgroundRenderSystem())

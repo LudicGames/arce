@@ -1,5 +1,6 @@
 // Player
 // export { default as PlayerCreate } from './PlayerCreate'
+export { default as PlayerInitSystem } from './PlayerInitSystem'
 export { default as PlayerRenderSystem } from './PlayerRenderSystem'
 export { default as PlayerControlSystem } from './PlayerControlSystem'
 // export { default as PlayerMapControlSystem } from './PlayerMapControlSystem'
