@@ -89,11 +89,9 @@ export default class PlayerControlSystem extends System {
     // whenever a tower menu loses we want to give it back to the player
     this.queries.towerMenusWithoutFocus.added.forEach(ent => {
       // find a player without focus and assign focus back
-      console.log('return focus')
       const gamepadIndex = ent.getComponent(GamepadComponent).index
       const player = this.queries.playersWithoutFocus.results.find(ent => ent.getComponent(GamepadComponent).index == gamepadIndex)
       if(player != null){
-        console.log('add input focus to player')
         player.addComponent(InputFocus)
       }
     })

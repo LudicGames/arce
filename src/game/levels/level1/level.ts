@@ -28,7 +28,9 @@ import {
   PositionComponent,
   MovementComponent,
   PlayerStateComponent,
-  InputFocus
+  MapConfigComponent,
+  CameraComponent,
+  InputFocus,
 } from '../../components'
 
 // Map and Waves
@@ -36,7 +38,6 @@ import { generateMap } from '../../utils/Map'
 import WavesConfig from './wavesConfig'
 import mapConfig from './mapConfig'
 import { World } from 'ecsy'
-import UIRenderSystem from '../../systems/UIRenderSystem'
 
 
 interface LevelOptions {
