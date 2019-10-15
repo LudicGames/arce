@@ -1,50 +1,46 @@
-import Ludic, { Camera } from '@ludic/ludic'
-import {ComponentMapper, Family, Entity, System, Engine} from '@ludic/ein'
-import PositionComponent from '../components/PositionComponent'
-import EnemyStateComponent from '../components/EnemyStateComponent'
-import Enemy from '../entities/Enemy'
+import Ludic from '@ludic/ludic'
+import { PositionComponent,
+         CameraComponent,
+         isEnemyComponent,
+         SizeComponent,
+       } from '../components'
+import { System, World, Entity } from 'ecsy'
+import { QueryType } from '/src/ecsy'
 
 export default class EnemyRenderSystem extends System {
-  private pm: ComponentMapper<PositionComponent> = ComponentMapper.getFor(PositionComponent)
-  private sm: ComponentMapper<EnemyStateComponent> = ComponentMapper.getFor(EnemyStateComponent)
+  engine: World
 
-  public entities: Entity[]
-  public components = [EnemyStateComponent]
-  public family: Family
-
-  constructor(){
-    super()
-    this.family = Family.all(this.components).get()
+  queries: {
+    enemies: QueryType
+    camera: QueryType
   }
 
-  public addedToEngine(engine: Engine): void {
-    this.entities = engine.getEntitiesFor(this.family)
-    this.engine = engine
-  }
-
-  public removedFromEngine(engine: Engine): void {
-    this.entities = []
-  }
-
-  public update(deltaTime: number): void {
+  execute(deltaTime: number): void {
     const ctx = Ludic.canvas.context
-    if(this.engine) {
-      this.entities = this.engine.getEntitiesFor(this.family)
-    }
+    const camera = this.queries.camera.results[0].getComponent(CameraComponent).value
+
     ctx.save()
-    this.entities.forEach((entity: Entity) => {
+    this.queries.enemies.results.forEach((entity: Entity) => {
       ctx.save()
-      this.renderEnemy(ctx, entity)
+      this.render(ctx, entity)
       ctx.restore()
     })
     ctx.restore()
   }
 
-  renderEnemy(ctx: CanvasRenderingContext2D, enemy: Enemy){
-    const pos = this.pm.get(enemy)
-    const state = this.sm.get(enemy)
+  render(ctx: CanvasRenderingContext2D, enemy: Entity){
+    const pos = enemy.getComponent(PositionComponent)
+    const size: number = enemy.getComponent(SizeComponent).value
 
-    ctx.fillStyle = state.color
-    ctx.fillRect(pos.x - state.size / 2, pos.y - state.size / 2, state.size, state.size)
+    ctx.fillStyle = "red"
+    ctx.beginPath()
+    ctx.arc(pos.x + (size / 2), pos.y + (size / 2), size, 0, Math.PI * 2)
+    ctx.fill()
   }
+}
+
+// @ts-ignore
+EnemyRenderSystem.queries = {
+  enemies: { components: [isEnemyComponent]},
+  camera: { components: [CameraComponent]},
 }

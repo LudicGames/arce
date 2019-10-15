@@ -14,8 +14,8 @@ export { default as CastleRenderSystem } from './CastleRenderSystem'
 
 
 // Enemy
-// export { default as EnemySpawnSystem } from './EnemySpawnSystem'
-// export { default as EnemyRenderSystem } from './EnemyRenderSystem'
+export { default as EnemySpawnSystem } from './EnemySpawnSystem'
+export { default as EnemyRenderSystem } from './EnemyRenderSystem'
 // export { default as EnemyMovementSystem } from './EnemyMovementSystem'
 
 

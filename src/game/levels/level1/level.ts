@@ -12,9 +12,7 @@ import { CastleInitSystem, CastleRenderSystem } from '../../systems'
 import CastleDamageSystem from '../../systems/CastleDamageSystem'
 
 // Enemy Systems
-import EnemyRenderSystem from '../../systems/EnemyRenderSystem'
-import EnemyMovementSystem from '../../systems/EnemyMovementSystem'
-import EnemySpawnSystem from '../../systems/EnemySpawnSystem'
+import { EnemySpawnSystem, EnemyRenderSystem } from '../../systems'
 
 // Tower Systems
 import TowerMenuControlSystem from '../../systems/TowerMenuControlSystem'
@@ -75,13 +73,14 @@ export default class Level1 {
     this.engine.registerSystem(TileInitSystem)
     this.engine.registerSystem(CastleInitSystem)
     this.engine.registerSystem(PlayerInitSystem)
+    this.engine.registerSystem(EnemySpawnSystem)
 
     // Render
     // this.engine.addSystem(new BackgroundRenderSystem())
     // this.engine.addSystem(new TowerRenderSystem())
     this.engine.registerSystem(TileRenderSystem)
     this.engine.registerSystem(CastleRenderSystem)
-    // this.engine.addSystem(new EnemyRenderSystem())
+    this.engine.registerSystem(EnemyRenderSystem)
     this.engine.registerSystem(PlayerRenderSystem)
 
 

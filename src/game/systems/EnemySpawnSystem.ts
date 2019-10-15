@@ -2,18 +2,13 @@ import { Camera } from '@ludic/ludic'
 import { System, World, Entity } from 'ecsy'
 import { QueryType } from '/src/ecsy'
 import { Map, MapTile } from '../utils/Map'
-import { CameraComponent,
-         MapConfigComponent,
-         PlayerConfigComponent,
-         isPlayerComponent,
-         PositionComponent,
+import { PositionComponent,
          MovementComponent,
-         PlayerStateComponent,
-         GamepadComponent,
-         InputFocus,
-         MechComponent
+         isTileComponent,
+         isEnemyComponent,
+         SizeComponent,
+         EnemyConfigComponent
        } from '../components'
-
 
 export default class EnemySpawnSystem extends System {
   enabled: boolean
@@ -21,39 +16,35 @@ export default class EnemySpawnSystem extends System {
 
   queries: {
     enemyConfig: QueryType
+    tiles:  QueryType
+
   }
 
+  spawns = [1, 2, 3, 4, 5]
 
-  execute(deltaTime: number): void {
-    const playerConfig = this.queries.playerConfig.results[0].getComponent(PlayerConfigComponent).value
-    const mapConfig: Map = this.queries.mapConfig.results[0].getComponent(MapConfigComponent).value
-    const camera: Camera = this.queries.camera.results[0].getComponent(CameraComponent).value
+  execute(deltaTime: number, time: number): void {
+    const enemyConfig: Map = this.queries.enemyConfig.results[0].getComponent(EnemyConfigComponent).value
+    const tileSize: number = this.queries.tiles.results[0].getComponent(SizeComponent).value
 
-    // TODO
-    // In order to spawn the Player on a specific Tile, we need to know the size of the Tiles
+    // Just spawn a random enemy every 10 seconds
+    if(this.spawns.indexOf(Math.round(time / 5000)) > -1){
+      this.spawnRandomEnemy()
+      this.spawns.splice(0, 1)
+    }
+  }
 
-
-    Object.entries(playerConfig).forEach(([index, type]) => {
-      // let spawnPoint = mapConfig.playerSpawnPoints[parseInt(index)]
-      // let hex = new Hex(spawnPoint.x, spawnPoint.y, spawnPoint.z, hexSideLength)
-      const player = this.world.createEntity()
-      player.addComponent(PositionComponent, {x: 10, y: 10})
-      player.addComponent(MovementComponent)
-      player.addComponent(PlayerStateComponent)
-      player.addComponent(GamepadComponent, {index: parseInt(index)})
-      player.addComponent(InputFocus)
-      player.addComponent(MechComponent, {type})
-    })
-
-
-    // this.enabled = false
+  spawnRandomEnemy(){
+    this.world.createEntity()
+      .addComponent(PositionComponent, {x: 10, y: 10})
+      .addComponent(MovementComponent)
+      .addComponent(SizeComponent, {value: .5})
+      .addComponent(isEnemyComponent)
   }
 }
 
 
 // @ts-ignore
 EnemySpawnSystem.queries = {
-  playerConfig: { components: [PlayerConfigComponent], mandatory: true},
-  mapConfig: { components: [MapConfigComponent], mandatory: true},
-  camera: { components: [CameraComponent], mandatory: true},
+  enemyConfig: { components: [EnemyConfigComponent], mandatory: true},
+  tiles:  { components: [isTileComponent], mandatory: true},
 }
