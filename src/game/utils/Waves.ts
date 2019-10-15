@@ -1,4 +1,4 @@
-import Hex, { OffsetCoordinate, CubeCoordinate } from './Hex'
+import { OffsetCoordinate, CubeCoordinate } from './Hex'
 
 export interface EnemyWave {
   start: number

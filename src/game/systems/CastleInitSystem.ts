@@ -5,6 +5,7 @@ import { Map, MapCastle } from '../utils/Map'
 import { CameraComponent,
          MapConfigComponent,
          isCastleComponent,
+         isTileComponent,
          SizeComponent,
          HealthComponent,
          CubeCoordinateComponent,
@@ -17,6 +18,7 @@ export default class CastleInitSystem extends System {
   queries: {
     map: QueryType
     camera: QueryType
+    tiles: QueryType
   }
 
   execute(deltaTime: number): void {
@@ -28,8 +30,8 @@ export default class CastleInitSystem extends System {
     const mapW: number = Math.ceil(camera.width / ptm)
     const mapArea: number = mapH * mapW
 
-    // TODO this needs to be relative to Tile size
-    const size: number = 2
+    const tileSize: number = this.queries.tiles.results[0].getComponent(SizeComponent).value
+    const size: number = tileSize / 2
 
     map.castles.forEach((castle: MapCastle) => {
       this.world.createEntity()
@@ -47,4 +49,5 @@ export default class CastleInitSystem extends System {
 CastleInitSystem.queries = {
   map: { components: [MapConfigComponent], mandatory: true},
   camera: { components: [CameraComponent], mandatory: true},
+  tiles:  { components: [isTileComponent], mandatory: true},
 }

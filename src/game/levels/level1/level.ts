@@ -30,12 +30,12 @@ import {
   PlayerStateComponent,
   PlayerConfigComponent,
   MapConfigComponent,
+  EnemyConfigComponent,
   CameraComponent,
   InputFocus,
 } from '../../components'
 
 // Map and Waves
-import { generateMap } from '../../utils/Map'
 import WavesConfig from './wavesConfig'
 import mapConfig from './mapConfig'
 import { World } from 'ecsy'
@@ -47,8 +47,6 @@ interface LevelOptions {
 
 export default class Level1 {
   engine: World
-  map: any
-  waves: any
 
   constructor(engine: World){
     this.engine = engine
@@ -65,6 +63,10 @@ export default class Level1 {
     // Add the map config
     this.engine.createEntity().addComponent(MapConfigComponent, {value: mapConfig})
 
+    // Add the enemy config
+    this.engine.createEntity().addComponent(EnemyConfigComponent, {value: WavesConfig})
+
+
     this.initSystems()
   }
 
@@ -76,10 +78,10 @@ export default class Level1 {
 
     // Render
     // this.engine.addSystem(new BackgroundRenderSystem())
-    // this.engine.addSystem(new EnemyRenderSystem())
     // this.engine.addSystem(new TowerRenderSystem())
     this.engine.registerSystem(TileRenderSystem)
     this.engine.registerSystem(CastleRenderSystem)
+    // this.engine.addSystem(new EnemyRenderSystem())
     this.engine.registerSystem(PlayerRenderSystem)
 
 

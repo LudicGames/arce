@@ -52,16 +52,16 @@ export default class TileRenderSystem extends System {
     ctx.stroke()
 
 
-    // if(Ludic.debug){
-    //   ctx.save()
-    //   ctx.font = '1px serif'
-    //   ctx.fillStyle = 'white'
-    //   ctx.scale(1, -1)
-    //   ctx.fillText(`${coords.x}  ${coords.y}  ${coords.z}`, x - 1.5, -y)
-    //   // ctx.fillText(`q: ${state.hex.offsetCoordinate.q}  r: ${state.hex.offsetCoordinate.r}`, x - 1.5, -y)
-    //   // ctx.fillText(`q: ${state.hex.q} r:${state.hex.r}`, x - 1.5, -y)
-    //   ctx.restore()
-    // }
+    if(Ludic.debug){
+      ctx.save()
+      ctx.font = '1px serif'
+      ctx.fillStyle = 'white'
+      ctx.scale(1, -1)
+      ctx.fillText(`${coords.x}  ${coords.y}  ${coords.z}`, x - 1.5, -y)
+      // ctx.fillText(`q: ${state.hex.offsetCoordinate.q}  r: ${state.hex.offsetCoordinate.r}`, x - 1.5, -y)
+      // ctx.fillText(`q: ${state.hex.q} r:${state.hex.r}`, x - 1.5, -y)
+      ctx.restore()
+    }
 
   }
 }

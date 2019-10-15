@@ -162,6 +162,17 @@ export class MapConfigComponent extends Component {
   }
 }
 
+export class EnemyConfigComponent extends Component {
+  value: any
+  constructor(){
+    super()
+  }
+
+  reset(){
+    this.value = null
+  }
+}
+
 export class PlayerConfigComponent extends Component {
   value: any
   constructor(){
