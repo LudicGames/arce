@@ -1,7 +1,6 @@
 import { Vector2 } from '@ludic/ludic'
-import { Component } from 'ecsy'
 
-export class Hex extends Component {
+export class Hex {
   q: number
   r: number
   s: number
@@ -11,8 +10,6 @@ export class Hex extends Component {
   sideLength: number
 
   constructor(x: number, y: number, z: number, sideLength: number){
-    super()
-
     if((x + y + z) !== 0){ throw "x + y + z needs to = 0"}
     this.x = x
     this.y = y
@@ -20,15 +17,6 @@ export class Hex extends Component {
     this.q = x
     this.r = z
     this.sideLength = sideLength
-  }
-
-  reset(): void {
-    this.x = 0
-    this.y = 0
-    this.z = 0
-    this.q = 0
-    this.r = 0
-    this.sideLength = 0
   }
 
   get position(): Vector2 {
