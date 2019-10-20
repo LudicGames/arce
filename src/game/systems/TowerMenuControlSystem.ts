@@ -1,9 +1,7 @@
-import { Family, Entity, ComponentMapper, IteratingSystem } from '@ludic/ein'
 import {
   GamepadComponent,
   PositionComponent,
   PlayerStateComponent,
-  TileStateComponent,
   isTowerMenu,
   CameraComponent,
   InputFocus,
@@ -12,7 +10,7 @@ import {
 
 import Ludic, { Vector2 } from '@ludic/ludic'
 import TowerMenu from '../ui/towerMenu'
-import { System, Entity, Entity } from 'ecsy'
+import { System, Entity } from 'ecsy'
 import { UIComponent } from '@ludic/ludic-ui'
 import { QueryType } from '/src/ecsy'
 
@@ -23,9 +21,9 @@ export default class TowerMenuControlSystem extends System {
   }
 
   totalTowers = 3
-  
+
   execute(){
-    this.queries.menus.results.forEach(ent => {
+    this.queries.menus.results.forEach((ent: Entity) => {
       const g = ent.getComponent(GamepadComponent)
       const gamepad = Ludic.input.gamepad.get(g.index)
 
