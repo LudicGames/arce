@@ -10,6 +10,7 @@ export default class TowerMenu {
 
   get style(){
     return {
+      position: 'absolute',
       display: this.visible ? 'initial' : 'none',
       left: `${this.position.x}px`,
       top: `${this.position.y}px`,
@@ -18,11 +19,6 @@ export default class TowerMenu {
 
   render() {
     return html`
-      <style>
-        .tower-menu {
-          position: absolute;
-        }
-      </style>
       <div class="tower-menu" style=${styleMap(this.style)}>hello world</div>
     `
   }

@@ -4,41 +4,25 @@ import {
   PositionComponent,
   PlayerStateComponent,
   TileStateComponent,
-  TowerMenuComponent,
+  isTowerMenu,
   CameraComponent,
-  InputFocus
+  InputFocus,
+  TowerMenuStateComponent
 } from '../components'
 
-import Ludic, { Vector2 } from '@ludic/ludic';
+import Ludic, { Vector2 } from '@ludic/ludic'
 import TowerMenu from '../ui/towerMenu'
-import { System } from 'ecsy'
-import { UIComponent } from '@ludic/ludic-ui';
-import { QueryType } from '/src/ecsy';
+import { System, Entity, Entity } from 'ecsy'
+import { UIComponent } from '@ludic/ludic-ui'
+import { QueryType } from '/src/ecsy'
 
-/**
- * This system is in charge of translating gamepad inputs into
- * player movement.
- */
-export default class TowerMenuSystem extends System {
-
-  // processEntity(ent: Entity, deltaTime: number) {
-  //   const { index: gamepadIndex } = this.gamepadMapper.get(ent)
-  //   const state = this.playerStateMapper.get(ent)
-  //   const { component } = this.towerMenuMapper.get(ent)
-  //   const gamepad = Ludic.input.gamepad.get(gamepadIndex)
-  //   const pos = this.positionMapper.get(ent)
-
-  //   const {camera} = this.engine.getSingletonComponent(CameraComponent)
-
-  //   if(component.enabled){
-  //     component.position = camera.getPixelPointFromWorldPoint(new Vector2(pos.x, pos.y))
-  //   }
-
-  // }
+export default class TowerMenuControlSystem extends System {
 
   queries: {
     menus: QueryType
   }
+
+  totalTowers = 3
   
   execute(){
     this.queries.menus.results.forEach(ent => {
@@ -46,13 +30,40 @@ export default class TowerMenuSystem extends System {
       const gamepad = Ludic.input.gamepad.get(g.index)
 
       if(gamepad.circle.buttonUp){
-        ent.removeComponent(InputFocus)
+        this.closeMenu(ent)
+      } else if(gamepad.left.buttonDown){
+        this.moveLeft(ent)
+      } else if(gamepad.right.buttonDown){
+        this.moveRight(ent)
+      } else if(gamepad.cross.buttonUp){
+        const { index } = ent.getComponent(TowerMenuStateComponent)
+        console.log('create tower', index)
+        this.closeMenu(ent)
       }
     })
+  }
+
+  closeMenu(ent: Entity){
+    ent.removeComponent(InputFocus)
+  }
+
+  moveLeft(ent: Entity){
+    const state = ent.getMutableComponent(TowerMenuStateComponent)
+    state.index--
+    if(state.index < 0){
+      state.index = this.totalTowers - 1
+    }
+  }
+  moveRight(ent: Entity){
+    const state = ent.getMutableComponent(TowerMenuStateComponent)
+    state.index++
+    if(state.index >= this.totalTowers){
+      state.index = 0
+    }
   }
 }
 
 // @ts-ignore
-TowerMenuSystem.queries = {
-  menus: {components: [TowerMenuComponent, GamepadComponent, InputFocus]}
+TowerMenuControlSystem.queries = {
+  menus: {components: [isTowerMenu, GamepadComponent, InputFocus, TowerMenuStateComponent]}
 }

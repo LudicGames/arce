@@ -1,5 +1,5 @@
 import Ludic, { Camera, Vector2 } from '@ludic/ludic'
-import { Component, TagComponent } from 'ecsy'
+import { Component, TagComponent, SystemStateComponent } from 'ecsy'
 
 import TowerMenu from './ui/towerMenu'
 
@@ -133,17 +133,18 @@ export class RenderComponent  extends Component {
   }
 }
 
-export class TowerMenuComponent {
-  value: TowerMenu
-  name: string | null
+export class TowerMenuStateComponent extends SystemStateComponent {
+  index: number
   constructor(){
+    super()
     this.reset()
   }
   reset(){
-    this.value = new TowerMenu()
-    this.name = null
+    this.index = 0
   }
 }
+
+export class isTowerMenu extends TagComponent {}
 
 export class isPlayerComponent extends TagComponent {}
 export class isTowerComponent extends TagComponent {}

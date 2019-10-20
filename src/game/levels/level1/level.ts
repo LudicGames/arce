@@ -84,11 +84,11 @@ export default class Level1 {
     this.engine.registerSystem(PlayerRenderSystem)
 
 
+    this.engine.registerSystem(TowerMenuControlSystem)
     this.engine.registerSystem(PlayerControlSystem)
     this.engine.registerSystem(TowerMenuRenderSystem)
-    this.engine.registerSystem(TowerMenuControlSystem)
     this.engine.registerSystem(EnemyMovementSystem)
-
+    
     // this.engine.addSystem(new TileActivationSystem())
     // this.engine.addSystem(new CastleDamageSystem())
   }
