@@ -20,7 +20,7 @@ export class Hex {
   }
 
   get position(): Vector2 {
-    return cubeCoordinateToVector2({x: this.x, y: this.y, z: this.z}, this.sideLength)
+    return cube_to_vector2({x: this.x, y: this.y, z: this.z}, this.sideLength)
   }
 
   get cubeCoordinate(): CubeCoordinate {
@@ -75,6 +75,14 @@ export function add(a: Hex, b:Hex): Hex {
   return new Hex(a.x + b.x, a.y + b.y, a.z + b.z, a.sideLength + b.sideLength)
 }
 
+export function cube_add(a: CubeCoordinate, b:CubeCoordinate): CubeCoordinate {
+  return {
+    x: a.x + b.x,
+    y: a.y + b.y,
+    z: a.z + b.z
+  }
+}
+
 export function subtract(a: Hex, b: Hex): Hex {
   return new Hex(a.x - b.x, a.y - b.y, a.z - b.z, a.sideLength - b.sideLength)
 }
@@ -106,6 +114,12 @@ export function direction(direction: number): CubeCoordinate {
 export function allNeighbors(hex: Hex): Hex[] {
   return cubeDirections.map((d: CubeCoordinate) => {
     return add(hex, new Hex(d.x, d.y, d.z, 0))
+  })
+}
+
+export function cube_all_neighbors(cube: CubeCoordinate): CubeCoordinate[] {
+  return cubeDirections.map((d: CubeCoordinate) => {
+    return cube_add(cube, d)
   })
 }
 
@@ -143,7 +157,7 @@ export function cubeToOffset(cube: CubeCoordinate): OffsetCoordinate{
   }
 }
 
-export function cubeCoordinateToVector2(coordinate: CubeCoordinate, size: number): Vector2 {
+export function cube_to_vector2(coordinate: CubeCoordinate, size: number): Vector2 {
   var x = size * (3/2 * coordinate.x)
   var y = size * (Math.sqrt(3)/2 * coordinate.x  +  Math.sqrt(3) * coordinate.y)
 
@@ -163,5 +177,36 @@ export function axialToCube(q: number, r: number): CubeCoordinate {
     x: q,
     y: r,
     z: -q - r
+  }
+}
+
+export function vector2_to_cube(point: Vector2, sideLength: number): CubeCoordinate {
+  let q: number = (2./3 * point.x) / sideLength
+  let r: number = (-1./3 * point.x + Math.sqrt(3)/3 * point.y) / sideLength
+  return cube_round(axialToCube(q, r))
+}
+
+export function cube_round(cube: CubeCoordinate): CubeCoordinate {
+  var rx = Math.round(cube.x)
+  var ry = Math.round(cube.y)
+  var rz = Math.round(cube.z)
+
+  var x_diff = Math.abs(rx - cube.x)
+  var y_diff = Math.abs(ry - cube.y)
+  var z_diff = Math.abs(rz - cube.z)
+
+  if(x_diff > y_diff && x_diff > z_diff){
+    rx = -ry-rz
+  }
+  else if(y_diff > z_diff) {
+    ry = -rx-rz
+  } else {
+    rz = -rx-ry
+  }
+
+  return {
+    x: rx,
+    y: ry,
+    z: rz
   }
 }

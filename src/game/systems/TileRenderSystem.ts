@@ -8,7 +8,7 @@ import {
 } from '../components'
 
 import { QueryType } from '/src/ecsy'
-import { Hex, cubeCoordinateToVector2, CubeCoordinate } from '../utils/Hex'
+import { Hex, cube_to_vector2, CubeCoordinate } from '../utils/Hex'
 
 export default class TileRenderSystem extends System {
   queries: {
@@ -34,7 +34,7 @@ export default class TileRenderSystem extends System {
   renderTile(ctx: CanvasRenderingContext2D, tile: Entity): void {
     const size: number = tile.getComponent(SizeComponent).value
     const coords: CubeCoordinate = tile.getComponent(CubeCoordinateComponent)
-    const pos: Vector2 = cubeCoordinateToVector2({x: coords.x, y: coords.y, z: coords.z}, size)
+    const pos: Vector2 = cube_to_vector2({x: coords.x, y: coords.y, z: coords.z}, size)
     const x: number = pos.x
     const y: number = pos.y
 

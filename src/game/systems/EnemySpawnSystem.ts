@@ -1,4 +1,4 @@
-import { Camera } from '@ludic/ludic'
+import { Camera, Vector2 } from '@ludic/ludic'
 import { System, World, Entity } from 'ecsy'
 import { QueryType } from '/src/ecsy'
 import { Map, MapTile } from '../utils/Map'
@@ -7,8 +7,14 @@ import { PositionComponent,
          isTileComponent,
          isEnemyComponent,
          SizeComponent,
+         SpeedComponent,
+         DestinationCubeComponent,
+         CurrentCubeComponent,
+         PreviousCubeComponent,
          EnemyConfigComponent
        } from '../components'
+
+import { Hex, CubeCoordinate, OffsetCoordinate, cube_all_neighbors, vector2_to_cube, cube_to_vector2 } from '../utils/Hex'
 
 export default class EnemySpawnSystem extends System {
   enabled: boolean
@@ -28,16 +34,22 @@ export default class EnemySpawnSystem extends System {
 
     // Just spawn a random enemy every 10 seconds
     if(this.spawns.indexOf(Math.round(time / 5000)) > -1){
-      this.spawnRandomEnemy()
+      this.spawnRandomEnemy(tileSize)
       this.spawns.splice(0, 1)
     }
   }
 
-  spawnRandomEnemy(){
+  spawnRandomEnemy(tileSize: number){
+    let pos: Vector2 = new Vector2(-tileSize * 8, tileSize * 5)
+    let cube: CubeCoordinate = vector2_to_cube(pos, tileSize)
     this.world.createEntity()
-      .addComponent(PositionComponent, {x: 10, y: 10})
+      .addComponent(PositionComponent, pos)
       .addComponent(MovementComponent)
       .addComponent(SizeComponent, {value: .5})
+      .addComponent(SpeedComponent, {value: .05})
+      .addComponent(CurrentCubeComponent, cube)
+      .addComponent(DestinationCubeComponent, cube)
+      .addComponent(PreviousCubeComponent, cube)
       .addComponent(isEnemyComponent)
   }
 }

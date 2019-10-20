@@ -8,11 +8,15 @@ import { PositionComponent,
          SizeComponent,
          EnemyConfigComponent,
          isCastleComponent,
+         SpeedComponent,
+         DestinationCubeComponent,
+         CurrentCubeComponent,
+         PreviousCubeComponent,
          CubeCoordinateComponent,
        } from '../components'
 
 import { Vector2Normalize } from '../utils/Euclid'
-import { Hex, CubeCoordinate, OffsetCoordinate, allNeighbors } from '../utils/Hex'
+import { Hex, CubeCoordinate, OffsetCoordinate, cube_all_neighbors, vector2_to_cube, cube_to_vector2 } from '../utils/Hex'
 
 export default class EnemyMovementSystem extends System {
   enabled: boolean
@@ -27,10 +31,8 @@ export default class EnemyMovementSystem extends System {
   pathMap: any = null
 
   getNeighborTiles(tiles: Entity[], current: CubeCoordinate): Entity[] {
-    const currentHex = new Hex(current.x, current.y, current.z, 0)
-    const neighborCubeCoords: CubeCoordinate[] = allNeighbors(currentHex).map((hex: Hex)=>{ return {x: hex.x, y: hex.y, z: hex.z}})
+    const neighborCubeCoords: CubeCoordinate[] = cube_all_neighbors(current)
 
-    // TODO
     // console.log("neighborCubeCoords: ", neighborCubeCoords)
     return tiles.filter((tile: Entity) => {
       let found = false
@@ -44,30 +46,29 @@ export default class EnemyMovementSystem extends System {
     })
   }
 
+  cubeToString(cube: CubeCoordinate): string {
+    return '' + cube.x + cube.y + cube.z
+  }
+
 
   generatePathMap(tiles: Entity[], castleCoords: CubeCoordinate): any {
-    let frontier: CubeCoordinate[] = []
-    frontier.push(castleCoords)
-
+    let frontier: CubeCoordinate[] = [castleCoords]
     this.pathMap = new Map()
-    this.pathMap.set(castleCoords, null)
+    this.pathMap.set(this.cubeToString(castleCoords), null)
 
     while(frontier.length){
       const current: CubeCoordinate = frontier.shift()
       const neighborTiles: Entity[] = this.getNeighborTiles(tiles, current)
 
-      // TODO, broken, self is not neighbor
-      // console.log("neighborTiles: ", neighborTiles)
-
       neighborTiles.forEach((tile: Entity) => {
-        const tileCoord: CubeCoordinate = tile.getComponent(CubeCoordinateComponent)
-        if(!this.pathMap.get(tileCoord)){
+        const tileCoordComponent: CubeCoordinateComponent = tile.getComponent(CubeCoordinateComponent)
+        const tileCoord: CubeCoordinate = {x: tileCoordComponent.x, y: tileCoordComponent.y, z: tileCoordComponent.z}
+        if(!this.pathMap.has(this.cubeToString(tileCoord))){
           frontier.push(tileCoord)
-          this.pathMap.set(tileCoord, current)
+          this.pathMap.set(this.cubeToString(tileCoord), current)
         }
       })
     }
-
     return this.pathMap
   }
 
@@ -83,36 +84,41 @@ export default class EnemyMovementSystem extends System {
     const tiles: Entity[] = this.queries.tiles.results
 
     const castle: Entity = castles[0]
-    const castleCoords = castle.getComponent(CubeCoordinateComponent)
+    const castleCoordsComponent = castle.getComponent(CubeCoordinateComponent)
+    const castleCube = {x: castleCoordsComponent.x, y: castleCoordsComponent.y, z: castleCoordsComponent.z}
 
-    if(!this.pathMap) this.generatePathMap(tiles, castleCoords)
+    if(!this.pathMap) this.generatePathMap(tiles, castleCube)
 
+    const tileSize: number = tiles[0].getComponent(SizeComponent).value
 
-    // enemies.forEach((enemy: Entity) => {
-    //   let enemyPosition = enemy.getMutableComponent(PositionComponent)
-    //   let enemyCoords = cubeCoordinateFromPosition(enemyPosition, size)
+    enemies.forEach((enemy: Entity) => {
+      const enemySpeed: number = enemy.getComponent(SpeedComponent).value
+      let enemyPositionComponent = enemy.getMutableComponent(PositionComponent)
+      let enemyPosition: Vector2 = new Vector2(enemyPositionComponent.x, enemyPositionComponent.y)
+      let destinationCube: CubeCoordinate = enemy.getMutableComponent(DestinationCubeComponent)
+      let previousCube: CubeCoordinate = enemy.getMutableComponent(PreviousCubeComponent)
 
-    //   const currentTile: Entity = tiles.find((tile: Entity) => {
-    //     let tileCoords = tile.getComponent(CubeCoordinateComponent)
-    //     if(tileCoords.x == enemyCoords.x && tileCoords.y == enemyCoords.y && tileCoords.z == enemyCoords.z){
-    //       return true
-    //     } else {
-    //       return false
-    //     }
-    //   })
+      // If the Enemy is not in the center of our current Tile, go there
+      let tileCenter: Vector2 = cube_to_vector2(destinationCube, tileSize)
+      if(Math.abs(tileCenter.x - enemyPosition.x) > .05 || Math.abs(tileCenter.y - enemyPosition.y) > .05){
+        let diffVec = new Vector2(tileCenter.x - enemyPosition.x, tileCenter.y - enemyPosition.y)
+        diffVec = Vector2Normalize(diffVec)
+        diffVec = new Vector2(diffVec.x * enemySpeed, diffVec.y * enemySpeed)
+        enemyPositionComponent.x += diffVec.x
+        enemyPositionComponent.y += diffVec.y
+      } else {
+        previousCube.x = destinationCube.x
+        previousCube.y = destinationCube.y
+        previousCube.z = destinationCube.z
 
-    //   // If we are not in the center of our current hex, go there
-    //   if(Math.abs(currentHex.position.x - pos.x) > .05 || Math.abs(currentHex.position.y - pos.y) > .05){
-    //     const diffVec: Vector2 = this.moveToHexCenter(pos, currentHex, state.speed)
-    //     enemyPosition.x += diffVec.x
-    //     enemyPosition.y += diffVec.y
-    //   } else {
-
-    //     // Go to the next Hex
-    //     let next = this.pathMap.get(currentTile)
-    //     state.currentHex = this.tsm.get(next).hex
-    //   }
-    // })
+        let nextCube = this.pathMap.get(this.cubeToString(previousCube))
+        if(nextCube){
+          destinationCube.x = nextCube.x
+          destinationCube.y = nextCube.y
+          destinationCube.z = nextCube.z
+        }
+      }
+    })
   }
 }
 

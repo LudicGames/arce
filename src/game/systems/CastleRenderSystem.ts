@@ -2,41 +2,40 @@ import Ludic, { Camera, Vector2 } from '@ludic/ludic'
 import { System, World, Entity } from 'ecsy'
 import {
   isCastleComponent,
+  isTileComponent,
   SizeComponent,
   CubeCoordinateComponent,
-  CameraComponent,
 } from '../components'
 
 import { QueryType } from '/src/ecsy'
-import { Hex, cubeCoordinateToVector2, CubeCoordinate } from '../utils/Hex'
+import { Hex, cube_to_vector2, CubeCoordinate } from '../utils/Hex'
 
 
 export default class CastleRenderSystem extends System {
   queries: {
     castles: QueryType
-    camera: QueryType
+    tiles: QueryType
   }
 
 
   execute(deltaTime: number): void {
-    const camera = this.queries.camera.results[0].getComponent(CameraComponent).value
     const ctx = Ludic.canvas.context
-
+    const tileSize: number = this.queries.tiles.results[0].getComponent(SizeComponent).value
     ctx.save()
 
     this.queries.castles.results.forEach((castle: Entity) => {
       ctx.save()
-      this.render(ctx, castle)
+      this.render(ctx, castle, tileSize)
       ctx.restore()
     })
 
     ctx.restore()
   }
 
-  render(ctx: CanvasRenderingContext2D, castle: Entity): void {
+  render(ctx: CanvasRenderingContext2D, castle: Entity, tileSize: number): void {
     const size: number = castle.getComponent(SizeComponent).value
     const coords: CubeCoordinate = castle.getComponent(CubeCoordinateComponent)
-    const pos: Vector2 = cubeCoordinateToVector2({x: coords.x, y: coords.y, z: coords.z}, size)
+    const pos: Vector2 = cube_to_vector2({x: coords.x, y: coords.y, z: coords.z}, tileSize)
     const x: number = pos.x
     const y: number = pos.y
 
@@ -54,5 +53,5 @@ export default class CastleRenderSystem extends System {
 // @ts-ignore
 CastleRenderSystem.queries = {
   castles: { components: [isCastleComponent]},
-  camera: { components: [CameraComponent], mandatory: true},
+  tiles: { components: [isTileComponent], mandatory: true},
 }

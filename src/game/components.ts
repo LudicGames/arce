@@ -167,6 +167,7 @@ export class EnemyConfigComponent extends Component {
   value: any
   constructor(){
     super()
+    this.reset()
   }
 
   reset(){
@@ -178,6 +179,7 @@ export class PlayerConfigComponent extends Component {
   value: any
   constructor(){
     super()
+    this.reset()
   }
 
   reset(){
@@ -189,8 +191,20 @@ export class SizeComponent extends Component {
   value: number
   constructor(){
     super()
+    this.reset()
   }
 
+  reset(){
+    this.value = 0
+  }
+}
+
+export class SpeedComponent extends Component {
+  value: number
+  constructor(){
+    super()
+    this.reset()
+  }
   reset(){
     this.value = 0
   }
@@ -207,6 +221,58 @@ export class HealthComponent extends Component {
   }
 }
 
+export class CurrentCubeComponent extends Component {
+  x: number
+  y: number
+  z: number
+
+  constructor(){
+    super()
+    this.reset()
+  }
+
+  reset(){
+    this.x = 0
+    this.y = 0
+    this.z = 0
+  }
+}
+
+export class DestinationCubeComponent extends Component {
+  x: number
+  y: number
+  z: number
+
+  constructor(){
+    super()
+    this.reset()
+  }
+
+  reset(){
+    this.x = 0
+    this.y = 0
+    this.z = 0
+  }
+}
+
+export class PreviousCubeComponent extends Component {
+  x: number
+  y: number
+  z: number
+
+  constructor(){
+    super()
+    this.reset()
+  }
+
+  reset(){
+    this.x = 0
+    this.y = 0
+    this.z = 0
+  }
+}
+
+
 export class CubeCoordinateComponent extends Component {
   x: number
   y: number
@@ -214,6 +280,7 @@ export class CubeCoordinateComponent extends Component {
 
   constructor(){
     super()
+    this.reset()
   }
 
   reset(){

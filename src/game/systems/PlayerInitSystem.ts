@@ -13,7 +13,7 @@ import { MapConfigComponent,
          InputFocus,
          MechComponent
        } from '../components'
-import { Hex, cubeCoordinateToVector2, CubeCoordinate } from '../utils/Hex'
+import { Hex, cube_to_vector2, CubeCoordinate } from '../utils/Hex'
 
 
 export default class PlayerInitSystem extends System {
@@ -35,7 +35,7 @@ export default class PlayerInitSystem extends System {
       let spawnPoint = {x: 0, y: 0}
       if(mapConfig.playerSpawnPoints.length > parseInt(index)){
         let coords = mapConfig.playerSpawnPoints[parseInt(index)]
-        spawnPoint = cubeCoordinateToVector2({x: coords.x, y: coords.y, z: coords.z}, tileSize)
+        spawnPoint = cube_to_vector2({x: coords.x, y: coords.y, z: coords.z}, tileSize)
       }
 
       const player = this.world.createEntity()
