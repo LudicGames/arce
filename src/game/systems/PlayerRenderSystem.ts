@@ -1,5 +1,11 @@
 import Ludic from '@ludic/ludic'
-import { PositionComponent, RenderComponent, PlayerStateComponent, CameraComponent, MechComponent } from '../components'
+import { PositionComponent,
+         RenderComponent,
+         PlayerStateComponent,
+         CameraComponent,
+         MechComponent,
+         SizeComponent
+       } from '../components'
 import { System, World, Entity } from 'ecsy'
 import { QueryType } from '/src/ecsy'
 
@@ -28,13 +34,13 @@ export default class PlayerRenderSystem extends System {
 
   renderPlayer(ctx: CanvasRenderingContext2D, player: Entity){
     const pos = player.getComponent(PositionComponent)
-    const state = player.getComponent(PlayerStateComponent)
+    const size: number = player.getComponent(SizeComponent).value
     const mechComp = player.getComponent(MechComponent)
 
     ctx.fillStyle = mechComp.type
     ctx.translate(pos.x, pos.y)
     ctx.beginPath()
-    ctx.arc(0, 0, state.size, 0, Math.PI * 2)
+    ctx.arc(0, 0, size, 0, Math.PI * 2)
     ctx.fill()
   }
 }

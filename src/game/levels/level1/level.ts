@@ -50,7 +50,7 @@ export default class Level1 {
     this.engine = engine
 
     // Hack for now
-    Ludic.debug = true
+    Ludic.debug = false
   }
 
   init(options: LevelOptions){
@@ -88,7 +88,7 @@ export default class Level1 {
     this.engine.registerSystem(PlayerControlSystem)
     this.engine.registerSystem(TowerMenuRenderSystem)
     this.engine.registerSystem(EnemyMovementSystem)
-    
+
     // this.engine.addSystem(new TileActivationSystem())
     // this.engine.addSystem(new CastleDamageSystem())
   }

@@ -30,6 +30,8 @@ export default class PlayerInitSystem extends System {
     const playerConfig = this.queries.playerConfig.results[0].getComponent(PlayerConfigComponent).value
     const mapConfig: Map = this.queries.mapConfig.results[0].getComponent(MapConfigComponent).value
     const tileSize: number = this.queries.tiles.results[0].getComponent(SizeComponent).value
+    const playerSize: number = tileSize / 3
+
 
     Object.entries(playerConfig).forEach(([index, type]) => {
       let spawnPoint = {x: 0, y: 0}
@@ -40,6 +42,7 @@ export default class PlayerInitSystem extends System {
 
       const player = this.world.createEntity()
       player.addComponent(PositionComponent, spawnPoint)
+      player.addComponent(SizeComponent, {value: playerSize})
       player.addComponent(MovementComponent)
       player.addComponent(PlayerStateComponent)
       player.addComponent(GamepadComponent, {index: parseInt(index)})
