@@ -3,6 +3,7 @@ import { System, World, Entity } from 'ecsy'
 import {
   isTileComponent,
   SizeComponent,
+  TileStateComponent,
   CubeCoordinateComponent,
   CameraComponent,
 } from '../components'
@@ -32,6 +33,7 @@ export default class TileRenderSystem extends System {
   }
 
   renderTile(ctx: CanvasRenderingContext2D, tile: Entity): void {
+    const state: TileStateComponent = tile.getComponent(TileStateComponent)
     const size: number = tile.getComponent(SizeComponent).value
     const coords: CubeCoordinate = tile.getComponent(CubeCoordinateComponent)
     const pos: Vector2 = cube_to_vector2({x: coords.x, y: coords.y, z: coords.z}, size)
@@ -39,8 +41,13 @@ export default class TileRenderSystem extends System {
     const y: number = pos.y
 
     ctx.lineWidth = .15
-    ctx.fillStyle = "rgba(55, 4, 72, .8)"
-    ctx.strokeStyle = "rgba(255, 74, 82, 1)"
+
+    ctx.fillStyle = "#6EB5FF"
+    if(state.status == 'active'){
+      ctx.fillStyle = "#AFF8DB"
+    }
+
+    ctx.strokeStyle = "#FFFFFF"
 
 
     ctx.beginPath()
@@ -62,7 +69,6 @@ export default class TileRenderSystem extends System {
       // ctx.fillText(`q: ${state.hex.q} r:${state.hex.r}`, x - 1.5, -y)
       ctx.restore()
     }
-
   }
 }
 

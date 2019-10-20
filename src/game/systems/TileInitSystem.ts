@@ -5,6 +5,7 @@ import { Map, MapTile } from '../utils/Map'
 import { CameraComponent,
          MapConfigComponent,
          isTileComponent,
+         TileStateComponent,
          SizeComponent,
          CubeCoordinateComponent,
        } from '../components'
@@ -42,6 +43,7 @@ export default class TileInitSystem extends System {
           if(x+y+z === 0){
             this.world.createEntity()
               .addComponent(isTileComponent)
+              .addComponent(TileStateComponent)
               .addComponent(SizeComponent, {value: size})
               .addComponent(CubeCoordinateComponent, {x, y, z})
           }

@@ -1,99 +1,69 @@
-import Ludic, { Camera, Vector2 } from '@ludic/ludic'
-import {ComponentMapper, Family, Entity, System, Engine} from '@ludic/ein'
+import Ludic, { Vector2 } from '@ludic/ludic'
+import { System, World, Entity } from 'ecsy'
+import { QueryType } from '/src/ecsy'
+import { PositionComponent,
+         MovementComponent,
+         isTileComponent,
+         isPlayerComponent,
+         SizeComponent,
+         EnemyConfigComponent,
+         isCastleComponent,
+         SpeedComponent,
+         PreviousCubeComponent,
+         TileStateComponent,
+         CubeCoordinateComponent,
+       } from '../components'
 
-import PositionComponent from '../components/PositionComponent'
-import TileStateComponent from '../components/TileStateComponent'
-import PlayerStateComponent from '../components/PlayerStateComponent'
-
-import { Vector2Distance } from '../utils/Euclid'
+import { Vector2Normalize } from '../utils/Euclid'
+import { Hex, CubeCoordinate, OffsetCoordinate, cube_all_neighbors, vector2_to_cube, cube_to_vector2 } from '../utils/Hex'
 
 export default class TileActivationSystem extends System {
-  private pm: ComponentMapper<PositionComponent> = ComponentMapper.getFor(PositionComponent)
-  private psm: ComponentMapper<PlayerStateComponent> = ComponentMapper.getFor(PlayerStateComponent)
-  private tsm: ComponentMapper<TileStateComponent> = ComponentMapper.getFor(TileStateComponent)
+  enabled: boolean
+  world: World
 
-  public entities: Entity[]
-  public components = [PositionComponent]
-  public family: Family
-
-  camera: Camera
-
-  constructor(){
-    super()
-    this.family = Family.all(this.components).get()
+  queries: {
+    players: QueryType
+    tiles:  QueryType
   }
 
-  public addedToEngine(engine: Engine): void {
-    this.entities = engine.getEntitiesFor(this.family)
-    this.engine = engine
-  }
+  execute(deltaTime: number): void {
+    const players: Entity[] = this.queries.players.changed
+    if(!players.length) return
 
-  public removedFromEngine(engine: Engine): void {
-    this.entities = []
-  }
+    const tiles: Entity[] = this.queries.tiles.results
+    const tileSize: number = tiles[0].getComponent(SizeComponent).value
 
-  public update(deltaTime: number): void {
-    const ctx = Ludic.canvas.context
-    if(this.engine) {
-      this.entities = this.engine.getEntitiesFor(this.family)
-    }
+    let playerCubes: CubeCoordinate[] = []
+    players.forEach((player: Entity) => {
+      const playerPositionComponent = player.getComponent(PositionComponent)
+      const playerPosition: Vector2 = new Vector2(playerPositionComponent.x, playerPositionComponent.y)
+      playerCubes.push(vector2_to_cube(playerPosition, tileSize))
+    })
 
-    // Player entities
-    const players =  this.entities.filter(entity => !!this.psm.get(entity))
-    const tiles   =  this.entities.filter(entity => !!this.tsm.get(entity))
+    tiles.forEach((tile: Entity) => {
+      let state: TileStateComponent = tile.getMutableComponent(TileStateComponent)
+      let cube: CubeCoordinateComponent = tile.getComponent(CubeCoordinateComponent)
 
-    if(players.length){
-      let playerInfo = players.map(player => {
-        const playerPos = this.pm.get(player)
-        const playerState = this.psm.get(player)
-        const centerPointX = playerPos.x + (playerState.size / 2)
-        const centerPointY = playerPos.y + (playerState.size / 2)
-        return {
-          player: player,
-          closestTile: null,
-          closestTileDistance: null,
-          cX: centerPointX,
-          cY: centerPointY,
+      state.status = "inactive"
+      state.playersOn = 0
+      playerCubes.forEach(c => {
+        if(c.x == cube.x && c.y == cube.y && c.z == cube.z){
+          state.status = "active"
+          state.playersOn++
         }
       })
-
-      tiles.forEach((tile: Entity) => {
-        let tileState: TileStateComponent = this.tsm.get(tile)
-        let tilePos: PositionComponent = this.pm.get(tile)
-        let x = tilePos.x
-        let y = tilePos.y
-
-        playerInfo.forEach(p => {
-          // Calc distance from current Tile
-          const p1 = new Vector2(p.cX, p.cY)
-          const p2 = new Vector2(x, y)
-          const distance = Vector2Distance(p1, p2)
-          if(p.closestTileDistance == null || p.closestTileDistance > distance){
-            p.closestTileDistance = distance
-            p.closestTile = tile
-          }
-        })
-      })
-
-      // Set active tile if either player is closest
-      tiles.forEach(tile => {
-        let tileState: TileStateComponent = this.tsm.get(tile)
-        tileState.playersOn = []
-        tileState.active = false
-
-        playerInfo.forEach(p => {
-          if(p.closestTile == tile){
-            tileState.active = true
-            tileState.playersOn.push(p.player)
-          }
-        })
-      })
-
-      // Set the players active tile
-      playerInfo.forEach(p => {
-        const playerState = this.psm.get(p.player)
-        playerState.currentTile = p.closestTile
-      })
-    }
+    })
   }
+}
+
+// @ts-ignore
+TileActivationSystem.queries = {
+  players: {
+    components: [isPlayerComponent, CubeCoordinateComponent],
+    listen: {
+      changed: [ CubeCoordinateComponent ]
+    },
+    mandatory: true
+  },
+  tiles:  { components: [TileStateComponent], mandatory: true},
 }

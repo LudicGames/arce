@@ -260,3 +260,19 @@ export class CubeCoordinateComponent extends Component {
     this.z = 0
   }
 }
+
+
+export class TileStateComponent extends Component {
+  status: string
+  playersOn: number
+
+  constructor(){
+    super()
+    this.reset()
+  }
+
+  reset(){
+    this.status = "inactive"
+    this.playersOn = 0
+  }
+}

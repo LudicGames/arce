@@ -1,3 +1,4 @@
+import { Vector2 } from '@ludic/ludic'
 import { System, World, Entity } from 'ecsy'
 import { QueryType } from '/src/ecsy'
 import { Map, MapTile } from '../utils/Map'
@@ -8,12 +9,13 @@ import { MapConfigComponent,
          PositionComponent,
          MovementComponent,
          PlayerStateComponent,
+         CubeCoordinateComponent,
          SizeComponent,
          GamepadComponent,
          InputFocus,
          MechComponent
        } from '../components'
-import { Hex, cube_to_vector2, CubeCoordinate } from '../utils/Hex'
+import { Hex, vector2_to_cube, cube_to_vector2, CubeCoordinate } from '../utils/Hex'
 
 
 export default class PlayerInitSystem extends System {
@@ -34,7 +36,7 @@ export default class PlayerInitSystem extends System {
 
 
     Object.entries(playerConfig).forEach(([index, type]) => {
-      let spawnPoint = {x: 0, y: 0}
+      let spawnPoint: Vector2 = new Vector2(0, 0)
       if(mapConfig.playerSpawnPoints.length > parseInt(index)){
         let coords = mapConfig.playerSpawnPoints[parseInt(index)]
         spawnPoint = cube_to_vector2({x: coords.x, y: coords.y, z: coords.z}, tileSize)
@@ -44,7 +46,9 @@ export default class PlayerInitSystem extends System {
       player.addComponent(PositionComponent, spawnPoint)
       player.addComponent(SizeComponent, {value: playerSize})
       player.addComponent(MovementComponent)
+      player.addComponent(CubeCoordinateComponent, vector2_to_cube(spawnPoint, tileSize))
       player.addComponent(PlayerStateComponent)
+      player.addComponent(isPlayerComponent)
       player.addComponent(GamepadComponent, {index: parseInt(index)})
       player.addComponent(InputFocus)
       player.addComponent(MechComponent, {type})

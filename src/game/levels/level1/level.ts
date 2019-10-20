@@ -4,8 +4,7 @@ import Ludic, {Screen, Camera} from '@ludic/ludic'
 import { PlayerInitSystem, PlayerControlSystem, PlayerRenderSystem } from '../../systems'
 
 // Tile Systems
-import { TileInitSystem, TileRenderSystem } from '../../systems'
-import TileActivationSystem from '../../systems/TileActivationSystem'
+import { TileInitSystem, TileRenderSystem, TileActivationSystem } from '../../systems'
 
 // Castle Systems
 import { CastleInitSystem, CastleRenderSystem } from '../../systems'
@@ -64,7 +63,6 @@ export default class Level1 {
     // Add the enemy config
     this.engine.createEntity().addComponent(EnemyConfigComponent, {value: WavesConfig})
 
-
     this.initSystems()
   }
 
@@ -89,7 +87,8 @@ export default class Level1 {
     this.engine.registerSystem(TowerMenuRenderSystem)
     this.engine.registerSystem(EnemyMovementSystem)
 
-    // this.engine.addSystem(new TileActivationSystem())
+    this.engine.registerSystem(TileActivationSystem)
+
     // this.engine.addSystem(new CastleDamageSystem())
   }
 }

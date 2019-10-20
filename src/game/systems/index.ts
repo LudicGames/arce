@@ -22,7 +22,7 @@ export { default as EnemyMovementSystem } from './EnemyMovementSystem'
 // Tile
 export { default as TileInitSystem } from './TileInitSystem'
 export { default as TileRenderSystem } from './TileRenderSystem'
-// export { default as TileActivationSystem } from './TileActivationSystem'
+export { default as TileActivationSystem } from './TileActivationSystem'
 
 // Tower
 // export { default as TowerRenderSystem } from './TowerRenderSystem'
