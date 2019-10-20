@@ -9,7 +9,6 @@ import { PositionComponent,
          SizeComponent,
          SpeedComponent,
          DestinationCubeComponent,
-         CurrentCubeComponent,
          PreviousCubeComponent,
          EnemyConfigComponent
        } from '../components'
@@ -46,8 +45,7 @@ export default class EnemySpawnSystem extends System {
       .addComponent(PositionComponent, pos)
       .addComponent(MovementComponent)
       .addComponent(SizeComponent, {value: .5})
-      .addComponent(SpeedComponent, {value: .05})
-      .addComponent(CurrentCubeComponent, cube)
+      .addComponent(SpeedComponent, {value: .1})
       .addComponent(DestinationCubeComponent, cube)
       .addComponent(PreviousCubeComponent, cube)
       .addComponent(isEnemyComponent)
