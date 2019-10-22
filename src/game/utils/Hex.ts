@@ -135,15 +135,15 @@ export function distance(a: Hex, b:Hex): number {
   return len(subtract(a, b))
 }
 
-export function areaFromSideLength(sideLength: number): number {
+export function area_from_side_length(sideLength: number): number {
   return ((3 * Math.sqrt(3)) / 2) * Math.pow(sideLength, 2)
 }
 
-export function sideLengthFromArea(area: number): number {
-  return Math.sqrt((area / ((3 * Math.sqrt(3)) / 2)))
+export function side_length_from_area(area: number): number {
+  return Math.pow(3, 1/4) * Math.sqrt(2 * (area / 9))
 }
 
-export function offsetToCube(offsetCoordinate: OffsetCoordinate): CubeCoordinate {
+export function offset_to_cube(offsetCoordinate: OffsetCoordinate): CubeCoordinate {
   var x = offsetCoordinate.q
   var z = offsetCoordinate.r - (offsetCoordinate.q - (offsetCoordinate.q&1)) / 2
   var y = -x-z
