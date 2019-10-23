@@ -25,8 +25,10 @@ export { default as TileRenderSystem } from './TileRenderSystem'
 export { default as TileActivationSystem } from './TileActivationSystem'
 
 // Tower
-// export { default as TowerRenderSystem } from './TowerRenderSystem'
+export { default as TowerRenderSystem } from './TowerRenderSystem'
 export { default as TowerMenuRenderSystem } from './TowerMenuRenderSystem'
+export { default as TowerFactorySystem } from './TowerFactorySystem'
+export { default as TowerMenuControlSystem } from './TowerMenuControlSystem'
 
 // Misc
 // export { default as PositionSystem } from './PositionSystem'

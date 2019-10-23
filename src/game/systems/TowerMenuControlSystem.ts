@@ -5,22 +5,37 @@ import {
   isTowerMenu,
   CameraComponent,
   InputFocus,
-  TowerMenuStateComponent
+  TowerMenuStateComponent,
+  CubeCoordinateComponent,
+  isTowerComponent,
+  TowerTypeComponent
 } from '../components'
 
 import Ludic, { Vector2 } from '@ludic/ludic'
 import TowerMenu from '../ui/towerMenu'
-import { System, Entity } from 'ecsy'
+import { System, Entity, World } from 'ecsy'
 import { UIComponent } from '@ludic/ludic-ui'
 import { QueryType } from '/src/ecsy'
 
 export default class TowerMenuControlSystem extends System {
 
+  world!: World
   queries: {
     menus: QueryType
   }
 
-  totalTowers = 3
+  // TODO: figure out a better way to manage tower types
+  towers = [
+    {
+      type: 'blue',
+    },
+    {
+      type: 'brown',
+    },
+    {
+      type: 'green',
+    },
+  ]
 
   execute(){
     this.queries.menus.results.forEach((ent: Entity) => {
@@ -35,7 +50,11 @@ export default class TowerMenuControlSystem extends System {
         this.moveRight(ent)
       } else if(gamepad.cross.buttonUp){
         const { index } = ent.getComponent(TowerMenuStateComponent)
-        console.log('create tower', index)
+        const cubeCoord = ent.getComponent(CubeCoordinateComponent)
+        this.world.createEntity()
+          .addComponent(isTowerComponent)
+          .addComponent(CubeCoordinateComponent, cubeCoord)
+          .addComponent(TowerTypeComponent, {value: this.towers[index].type})
         this.closeMenu(ent)
       }
     })
@@ -49,13 +68,13 @@ export default class TowerMenuControlSystem extends System {
     const state = ent.getMutableComponent(TowerMenuStateComponent)
     state.index--
     if(state.index < 0){
-      state.index = this.totalTowers - 1
+      state.index = this.towers.length - 1
     }
   }
   moveRight(ent: Entity){
     const state = ent.getMutableComponent(TowerMenuStateComponent)
     state.index++
-    if(state.index >= this.totalTowers){
+    if(state.index >= this.towers.length){
       state.index = 0
     }
   }

@@ -84,6 +84,7 @@ export default class PlayerControlSystem extends System {
             .addComponent(isTowerMenu)
             .addComponent(GamepadComponent, g)
             .addComponent(PositionComponent, p)
+            .addComponent(CubeCoordinateComponent, ent.getComponent(CubeCoordinateComponent))
 
           ent.removeComponent(InputFocus)
         }

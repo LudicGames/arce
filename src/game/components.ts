@@ -132,6 +132,10 @@ export class TowerMenuStateComponent extends SystemStateComponent {
   }
 }
 
+export class TowerTypeComponent {
+  value: string
+}
+
 export class isTowerMenu extends TagComponent {}
 
 export class isPlayerComponent extends TagComponent {}
@@ -258,6 +262,10 @@ export class CubeCoordinateComponent extends Component {
     this.x = 0
     this.y = 0
     this.z = 0
+  }
+
+  equals(other: CubeCoordinateComponent){
+    return this.x === other.x && this.y === other.y && this.z === other.z
   }
 }
 

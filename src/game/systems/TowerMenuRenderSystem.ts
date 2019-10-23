@@ -5,6 +5,7 @@ import Ludic, { Vector2 } from '@ludic/ludic'
 import { render, html } from 'lit-html'
 import { styleMap } from 'lit-html/directives/style-map'
 import { classMap } from 'lit-html/directives/class-map'
+import '/src/game/ui/styles/towerMenu.styl'
 
 export default class TowerMenuRenderSystem extends System {
 
@@ -20,7 +21,17 @@ export default class TowerMenuRenderSystem extends System {
   containerId = '#tower-menu-render-container'
   container: HTMLDivElement
 
-  towers = ['a', 'b', 'c']
+  towers = [
+    {
+      type: 'blue',
+    },
+    {
+      type: 'brown',
+    },
+    {
+      type: 'green',
+    },
+  ]
 
   init(){
     // initialize our rendering container
@@ -47,25 +58,11 @@ export default class TowerMenuRenderSystem extends System {
   }
 
   menuTemplate(ent: Entity){
+    // Styles imported above
     return html`
-      <style>
-        .tower-menu {
-          display: flex;
-        }
-        .tower {
-          width: 20px;
-          height: 20px;
-          background: blue;
-          border: 1px solid blue;
-          margin-right: 8px;
-        }
-        .tower.active {
-          border-color: red;
-        }
-      </style>
-      <div class="${this.menuClass(ent)}" style=${this.menuStyle(ent)}>
-        ${this.towers.map((name, ix) => html`
-          <div class="${this.towerItemClass(ent, ix)}">${name}</div>
+      <div class=${this.menuClass(ent)} style=${this.menuStyle(ent)}>
+        ${this.towers.map((cfg, ix) => html`
+          <div class=${this.towerItemClass(ent, ix)} data-type=${cfg.type}>${cfg.type}</div>
         `)}
       </div>
     `
@@ -75,10 +72,10 @@ export default class TowerMenuRenderSystem extends System {
     const {value: camera} = this.queries.camera.results[0].getComponent(CameraComponent)
     const pos = ent.getComponent(PositionComponent)
     const position = camera.getPixelPointFromWorldPoint(new Vector2(pos.x, pos.y))
+    const margin = 20
     return styleMap({
-      position: 'absolute',
-      left: `${position.x-40}px`,
-      top: `${position.y-50}px`,
+      left: `${position.x}px`,
+      top: `${position.y-margin}px`,
     })
   }
 

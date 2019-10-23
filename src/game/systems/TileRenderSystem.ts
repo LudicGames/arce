@@ -12,9 +12,19 @@ import { QueryType } from '/src/ecsy'
 import { Hex, cube_to_vector2, CubeCoordinate } from '../utils/Hex'
 
 export default class TileRenderSystem extends System {
+
+  canvas: OffscreenCanvas
+  context: OffscreenCanvasRenderingContext2D
+
   queries: {
     tiles: QueryType
     camera: QueryType
+  }
+
+  init(){
+    const { width, height } = Ludic.canvas.element
+    this.canvas = new OffscreenCanvas(width, height)
+    this.context = this.canvas.getContext('2d', {alpha: false})
   }
 
   execute(deltaTime: number): void {
@@ -32,7 +42,7 @@ export default class TileRenderSystem extends System {
     ctx.restore()
   }
 
-  renderTile(ctx: CanvasRenderingContext2D, tile: Entity): void {
+  renderTile(ctx: CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D, tile: Entity): void {
     const state: TileStateComponent = tile.getComponent(TileStateComponent)
     const size: number = tile.getComponent(SizeComponent).value
     const coords: CubeCoordinate = tile.getComponent(CubeCoordinateComponent)
