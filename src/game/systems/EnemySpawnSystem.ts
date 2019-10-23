@@ -10,6 +10,7 @@ import { PositionComponent,
          SpeedComponent,
          DestinationCubeComponent,
          PreviousCubeComponent,
+         CubeCoordinateComponent,
          EnemyConfigComponent
        } from '../components'
 
@@ -46,6 +47,7 @@ export default class EnemySpawnSystem extends System {
       .addComponent(MovementComponent)
       .addComponent(SizeComponent, {value: tileSize / 4})
       .addComponent(SpeedComponent, {value: .1})
+      .addComponent(CubeCoordinateComponent, cube)
       .addComponent(DestinationCubeComponent, cube)
       .addComponent(PreviousCubeComponent, cube)
       .addComponent(isEnemyComponent)

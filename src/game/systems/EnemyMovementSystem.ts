@@ -10,9 +10,8 @@ import { PositionComponent,
          isCastleComponent,
          SpeedComponent,
          DestinationCubeComponent,
-         CurrentCubeComponent,
-         PreviousCubeComponent,
          CubeCoordinateComponent,
+         PreviousCubeComponent,
        } from '../components'
 
 import { Vector2Normalize } from '../utils/Euclid'
@@ -95,6 +94,7 @@ export default class EnemyMovementSystem extends System {
       const enemySpeed: number = enemy.getComponent(SpeedComponent).value
       let enemyPositionComponent = enemy.getMutableComponent(PositionComponent)
       let enemyPosition: Vector2 = new Vector2(enemyPositionComponent.x, enemyPositionComponent.y)
+      let currentCube: CubeCoordinate = enemy.getMutableComponent(CubeCoordinateComponent)
       let destinationCube: CubeCoordinate = enemy.getMutableComponent(DestinationCubeComponent)
       let previousCube: CubeCoordinate = enemy.getMutableComponent(PreviousCubeComponent)
 
@@ -106,6 +106,13 @@ export default class EnemyMovementSystem extends System {
         diffVec = new Vector2(diffVec.x * enemySpeed, diffVec.y * enemySpeed)
         enemyPositionComponent.x += diffVec.x
         enemyPositionComponent.y += diffVec.y
+
+        let nowCube: CubeCoordinate = vector2_to_cube(enemyPositionComponent,  tileSize)
+        if(nowCube.x != currentCube.x || nowCube.y != currentCube.y || nowCube.z != currentCube.z){
+          currentCube.x = nowCube.x
+          currentCube.y = nowCube.y
+          currentCube.z = nowCube.z
+        }
       } else {
         previousCube.x = destinationCube.x
         previousCube.y = destinationCube.y

@@ -4,6 +4,7 @@ import {
   isCastleComponent,
   isTileComponent,
   SizeComponent,
+  HealthComponent,
   CubeCoordinateComponent,
 } from '../components'
 
@@ -34,6 +35,7 @@ export default class CastleRenderSystem extends System {
 
   render(ctx: CanvasRenderingContext2D, castle: Entity, tileSize: number): void {
     const size: number = castle.getComponent(SizeComponent).value
+    const health: number = castle.getComponent(HealthComponent).value
     const coords: CubeCoordinate = castle.getComponent(CubeCoordinateComponent)
     const pos: Vector2 = cube_to_vector2({x: coords.x, y: coords.y, z: coords.z}, tileSize)
     const x: number = pos.x
@@ -46,6 +48,14 @@ export default class CastleRenderSystem extends System {
     ctx.lineTo(pos.x, pos.y + (size / 2))
     ctx.lineTo(pos.x + (size / 2), pos.y - (size / 2))
     ctx.fill()
+
+
+    ctx.save()
+    ctx.font = '1px serif'
+    ctx.fillStyle = 'white'
+    ctx.scale(1, -1)
+    ctx.fillText(`${health}`, x - .3, -y + .5)
+    ctx.restore()
   }
 }
 

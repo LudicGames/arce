@@ -7,8 +7,7 @@ import { PlayerInitSystem, PlayerControlSystem, PlayerRenderSystem } from '../..
 import { TileInitSystem, TileRenderSystem, TileActivationSystem } from '../../systems'
 
 // Castle Systems
-import { CastleInitSystem, CastleRenderSystem } from '../../systems'
-import CastleDamageSystem from '../../systems/CastleDamageSystem'
+import { CastleInitSystem, CastleRenderSystem, CastleDamageSystem } from '../../systems'
 
 // Enemy Systems
 import { EnemySpawnSystem, EnemyRenderSystem, EnemyMovementSystem } from '../../systems'
@@ -87,10 +86,9 @@ export default class Level1 {
     this.engine.registerSystem(EnemyMovementSystem)
 
     this.engine.registerSystem(TileActivationSystem)
+    this.engine.registerSystem(CastleDamageSystem)
 
     // @ts-ignore
     this.engine.registerSystem(TowerFactorySystem, {priority: 1})
-
-    // this.engine.addSystem(new CastleDamageSystem())
   }
 }

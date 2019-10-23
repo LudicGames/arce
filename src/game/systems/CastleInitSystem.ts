@@ -37,6 +37,7 @@ export default class CastleInitSystem extends System {
       this.world.createEntity()
         .addComponent(isCastleComponent)
         .addComponent(SizeComponent, {value: size})
+        .addComponent(HealthComponent, {value: 10})
         .addComponent(CubeCoordinateComponent, castle.coords)
     })
 

@@ -12,7 +12,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@ludic-ui": "github:Ludic/ludic-ui",
     "@ludic/ein": "github:Ludic/ein",
     "@ludic/ludic": "github:Ludic/ludic",
     "ecsy": "^0.1.4",

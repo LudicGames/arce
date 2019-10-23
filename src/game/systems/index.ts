@@ -9,7 +9,7 @@ export { default as PlayerControlSystem } from './PlayerControlSystem'
 // Castle
 export { default as CastleInitSystem } from './CastleInitSystem'
 export { default as CastleRenderSystem } from './CastleRenderSystem'
-// export { default as CastleDamageSystem } from './CastleDamageSystem'
+export { default as CastleDamageSystem } from './CastleDamageSystem'
 
 
 
