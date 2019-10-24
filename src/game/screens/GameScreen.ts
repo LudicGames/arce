@@ -41,6 +41,15 @@ export default class GameScreen extends Screen {
     this.level.init({
       playerMap: finalData
     })
+
+    // Fired by the CastleDamageSystem
+    window.addEventListener('GAME_OVER', () => {
+      // TODO add cool stats here, from this.engine.stats()
+      console.log("GAMEOVER")
+      // @ts-ignore
+      console.log(this.engine.stats())
+      this.finish({})
+    })
   }
 
   update(delta: number, time: number){

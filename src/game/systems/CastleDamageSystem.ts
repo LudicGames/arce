@@ -39,6 +39,11 @@ export default class CastleDamageSystem extends System {
   onEnemyContact(castle: Entity, enemy: Entity){
     let castleHealth: HealthComponent = castle.getMutableComponent(HealthComponent)
     castleHealth.value--
+
+    if(castleHealth.value == 0){
+      var event = new CustomEvent("GAME_OVER", { detail: this });
+      window.dispatchEvent(event)
+    }
     enemy.remove()
   }
 }
