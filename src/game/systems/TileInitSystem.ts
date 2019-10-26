@@ -28,27 +28,41 @@ export default class TileInitSystem extends System {
     const ptm: number = camera.pixelsToMeters
     const h: number = Math.ceil(camera.height / ptm)
     const w: number = Math.ceil(camera.width / ptm)
-    const area: number = h * w
 
-    const totalTiles: number = 250
-    const tileArea: number = area / totalTiles
-    const sideLength: number = side_length_from_area(tileArea)
+    // Try to keep golden monitor ratio of 16:9
+    const x_ratio = 16 * (4/3)  // 21.33 - The horizontal distance between adjacent hexagon centers is w * 3/4
+    const y_ratio = 9           // Packing ratio is 1:1 for height
 
-    // console.log("area: ", area)
-    // console.log("tileArea: ", tileArea)
-    // console.log("sideLength: ", sideLength)
+    const multiplier = 1.25
+    const final_x = 26
+    const final_y = 12
 
-    let tileH = Math.sqrt(3) * sideLength
-    let tileW = sideLength * 2
-    let maxX = Math.ceil(w / (tileW * (3/4) + tileW)) + 1
-    let maxY = Math.ceil((h / tileH) / 2)
+    const maxX = 13
+    const minX = -13
 
-    // console.log("maxX", maxX)
-    // console.log("maxY", maxY)
+    const maxY = 6
+    const minY = -7
+
+    const tileHeight = h / (final_y - 1)
+    const tileWidth = w / (final_x * (3/4))
+
+    let sideLength = tileWidth / 2
+    // let sideLength = tileHeight / Math.sqrt(3)
+
+    // console.log(maxY)
+    // console.log(minY)
+
+    // console.log("tileHeight", tileHeight)
+    // console.log("tileWidth", tileWidth)
+    // console.log("sideLength", sideLength)
+
+    // console.log("tileHeight ratio", tileHeight / 9)
+    // console.log("tileWidth ratio", tileWidth / 16 * (3/2))
+
 
     let actualTiles = 0
-    for(let q=-maxX; q <= maxX; q++){
-      for(let r=maxY; r >= -maxY; r--){
+    for(let q=minX; q <= maxX; q++){
+      for(let r=maxY; r >= minY; r--){
         const cube: CubeCoordinate = offset_to_cube({q, r})
         actualTiles++
         this.world.createEntity()
@@ -59,7 +73,7 @@ export default class TileInitSystem extends System {
       }
     }
 
-    // console.log("actual: ", actualTiles)
+    console.log("actual: ", actualTiles)
     // map.tiles.forEach((tile: MapTile) => {
     //   this.world.createEntity()
     //     .addComponent(isTileComponent)
