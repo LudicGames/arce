@@ -3,6 +3,7 @@
 export { default as PlayerInitSystem } from './PlayerInitSystem'
 export { default as PlayerRenderSystem } from './PlayerRenderSystem'
 export { default as PlayerControlSystem } from './PlayerControlSystem'
+export { default as PlayerDamageSystem } from './PlayerDamageSystem'
 // export { default as PlayerMapControlSystem } from './PlayerMapControlSystem'
 
 
@@ -10,7 +11,6 @@ export { default as PlayerControlSystem } from './PlayerControlSystem'
 export { default as CastleInitSystem } from './CastleInitSystem'
 export { default as CastleRenderSystem } from './CastleRenderSystem'
 export { default as CastleDamageSystem } from './CastleDamageSystem'
-
 
 
 // Enemy

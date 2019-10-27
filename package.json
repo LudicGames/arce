@@ -7,12 +7,11 @@
     "dev": "parcel -p 8080 index.html --no-autoinstall --no-cache",
     "build": "parcel build index.html --out-dir docs",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "link": "npm link @ludic/ludic @ludic/ludic-ui"
+    "link": "npm link @ludic/ludic"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@ludic/ein": "github:Ludic/ein",
     "@ludic/ludic": "github:Ludic/ludic",
     "ecsy": "^0.1.4",
     "intersects": "^2.7.1",
