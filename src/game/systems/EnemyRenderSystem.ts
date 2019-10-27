@@ -32,7 +32,7 @@ export default class EnemyRenderSystem extends System {
     const pos = enemy.getComponent(PositionComponent)
     const size: number = enemy.getComponent(SizeComponent).value
 
-    ctx.fillStyle = "red"
+    ctx.fillStyle = "#FF6961"
     ctx.beginPath()
     ctx.arc(pos.x + (size / 2), pos.y + (size / 2), size, 0, Math.PI * 2)
     ctx.fill()

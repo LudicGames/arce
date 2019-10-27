@@ -15,6 +15,7 @@
     "@ludic/ein": "github:Ludic/ein",
     "@ludic/ludic": "github:Ludic/ludic",
     "ecsy": "^0.1.4",
+    "intersects": "^2.7.1",
     "lit-html": "^1.1.2",
     "src": "^1.1.2"
   },
