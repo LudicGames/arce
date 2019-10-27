@@ -47,7 +47,7 @@ export class PlayerStateComponent extends Component {
   boosting: boolean
   boostMultiplier = 1.2
   building: boolean = false
-
+  status: string = "NORMAL"
   private _speed = 0.5
 
   constructor(){

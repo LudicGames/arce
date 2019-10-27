@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@ludic/ludic": "github:Ludic/ludic",
+    "color": "^3.1.2",
     "ecsy": "^0.1.4",
     "intersects": "^2.7.1",
     "lit-html": "^1.1.2",

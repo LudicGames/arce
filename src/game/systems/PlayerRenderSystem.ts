@@ -8,13 +8,14 @@ import { PositionComponent,
        } from '../components'
 import { System, World, Entity } from 'ecsy'
 import { QueryType } from '/src/ecsy'
+import Color from 'color'
 
 export default class PlayerRenderSystem extends System {
 
   engine: World
 
   queries: {
-    entities: QueryType
+    players: QueryType
     camera: QueryType
   }
 
@@ -24,7 +25,7 @@ export default class PlayerRenderSystem extends System {
     ctx.save()
     const camera = this.queries.camera.results[0].getComponent(CameraComponent).value
     camera.drawAxes(ctx)
-    this.queries.entities.results.forEach((entity: Entity) => {
+    this.queries.players.results.forEach((entity: Entity) => {
       ctx.save()
       this.renderPlayer(ctx, entity)
       ctx.restore()
@@ -34,10 +35,16 @@ export default class PlayerRenderSystem extends System {
 
   renderPlayer(ctx: CanvasRenderingContext2D, player: Entity){
     const pos = player.getComponent(PositionComponent)
+    const state = player.getComponent(PlayerStateComponent)
     const size: number = player.getComponent(SizeComponent).value
     const mechComp = player.getComponent(MechComponent)
 
-    ctx.fillStyle = mechComp.type
+    if(state.status == "HURT"){
+      ctx.fillStyle = Color(mechComp.type).lighten(.6)
+    } else {
+      ctx.fillStyle = mechComp.type
+    }
+
     ctx.translate(pos.x, pos.y)
     ctx.beginPath()
     ctx.arc(0, 0, size, 0, Math.PI * 2)
@@ -47,6 +54,6 @@ export default class PlayerRenderSystem extends System {
 
 // @ts-ignore
 PlayerRenderSystem.queries = {
-  entities: { components: [PlayerStateComponent]},
+  players: { components: [PlayerStateComponent]},
   camera: { components: [CameraComponent]},
 }

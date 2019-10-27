@@ -1,7 +1,7 @@
 import Ludic, {Screen, Camera} from '@ludic/ludic'
 
 // Player Systems
-import { PlayerInitSystem, PlayerControlSystem, PlayerRenderSystem } from '../../systems'
+import { PlayerInitSystem, PlayerControlSystem, PlayerRenderSystem, PlayerDamageSystem } from '../../systems'
 
 // Tile Systems
 import { TileInitSystem, TileRenderSystem, TileActivationSystem } from '../../systems'
@@ -87,6 +87,7 @@ export default class Level1 {
 
     this.engine.registerSystem(TileActivationSystem)
     this.engine.registerSystem(CastleDamageSystem)
+    this.engine.registerSystem(PlayerDamageSystem)
 
     // @ts-ignore
     this.engine.registerSystem(TowerFactorySystem, {priority: 1})

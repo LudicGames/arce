@@ -1,4 +1,4 @@
-import { Vector2 } from '@ludic/ludic'
+import Ludic, { Vector2 } from '@ludic/ludic'
 import { System, World, Entity } from 'ecsy'
 import { QueryType } from '/src/ecsy'
 import {
@@ -8,6 +8,8 @@ import {
   HealthComponent,
   CubeCoordinateComponent,
   PositionComponent,
+  GamepadComponent,
+  PlayerStateComponent,
 } from '../components'
 
 import { Hex, CubeCoordinate, OffsetCoordinate, cube_all_neighbors, vector2_to_cube, cube_to_vector2 } from '../utils/Hex'
@@ -28,20 +30,33 @@ export default class PlayerDamageSystem extends System {
 
     const players: Entity[] = this.queries.players.results
     players.forEach((player: Entity) => {
-      const playerPosition: PositionComponent = player.getComponent(PositionComponent)
-      const playerSize: SizeComponent = player.getComponent(SizeComponent)
-
+      const pp: PositionComponent = player.getComponent(PositionComponent)
+      const ps: SizeComponent = player.getComponent(SizeComponent)
+      const state: PlayerStateComponent = player.getComponent(PlayerStateComponent)
+      if(state.status == "HURT") return
       enemies.forEach((enemy: Entity) => {
-        const enemyPosition: PositionComponent = enemy.getComponent(PositionComponent)
-        const enemySize: SizeComponent = enemy.getComponent(SizeComponent)
+        const ep: PositionComponent = enemy.getComponent(PositionComponent)
+        const es: SizeComponent = enemy.getComponent(SizeComponent)
 
-
+        if(circleCircle(pp.x, pp.y, ps.value, ep.x, ep.y, es.value)) this.onContact(player, enemy)
       })
     })
   }
 
   onContact(player: Entity, enemy: Entity){
-    console.log("contact")
+    const g = player.getComponent(GamepadComponent)
+    const gamepad = Ludic.input.gamepad.get(g.index)
+    gamepad.gamepad.vibrationActuator.playEffect("dual-rumble", {
+      duration: 1000, // ms
+      startDelay: 0, // ms
+      weakMagnitude:   1, // 0..1 (~left)
+      strongMagnitude: 1, // 0..1 (~right)
+    })
+    let ps: PlayerStateComponent = player.getMutableComponent(PlayerStateComponent)
+    ps.status = "HURT"
+    setTimeout(()=>{
+      ps.status = "NORMAL"
+    }, 1000)
     // let playerHealth: HealthComponent = player.getMutableComponent(HealthComponent)
     // playerHealth.value--
 

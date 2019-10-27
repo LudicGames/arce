@@ -39,8 +39,8 @@ export default class PlayerControlSystem extends System {
 
       if(p){
 
-        // player can only move if they are not building
-        if(!state.building){
+        // player can only move if they are not building and not hurt
+        if(!state.building && state.status != "HURT"){
           const playerVector = new Vector2(0,0)
           // Update the position based on gamepad actions
           if(gamepad.lx.value >= this.gamepadDeadzone) {
