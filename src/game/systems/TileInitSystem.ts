@@ -33,28 +33,28 @@ export default class TileInitSystem extends System {
     const x_ratio = 16 * (4/3)  // 21.33 - The horizontal distance between adjacent hexagon centers is w * 3/4
     const y_ratio = 9           // Packing ratio is 1:1 for height
 
-    const multiplier = 1.25
-    const final_x = 26
-    const final_y = 12
+    const multiplier = 1.7
+    const final_x = Math.round(x_ratio * multiplier)
+    const final_y = Math.round(y_ratio * multiplier)
 
-    const maxX = 13
-    const minX = -13
+    const maxX = Math.round(final_x / 2 + 1)
+    const minX = Math.round(-final_x / 2 - 1)
 
-    const maxY = 6
-    const minY = -7
+    const maxY = Math.round(final_y / 2 + 2)
+    const minY = Math.round(-final_y / 2 - 2)
 
     const tileHeight = h / (final_y - 1)
     const tileWidth = w / (final_x * (3/4))
 
+    console.log(maxX)
+    console.log(minX)
+    console.log(maxY)
+    console.log(minY)
+
+
     let sideLength = tileWidth / 2
-    // let sideLength = tileHeight / Math.sqrt(3)
+    console.log("tile size", sideLength)
 
-    // console.log(maxY)
-    // console.log(minY)
-
-    // console.log("tileHeight", tileHeight)
-    // console.log("tileWidth", tileWidth)
-    // console.log("sideLength", sideLength)
 
     // console.log("tileHeight ratio", tileHeight / 9)
     // console.log("tileWidth ratio", tileWidth / 16 * (3/2))
@@ -73,7 +73,7 @@ export default class TileInitSystem extends System {
       }
     }
 
-    console.log("actual: ", actualTiles)
+    console.log("actual tiles: ", actualTiles)
     // map.tiles.forEach((tile: MapTile) => {
     //   this.world.createEntity()
     //     .addComponent(isTileComponent)
