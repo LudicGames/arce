@@ -32,7 +32,7 @@ export default class PlayerInitSystem extends System {
     const playerConfig = this.queries.playerConfig.results[0].getComponent(PlayerConfigComponent).value
     const mapConfig: Map = this.queries.mapConfig.results[0].getComponent(MapConfigComponent).value
     const tileSize: number = this.queries.tiles.results[0].getComponent(SizeComponent).value
-    const playerSize: number = tileSize / 3
+    const playerSize: number = tileSize / 2
 
 
     Object.entries(playerConfig).forEach(([index, type]) => {

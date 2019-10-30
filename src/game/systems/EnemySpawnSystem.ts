@@ -56,7 +56,7 @@ export default class EnemySpawnSystem extends System {
     this.world.createEntity()
       .addComponent(PositionComponent, pos)
       .addComponent(MovementComponent)
-      .addComponent(SizeComponent, {value: tileSize / 4})
+      .addComponent(SizeComponent, {value: tileSize / 3})
       .addComponent(SpeedComponent, {value: .1})
       .addComponent(CubeCoordinateComponent, cube)
       .addComponent(DestinationCubeComponent, cube)

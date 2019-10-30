@@ -271,8 +271,10 @@ export class CubeCoordinateComponent extends Component {
 
 
 export class TileStateComponent extends Component {
+  type: string
   status: string
   playersOn: number
+  towersOn: number
 
   constructor(){
     super()
@@ -280,7 +282,9 @@ export class TileStateComponent extends Component {
   }
 
   reset(){
+    this.type = "grass"
     this.status = "inactive"
     this.playersOn = 0
+    this.towersOn = 0
   }
 }

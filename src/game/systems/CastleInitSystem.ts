@@ -31,7 +31,7 @@ export default class CastleInitSystem extends System {
     const mapArea: number = mapH * mapW
 
     const tileSize: number = this.queries.tiles.results[0].getComponent(SizeComponent).value
-    const size: number = tileSize / 1.5
+    const size: number = tileSize
 
     map.castles.forEach((castle: MapCastle) => {
       this.world.createEntity()
