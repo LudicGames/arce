@@ -4,7 +4,7 @@ import { GamepadComponent,
          SizeComponent,
          PlayerStateComponent,
          isTowerMenu,
-         InputFocus,
+         InputFocusComponent,
          CameraComponent
        } from '../components'
 import Ludic, { Vector2 } from '@ludic/ludic'
@@ -80,13 +80,13 @@ export default class PlayerControlSystem extends System {
           // state.building = true
           // create the tower menu and give it player control
           this.world.createEntity()
-            .addComponent(InputFocus)
+            .addComponent(InputFocusComponent)
             .addComponent(isTowerMenu)
             .addComponent(GamepadComponent, g)
             .addComponent(PositionComponent, p)
             .addComponent(CubeCoordinateComponent, ent.getComponent(CubeCoordinateComponent))
 
-          ent.removeComponent(InputFocus)
+          ent.removeComponent(InputFocusComponent)
         }
       }
     })
@@ -97,7 +97,7 @@ export default class PlayerControlSystem extends System {
       const gamepadIndex = ent.getComponent(GamepadComponent).index
       const player = this.queries.playersWithoutFocus.results.find((ent: Entity) => ent.getComponent(GamepadComponent).index == gamepadIndex)
       if(player != null){
-        player.addComponent(InputFocus)
+        player.addComponent(InputFocusComponent)
       }
     })
   }
@@ -105,10 +105,10 @@ export default class PlayerControlSystem extends System {
 
 // @ts-ignore
 PlayerControlSystem.queries = {
-  players: {components: [GamepadComponent, PositionComponent, PlayerStateComponent, InputFocus]},
-  playersWithoutFocus: {components: [PlayerStateComponent, GamepadComponent, Not(InputFocus)]},
+  players: {components: [GamepadComponent, PositionComponent, PlayerStateComponent, InputFocusComponent]},
+  playersWithoutFocus: {components: [PlayerStateComponent, GamepadComponent, Not(InputFocusComponent)]},
   towerMenusWithoutFocus: {
-    components: [isTowerMenu, GamepadComponent, Not(InputFocus)],
+    components: [isTowerMenu, GamepadComponent, Not(InputFocusComponent)],
     listen: {
       added: true,
     },

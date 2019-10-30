@@ -3,7 +3,6 @@ import { System, World, Entity } from 'ecsy'
 import { QueryType } from '/src/ecsy'
 import { Map, MapTile } from '../utils/Map'
 import { PositionComponent,
-         MovementComponent,
          isTileComponent,
          isEnemyComponent,
          SizeComponent,
@@ -55,7 +54,6 @@ export default class EnemySpawnSystem extends System {
     let cube: CubeCoordinate = vector2_to_cube(pos, tileSize)
     this.world.createEntity()
       .addComponent(PositionComponent, pos)
-      .addComponent(MovementComponent)
       .addComponent(SizeComponent, {value: tileSize / 3})
       .addComponent(SpeedComponent, {value: .1})
       .addComponent(CubeCoordinateComponent, cube)

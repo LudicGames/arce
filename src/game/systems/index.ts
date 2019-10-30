@@ -31,8 +31,6 @@ export { default as TowerFactorySystem } from './TowerFactorySystem'
 export { default as TowerMenuControlSystem } from './TowerMenuControlSystem'
 
 // Misc
-// export { default as PositionSystem } from './PositionSystem'
-// export { default as MovementSystem } from './MovementSystem'
 // export { default as CameraRenderSystem } from './CameraRenderSystem'
 // export { default as CharacterSelectRenderer } from './characterSelect/CharacterSelectRenderer'
 // export { default as CharacterSelectSystem } from './characterSelect/CharacterSelectSystem'

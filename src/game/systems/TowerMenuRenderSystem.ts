@@ -1,5 +1,12 @@
 import { System, World, Entity, Not } from 'ecsy'
-import { isTowerMenu, GamepadComponent, PlayerStateComponent, PositionComponent, CameraComponent, InputFocus, TowerMenuStateComponent } from '../components'
+import { isTowerMenu,
+         GamepadComponent,
+         PlayerStateComponent,
+         PositionComponent,
+         CameraComponent,
+         InputFocusComponent,
+         TowerMenuStateComponent
+       } from '../components'
 import { QueryType } from '/src/ecsy'
 import Ludic, { Vector2 } from '@ludic/ludic'
 import { render, html } from 'lit-html'
@@ -43,7 +50,7 @@ export default class TowerMenuRenderSystem extends System {
       uiContainer.appendChild(this.container)
     }
   }
-  
+
   execute(){
     // init state components
     this.queries.added.results.forEach(ent => {
@@ -101,7 +108,7 @@ TowerMenuRenderSystem.queries = {
     components: [isTowerMenu, Not(TowerMenuStateComponent)],
   },
   components: {
-    components: [isTowerMenu, InputFocus, TowerMenuStateComponent],
+    components: [isTowerMenu, InputFocusComponent, TowerMenuStateComponent],
     listen: {
       added: true,
       removed: true,

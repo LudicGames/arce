@@ -41,7 +41,7 @@ export default class CastleRenderSystem extends System {
     const x: number = pos.x
     const y: number = pos.y
 
-    ctx.fillStyle = "#77dd77"
+    ctx.fillStyle = "#4baea0"
 
     ctx.beginPath();
     ctx.moveTo(pos.x - (size / 2), pos.y - (size / 2))

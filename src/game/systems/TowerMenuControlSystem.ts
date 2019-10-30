@@ -4,7 +4,7 @@ import {
   PlayerStateComponent,
   isTowerMenu,
   CameraComponent,
-  InputFocus,
+  InputFocusComponent,
   TowerMenuStateComponent,
   CubeCoordinateComponent,
   isTowerComponent,
@@ -14,7 +14,6 @@ import {
 import Ludic, { Vector2 } from '@ludic/ludic'
 import TowerMenu from '../ui/towerMenu'
 import { System, Entity, World } from 'ecsy'
-import { UIComponent } from '@ludic/ludic-ui'
 import { QueryType } from '/src/ecsy'
 
 export default class TowerMenuControlSystem extends System {
@@ -61,7 +60,7 @@ export default class TowerMenuControlSystem extends System {
   }
 
   closeMenu(ent: Entity){
-    ent.removeComponent(InputFocus)
+    ent.removeComponent(InputFocusComponent)
   }
 
   moveLeft(ent: Entity){
@@ -82,5 +81,5 @@ export default class TowerMenuControlSystem extends System {
 
 // @ts-ignore
 TowerMenuControlSystem.queries = {
-  menus: {components: [isTowerMenu, GamepadComponent, InputFocus, TowerMenuStateComponent]}
+  menus: {components: [isTowerMenu, GamepadComponent, InputFocusComponent, TowerMenuStateComponent]}
 }

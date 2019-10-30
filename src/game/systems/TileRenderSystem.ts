@@ -10,11 +10,28 @@ import {
 
 import { QueryType } from '/src/ecsy'
 import { Hex, cube_to_vector2, CubeCoordinate } from '../utils/Hex'
+import Color from 'color'
 
 export default class TileRenderSystem extends System {
-
   canvas: OffscreenCanvas
   context: OffscreenCanvasRenderingContext2D
+  typeSettings: any = {
+    "grass": {
+      fillStyle: "#9cf196",
+      strokeStyle: "#FFFFFF",
+      lineWidth: .15
+    },
+    "stone": {
+      fillStyle: "#39375b",
+      strokeStyle: "#FFFFFF",
+      lineWidth: .15
+    },
+    "dirt": {
+      fillStyle: "#f0dd92",
+      strokeStyle: "#FFFFFF",
+      lineWidth: .15
+    }
+  }
 
   queries: {
     tiles: QueryType
@@ -50,15 +67,12 @@ export default class TileRenderSystem extends System {
     const x: number = pos.x
     const y: number = pos.y
 
-    ctx.lineWidth = .15
 
-    ctx.fillStyle = "#6EB5FF"
-    if(state.status == 'active'){
-      ctx.fillStyle = "#AFF8DB"
-    }
+    const settings: any = this.typeSettings[state.type]
 
-    ctx.strokeStyle = "#FFFFFF"
-
+    ctx.lineWidth   = settings.lineWidth
+    ctx.fillStyle   = state.status == "active" ? Color(settings.fillStyle).darken(.5) : settings.fillStyle
+    ctx.strokeStyle = settings.strokeStyle
 
     ctx.beginPath()
     ctx.moveTo(x + size * Math.cos(0), y + size * Math.sin(0))

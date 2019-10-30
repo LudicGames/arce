@@ -2,7 +2,6 @@ import Ludic, { Vector2 } from '@ludic/ludic'
 import { System, World, Entity } from 'ecsy'
 import { QueryType } from '/src/ecsy'
 import { PositionComponent,
-         MovementComponent,
          isTileComponent,
          isPlayerComponent,
          SizeComponent,

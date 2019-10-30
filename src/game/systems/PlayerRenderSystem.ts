@@ -1,6 +1,5 @@
 import Ludic from '@ludic/ludic'
 import { PositionComponent,
-         RenderComponent,
          PlayerStateComponent,
          CameraComponent,
          MechComponent,

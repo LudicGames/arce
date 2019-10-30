@@ -2,7 +2,6 @@ import Ludic, { Vector2 } from '@ludic/ludic'
 import { System, World, Entity } from 'ecsy'
 import { QueryType } from '/src/ecsy'
 import { PositionComponent,
-         MovementComponent,
          isTileComponent,
          isEnemyComponent,
          SizeComponent,
@@ -103,11 +102,10 @@ export default class EnemyMovementSystem extends System {
       if(Math.abs(tileCenter.x - enemyPosition.x) > .05 || Math.abs(tileCenter.y - enemyPosition.y) > .05){
         let diffVec = new Vector2(tileCenter.x - enemyPosition.x, tileCenter.y - enemyPosition.y)
         diffVec = Vector2Normalize(diffVec)
-        diffVec = new Vector2(diffVec.x * enemySpeed, diffVec.y * enemySpeed)
-        enemyPositionComponent.x += diffVec.x
-        enemyPositionComponent.y += diffVec.y
+        enemyPositionComponent.x += diffVec.x * enemySpeed
+        enemyPositionComponent.y += diffVec.y * enemySpeed
 
-        let nowCube: CubeCoordinate = vector2_to_cube(enemyPositionComponent,  tileSize)
+        let nowCube: CubeCoordinate = vector2_to_cube(new Vector2(enemyPositionComponent.x, enemyPositionComponent.y),  tileSize)
         if(nowCube.x != currentCube.x || nowCube.y != currentCube.y || nowCube.z != currentCube.z){
           currentCube.x = nowCube.x
           currentCube.y = nowCube.y

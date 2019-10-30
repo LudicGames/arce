@@ -7,12 +7,11 @@ import { MapConfigComponent,
          isPlayerComponent,
          isTileComponent,
          PositionComponent,
-         MovementComponent,
          PlayerStateComponent,
          CubeCoordinateComponent,
          SizeComponent,
          GamepadComponent,
-         InputFocus,
+         InputFocusComponent,
          MechComponent
        } from '../components'
 import { Hex, vector2_to_cube, cube_to_vector2, CubeCoordinate } from '../utils/Hex'
@@ -45,12 +44,11 @@ export default class PlayerInitSystem extends System {
       const player = this.world.createEntity()
       player.addComponent(PositionComponent, spawnPoint)
       player.addComponent(SizeComponent, {value: playerSize})
-      player.addComponent(MovementComponent)
       player.addComponent(CubeCoordinateComponent, vector2_to_cube(spawnPoint, tileSize))
       player.addComponent(PlayerStateComponent)
       player.addComponent(isPlayerComponent)
       player.addComponent(GamepadComponent, {index: parseInt(index)})
-      player.addComponent(InputFocus)
+      player.addComponent(InputFocusComponent)
       player.addComponent(MechComponent, {type})
     })
 

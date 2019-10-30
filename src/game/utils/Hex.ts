@@ -83,6 +83,14 @@ export function cube_add(a: CubeCoordinate, b:CubeCoordinate): CubeCoordinate {
   }
 }
 
+export function cube_equal(a: CubeCoordinate, b: CubeCoordinate): boolean {
+  if(a.x == b.x && a.y == b.y && a.z == b.z){
+    return true
+  } else {
+    return false
+  }
+}
+
 export function subtract(a: Hex, b: Hex): Hex {
   return new Hex(a.x - b.x, a.y - b.y, a.z - b.z, a.sideLength - b.sideLength)
 }
