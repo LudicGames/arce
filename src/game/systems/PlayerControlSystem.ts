@@ -32,7 +32,7 @@ export default class PlayerControlSystem extends System {
       const p = ent.getMutableComponent(PositionComponent)
       const size: number = ent.getMutableComponent(SizeComponent).value
       const g = ent.getComponent(GamepadComponent)
-      const tileSize: number = size * 3 // Player is 1/3 tileSize
+      const tileSize: number = size * 2 // Player is 1/2 tileSize
       const currentCube: CubeCoordinateComponent = ent.getComponent(CubeCoordinateComponent)
       const state = ent.getComponent(PlayerStateComponent)
       const gamepad = Ludic.input.gamepad.get(g.index)
