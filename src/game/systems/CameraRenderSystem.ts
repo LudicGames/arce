@@ -13,7 +13,9 @@ class CameraRenderSystem extends System {
     // const {camera} = this.engine.getSingletonComponent(CameraComponentMapper)
     this.queries.camera.results.forEach(ent => {
       const camera = ent.getComponent(CameraComponent).value
-      camera.update(Ludic.canvas.context)
+      if(Ludic.canvas.context){
+        camera.update(Ludic.canvas.context)
+      }
     })
   }
 }

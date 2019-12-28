@@ -4,7 +4,9 @@ import Ludic, {Screen, Camera} from '@ludic/ludic'
 import { PlayerInitSystem, PlayerControlSystem, PlayerRenderSystem, PlayerDamageSystem } from '../../systems'
 
 // Tile Systems
-import { TileInitSystem, TileRenderSystem, TileActivationSystem } from '../../systems'
+// import { TileInitSystem, TileRenderSystem, TileActivationSystem } from '../../systems'
+import TileInitSystem from '../../systems/TileInitSystem'
+import TileRenderSystem from '../../systems/TileRenderSystem'
 
 // Castle Systems
 import { CastleInitSystem, CastleRenderSystem, CastleDamageSystem } from '../../systems'
@@ -13,7 +15,7 @@ import { CastleInitSystem, CastleRenderSystem, CastleDamageSystem } from '../../
 import { EnemySpawnSystem, EnemyRenderSystem, EnemyMovementSystem } from '../../systems'
 
 // Tower Systems
-import { TowerFactorySystem, TowerMenuControlSystem, TowerMenuRenderSystem, TowerRenderSystem } from '../../systems'
+// import { TowerFactorySystem, TowerMenuControlSystem, TowerMenuRenderSystem, TowerRenderSystem } from '../../systems'
 
 import BackgroundRenderSystem from '../../systems/BackgroundRenderSystem'
 
@@ -68,7 +70,7 @@ export default class Level1 {
     // Init
     this.engine.registerSystem(TileInitSystem)
     this.engine.registerSystem(CastleInitSystem)
-    this.engine.registerSystem(PlayerInitSystem)
+    // this.engine.registerSystem(PlayerInitSystem)
     this.engine.registerSystem(EnemySpawnSystem)
 
     // Render
@@ -76,20 +78,20 @@ export default class Level1 {
     this.engine.registerSystem(TileRenderSystem)
     this.engine.registerSystem(CastleRenderSystem)
     this.engine.registerSystem(EnemyRenderSystem)
-    this.engine.registerSystem(TowerRenderSystem)
-    this.engine.registerSystem(PlayerRenderSystem)
+    // this.engine.registerSystem(TowerRenderSystem)
+    // this.engine.registerSystem(PlayerRenderSystem)
 
 
-    this.engine.registerSystem(TowerMenuControlSystem)
-    this.engine.registerSystem(PlayerControlSystem)
-    this.engine.registerSystem(TowerMenuRenderSystem)
+    // this.engine.registerSystem(TowerMenuControlSystem)
+    // this.engine.registerSystem(PlayerControlSystem)
+    // this.engine.registerSystem(TowerMenuRenderSystem)
     this.engine.registerSystem(EnemyMovementSystem)
 
-    this.engine.registerSystem(TileActivationSystem)
-    this.engine.registerSystem(CastleDamageSystem)
-    this.engine.registerSystem(PlayerDamageSystem)
+    // this.engine.registerSystem(TileActivationSystem)
+    // this.engine.registerSystem(CastleDamageSystem)
+    // this.engine.registerSystem(PlayerDamageSystem)
 
     // @ts-ignore
-    this.engine.registerSystem(TowerFactorySystem, {priority: 1})
+    // this.engine.registerSystem(TowerFactorySystem, {priority: 1})
   }
 }

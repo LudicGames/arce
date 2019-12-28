@@ -6,6 +6,7 @@ import BaseLevel from '../levels/BaseLevel'
 import { CameraComponent } from '../components'
 import CameraRenderSystem from '../systems/CameraRenderSystem'
 import { World } from 'ecsy'
+import * as Comlink from 'comlink'
 
 export default class GameScreen extends Screen {
   engine: World
@@ -14,12 +15,12 @@ export default class GameScreen extends Screen {
 
   constructor() {
     super()
-    this.engine = new World()
-    // this.camera = new Camera(Ludic.canvas)
+    // this.engine = new World()
+    // // this.camera = new Camera(Ludic.canvas)
 
-    // this.camera.centerWorldToCamera()
-    this.createCamera()
-    this.level = new Level1(this.engine)
+    // // this.camera.centerWorldToCamera()
+    // this.createCamera()
+    // this.level = new Level1(this.engine)
   }
 
   createCamera(){
@@ -38,24 +39,35 @@ export default class GameScreen extends Screen {
   }
 
   public onAddedToManager(manager: ScreenManager, finalData?: {[key: number]: string}) {
-    this.level.init({
-      playerMap: finalData
+
+    // const worker: any = Comlink.wrap(new Worker('../worker.ts'))
+
+    // const offscreenCanvas = Ludic.canvas.element.transferControlToOffscreen()
+
+    Ludic.workers.ui.init({
+      playerMap: finalData,
     })
 
-    // Fired by the CastleDamageSystem
-    window.addEventListener('GAME_OVER', () => {
-      // TODO add cool stats here, from this.engine.stats()
-      console.log("GAMEOVER")
-      // @ts-ignore
-      console.log(this.engine.stats())
-      this.finish({})
-    })
+    // worker.init()
+
+    // this.level.init({
+    //   playerMap: finalData
+    // })
+
+    // // Fired by the CastleDamageSystem
+    // window.addEventListener('GAME_OVER', () => {
+    //   // TODO add cool stats here, from this.engine.stats()
+    //   console.log("GAMEOVER")
+    //   // @ts-ignore
+    //   console.log(this.engine.stats())
+    //   this.finish({})
+    // })
   }
 
   update(delta: number, time: number){
-    Ludic.canvas.context.save()
-    Ludic.canvas.clear()
-    this.engine.execute(delta, time)
-    Ludic.canvas.context.restore()
+    // Ludic.canvas.context.save()
+    // Ludic.canvas.clear()
+    // this.engine.execute(delta, time)
+    // Ludic.canvas.context.restore()
   }
 }
