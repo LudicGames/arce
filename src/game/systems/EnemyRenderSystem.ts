@@ -19,13 +19,9 @@ export default class EnemyRenderSystem extends System {
     const ctx = Ludic.canvas.context
     const camera = this.queries.camera.results[0].getComponent(CameraComponent).value
 
-    ctx.save()
     this.queries.enemies.results.forEach((entity: Entity) => {
-      ctx.save()
       this.render(ctx, entity)
-      ctx.restore()
     })
-    ctx.restore()
   }
 
   render(ctx: CanvasRenderingContext2D, enemy: Entity){

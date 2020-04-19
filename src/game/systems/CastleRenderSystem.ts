@@ -22,15 +22,10 @@ export default class CastleRenderSystem extends System {
   execute(deltaTime: number): void {
     const ctx = Ludic.canvas.context
     const tileSize: number = this.queries.tiles.results[0].getComponent(SizeComponent).value
-    ctx.save()
 
     this.queries.castles.results.forEach((castle: Entity) => {
-      ctx.save()
       this.render(ctx, castle, tileSize)
-      ctx.restore()
     })
-
-    ctx.restore()
   }
 
   render(ctx: CanvasRenderingContext2D, castle: Entity, tileSize: number): void {
@@ -49,13 +44,10 @@ export default class CastleRenderSystem extends System {
     ctx.lineTo(pos.x + (size / 2), pos.y - (size / 2))
     ctx.fill()
 
-
-    ctx.save()
     ctx.font = '1px serif'
     ctx.fillStyle = 'white'
     ctx.scale(1, -1)
     ctx.fillText(`${health}`, x - .3, -y + .5)
-    ctx.restore()
   }
 }
 

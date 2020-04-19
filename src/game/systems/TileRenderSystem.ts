@@ -48,15 +48,10 @@ export default class TileRenderSystem extends System {
     const camera = this.queries.camera.results[0].getComponent(CameraComponent).value
     const ctx = Ludic.canvas.context
 
-    ctx.save()
 
     this.queries.tiles.results.forEach((tile: Entity) => {
-      ctx.save()
       this.renderTile(ctx, tile)
-      ctx.restore()
     })
-
-    ctx.restore()
   }
 
   renderTile(ctx: CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D, tile: Entity): void {
@@ -74,8 +69,11 @@ export default class TileRenderSystem extends System {
     ctx.fillStyle   = state.status == "active" ? Color(settings.fillStyle).darken(.5) : settings.fillStyle
     ctx.strokeStyle = settings.strokeStyle
 
+
+    // ctx.translate(x + size * Math.cos(0), y + size * Math.sin(0))
+
     ctx.beginPath()
-    ctx.moveTo(x + size * Math.cos(0), y + size * Math.sin(0))
+    // ctx.moveTo(x + size * Math.cos(0), y + size * Math.sin(0))
     for(let side = 0; side < 7; side++) {
       ctx.lineTo(x + size * Math.cos(side * 2 * Math.PI / 6), y + size * Math.sin(side * 2 * Math.PI / 6))
     }
@@ -84,14 +82,12 @@ export default class TileRenderSystem extends System {
 
 
     if(Ludic.debug){
-      ctx.save()
       ctx.font = '1px serif'
       ctx.fillStyle = 'white'
       ctx.scale(1, -1)
       ctx.fillText(`${coords.x}  ${coords.y}  ${coords.z}`, x - 1.5, -y)
       // ctx.fillText(`q: ${state.hex.offsetCoordinate.q}  r: ${state.hex.offsetCoordinate.r}`, x - 1.5, -y)
       // ctx.fillText(`q: ${state.hex.q} r:${state.hex.r}`, x - 1.5, -y)
-      ctx.restore()
     }
   }
 }

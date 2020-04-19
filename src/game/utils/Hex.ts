@@ -1,4 +1,5 @@
-import { Vector2 } from '@ludic/ludic'
+// import { Vector2 } from '@ludic/ludic'
+import { Vector2 } from 'three'
 
 export class Hex {
   q: number
@@ -70,6 +71,18 @@ export const cubeDirections: CubeCoordinate[] = [
   {x: -1,  y:  1,  z:  0},
   {x: -1,  y:  0,  z:  1},
 ]
+
+export function hex_vertices({x=0, y=0, size=1}={}){
+  const vertices: Array<{x: number, y: number}> = []
+  for(let side = 0; side < 7; side++) {
+    // ctx.lineTo(x + size * Math.cos(side * 2 * Math.PI / 6), y + size * Math.sin(side * 2 * Math.PI / 6))
+    vertices.push({
+      x: x + size * Math.cos(side * 2 * Math.PI / 6),
+      y: y + size * Math.sin(side * 2 * Math.PI / 6),
+    })
+  }
+  return vertices
+}
 
 export function add(a: Hex, b:Hex): Hex {
   return new Hex(a.x + b.x, a.y + b.y, a.z + b.z, a.sideLength + b.sideLength)

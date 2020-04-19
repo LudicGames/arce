@@ -12,9 +12,7 @@ export default class TowerRenderSystem extends System {
   execute() {
     const ctx = Ludic.canvas.context
     this.queries.towers.results.forEach((tower: Entity) => {
-      ctx.save()
       this.renderTower(ctx, tower)
-      ctx.restore()
     })
 
   }

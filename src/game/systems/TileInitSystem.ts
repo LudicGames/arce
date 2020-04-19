@@ -1,33 +1,55 @@
-import { Camera } from '@ludic/ludic'
+// import { Camera } from '@ludic/ludic'
 import { System, World, Entity } from 'ecsy'
 import { QueryType } from '/src/ecsy'
-import { Map, MapTile } from '../utils/Map'
+// import { Map, MapTile } from '../utils/Map'
 import { CameraComponent,
          MapConfigComponent,
          isTileComponent,
          TileStateComponent,
          SizeComponent,
          CubeCoordinateComponent,
+         PositionComponent,
        } from '../components'
 
-import { side_length_from_area, area_from_side_length, offset_to_cube, OffsetCoordinate, CubeCoordinate } from '../utils/Hex'
+import { side_length_from_area, area_from_side_length, offset_to_cube, OffsetCoordinate, CubeCoordinate, hex_vertices, cube_to_vector2 } from '../utils/Hex'
+import { ContextComponent } from '../components/ContextComponent'
+import { PerspectiveCamera, OrthographicCamera, Shape, Vector2, ShapeGeometry, MeshBasicMaterial, Mesh, Scene, WebGLRenderer, BackSide, EdgesGeometry, LineBasicMaterial, LineSegments } from 'three'
 
 export default class TileInitSystem extends System {
   enabled: boolean
   world: World
 
+  blueMaterial = new MeshBasicMaterial( { color: '#607eeb', wireframe: false} )
+  redMaterial = new MeshBasicMaterial( { color: 'red', wireframe: false} )
+  outlineMaterial = new LineBasicMaterial( { color: 'black' } )
+
+  tileShape: Shape
+  geometry: ShapeGeometry
+  outlineGeometry: EdgesGeometry
+
   queries: {
-    map: QueryType
-    camera: QueryType
+    // map: QueryType
+    context: QueryType
   }
 
   execute(deltaTime: number): void {
-    const map: Map = this.queries.map.results[0].getComponent(MapConfigComponent).value
-    const camera: Camera = this.queries.camera.results[0].getComponent(CameraComponent).value
+    // const map: Map = this.queries.map.results[0].getComponent(MapConfigComponent).value
+    // const camera: Camera = this.queries.camera.results[0].getComponent(CameraComponent).value
 
-    const ptm: number = camera.pixelsToMeters
-    const h: number = Math.ceil(camera.height / ptm)
-    const w: number = Math.ceil(camera.width / ptm)
+    const camera: OrthographicCamera = this.queries.context.results[0].getComponent(ContextComponent).camera
+    const renderer: WebGLRenderer = this.queries.context.results[0].getComponent(ContextComponent).renderer
+
+    const canvasSize = renderer.getSize(new Vector2())
+
+    // const ptm: number = renderer.pixelRatio
+    // const h: number = Math.ceil(canvasSize.y / ptm)
+    // const w: number = Math.ceil(canvasSize.x / ptm)
+    const w = camera.right - camera.left
+    const h = camera.top - camera.bottom
+
+    // console.log(ptm)
+    console.log(w, h)
+    console.log(canvasSize)
 
     // Try to keep golden monitor ratio of 16:9
     const x_ratio = 16 * (4/3)  // 21.33 - The horizontal distance between adjacent hexagon centers is w * 3/4
@@ -42,14 +64,24 @@ export default class TileInitSystem extends System {
 
     const maxY = Math.round(final_y / 2 + 2)
     const minY = Math.round(-final_y / 2 - 2)
+    // const scale = 0.8
+
+    // const minX = camera.left * scale
+    // const maxX = camera.right * scale
+    
+    // const minY = camera.bottom * scale
+    // const maxY = camera.top * scale
 
     const tileHeight = h / (final_y - 1)
     const tileWidth = w / (final_x * (3/4))
 
-    console.log(maxX)
     console.log(minX)
-    console.log(maxY)
+    console.log(maxX)
+
     console.log(minY)
+    console.log(maxY)
+
+    console.log(tileWidth, tileHeight)
 
 
     let sideLength = tileWidth / 2
@@ -59,17 +91,17 @@ export default class TileInitSystem extends System {
     // console.log("tileHeight ratio", tileHeight / 9)
     // console.log("tileWidth ratio", tileWidth / 16 * (3/2))
 
+    this.tileShape = new Shape(hex_vertices({size: sideLength}).map(({x, y})=>new Vector2(x, y)))
+    this.geometry = new ShapeGeometry(this.tileShape)
+    this.outlineGeometry = new EdgesGeometry(this.geometry)
+
 
     let actualTiles = 0
     for(let q=minX; q <= maxX; q++){
       for(let r=maxY; r >= minY; r--){
-        const cube: CubeCoordinate = offset_to_cube({q, r})
         actualTiles++
-        this.world.createEntity()
-          .addComponent(isTileComponent)
-          .addComponent(TileStateComponent)
-          .addComponent(SizeComponent, {value: sideLength})
-          .addComponent(CubeCoordinateComponent, cube)
+        const position = new Vector2(q, r)
+        this.createTile(position, sideLength)
       }
     }
 
@@ -83,10 +115,33 @@ export default class TileInitSystem extends System {
 
     this.enabled = false
   }
+
+  createTile(offset: Vector2, size: number){
+    const cubeCoord: CubeCoordinate = offset_to_cube({q: offset.x, r: offset.y})
+    const pos: Vector2 = cube_to_vector2({x: cubeCoord.x, y: cubeCoord.y, z: cubeCoord.z}, size)
+    const scene: Scene = this.queries.context.results[0].getComponent(ContextComponent).scene
+
+    let tile = new Mesh( this.geometry, this.blueMaterial )
+    tile.position.set(pos.x, pos.y, 1)
+
+    let tileOutline = new LineSegments(this.outlineGeometry, this.outlineMaterial)
+    tileOutline.position.set(pos.x, pos.y, 1)
+
+
+    this.world.createEntity()
+      .addComponent(isTileComponent)
+      // .addComponent(TileStateComponent)
+      // .addComponent(SizeComponent, {value: sideLength})
+      .addComponent(CubeCoordinateComponent, cubeCoord)
+      .addComponent(PositionComponent, pos)
+
+    scene.add( tile )
+    scene.add( tileOutline )
+  }
 }
 
 // @ts-ignore
 TileInitSystem.queries = {
-  map: { components: [MapConfigComponent], mandatory: true},
-  camera: { components: [CameraComponent], mandatory: true},
+  // map: { components: [MapConfigComponent], mandatory: true},
+  context: { components: [ContextComponent], mandatory: true},
 }
