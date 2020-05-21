@@ -1,4 +1,4 @@
-import Ludic from '@ludic/ludic'
+import Ludic, { RenderingContext2D } from '@ludic/ludic'
 import { PositionComponent,
          PlayerStateComponent,
          CameraComponent,
@@ -21,18 +21,14 @@ export default class PlayerRenderSystem extends System {
   execute(deltaTime: number): void {
     const ctx = Ludic.canvas.context
 
-    ctx.save()
     const camera = this.queries.camera.results[0].getComponent(CameraComponent).value
     camera.drawAxes(ctx)
     this.queries.players.results.forEach((entity: Entity) => {
-      ctx.save()
       this.renderPlayer(ctx, entity)
-      ctx.restore()
     })
-    ctx.restore()
   }
 
-  renderPlayer(ctx: CanvasRenderingContext2D, player: Entity){
+  renderPlayer(ctx: RenderingContext2D, player: Entity){
     const pos = player.getComponent(PositionComponent)
     const state = player.getComponent(PlayerStateComponent)
     const size: number = player.getComponent(SizeComponent).value
@@ -44,7 +40,9 @@ export default class PlayerRenderSystem extends System {
       ctx.fillStyle = mechComp.type
     }
 
+    // console.log(pos.x, pos.y)
     ctx.translate(pos.x, pos.y)
+    // ctx.translate(0, 0)
     ctx.beginPath()
     ctx.arc(0, 0, size, 0, Math.PI * 2)
     ctx.fill()

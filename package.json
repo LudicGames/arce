@@ -12,19 +12,20 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@ludic/ein": "github:Ludic/ein",
-    "@ludic/ludic": "github:Ludic/ludic",
+    "@ludic/ein": "^0.0.1",
+    "@ludic/ludic": "^0.0.1",
     "color": "^3.1.2",
     "ecsy": "^0.1.4",
     "intersects": "^2.7.1",
     "lit-html": "^1.1.2",
-    "src": "^1.1.2"
+    "src": "^1.1.2",
+    "three": "^0.115.0"
   },
   "devDependencies": {
     "@types/node": "^12.7.11",
     "parcel-bundler": "^1.12.4",
     "stylus": "^0.54.7",
-    "typescript": "^3.6.3"
+    "typescript": "^3.8.3"
   },
   "browserslist": [
     "last 1 Chrome version"
