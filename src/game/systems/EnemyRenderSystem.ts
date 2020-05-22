@@ -4,8 +4,8 @@ import { PositionComponent,
          isEnemyComponent,
          SizeComponent,
        } from '../components'
-import { System, World, Entity } from 'ecsy'
-import { QueryType } from '/src/ecsy'
+import { System, World, Entity } from '@ludic/ein'
+
 
 export default class EnemyRenderSystem extends System {
   engine: World

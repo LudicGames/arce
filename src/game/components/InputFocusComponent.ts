@@ -1,2 +1,2 @@
-import { TagComponent } from 'ecsy'
-export default class InputFocusComponent extends TagComponent {}
+import { Component } from '@ludic/ein'
+export default class InputFocusComponent extends Component {}

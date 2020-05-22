@@ -33,7 +33,7 @@ import {
 // Map and Waves
 import WavesConfig from './wavesConfig'
 import mapConfig from './mapConfig'
-import { World } from 'ecsy'
+import { World } from '@ludic/ein'
 
 
 interface LevelOptions {

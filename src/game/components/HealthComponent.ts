@@ -1,4 +1,4 @@
-import { Component } from 'ecsy'
+import { Component } from '@ludic/ein'
 
 export default class HealthComponent extends Component {
   value: number

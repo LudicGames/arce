@@ -1,5 +1,5 @@
-import { System, World, Entity } from 'ecsy'
-import { QueryType } from '/src/ecsy'
+import { System, World, Entity } from '@ludic/ein'
+
 import {
   isEnemyComponent,
   SizeComponent,

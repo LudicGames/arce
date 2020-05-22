@@ -1,4 +1,4 @@
-import { Component, TagComponent } from 'ecsy'
+import { Component } from '@ludic/ein'
 
 export { default as CameraComponent } from './CameraComponent'
 export { default as CubeCoordinateComponent } from './CubeCoordinateComponent'
@@ -19,12 +19,12 @@ export { default as TowerTypeComponent } from './TowerTypeComponent'
 
 
 // Probably bullshit that should get removed
-export class isTowerMenu extends TagComponent {}
-export class isPlayerComponent extends TagComponent {}
-export class isTowerComponent extends TagComponent {}
-export class isTileComponent extends TagComponent {}
-export class isCastleComponent extends TagComponent {}
-export class isEnemyComponent extends TagComponent {}
+export class isTowerMenu extends Component {}
+export class isPlayerComponent extends Component {}
+export class isTowerComponent extends Component {}
+export class isTileComponent extends Component {}
+export class isCastleComponent extends Component {}
+export class isEnemyComponent extends Component {}
 
 export class MapConfigComponent extends Component {
   value: any

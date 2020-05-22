@@ -1,5 +1,5 @@
-import { System, Entity } from 'ecsy'
-import { QueryType } from '/src/ecsy'
+import { System, Entity } from '@ludic/ein'
+
 import { isTowerComponent, TowerTypeComponent, CubeCoordinateComponent, isTileComponent, PositionComponent, SizeComponent } from '../components'
 import { cube_to_vector2, cube_equal } from '../utils/Hex'
 

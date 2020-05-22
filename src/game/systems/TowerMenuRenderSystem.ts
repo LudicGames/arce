@@ -1,4 +1,4 @@
-import { System, World, Entity, Not } from 'ecsy'
+import { System, World, Entity, Not } from '@ludic/ein'
 import { isTowerMenu,
          GamepadComponent,
          PlayerStateComponent,
@@ -7,7 +7,7 @@ import { isTowerMenu,
          InputFocusComponent,
          TowerMenuStateComponent
        } from '../components'
-import { QueryType } from '/src/ecsy'
+
 import Ludic, { Vector2 } from '@ludic/ludic'
 import { render, html } from 'lit-html'
 import { styleMap } from 'lit-html/directives/style-map'

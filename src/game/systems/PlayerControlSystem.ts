@@ -1,15 +1,14 @@
+import Ludic, { Vector2 } from '@ludic/ludic'
+import { System, Entity, Engine, Query } from '@ludic/ein'
+
 import { GamepadComponent,
          CubeCoordinateComponent,
          PositionComponent,
          SizeComponent,
          PlayerStateComponent,
-         isTowerMenu,
          InputFocusComponent,
          CameraComponent
        } from '../components'
-import Ludic, { Vector2 } from '@ludic/ludic'
-import { System, Entity, World, Not } from 'ecsy'
-import { QueryType } from '/src/ecsy'
 import TowerMenu from '../ui/towerMenu'
 import { Hex, vector2_to_cube, cube_to_vector2, CubeCoordinate } from '../utils/Hex'
 /**
@@ -17,9 +16,9 @@ import { Hex, vector2_to_cube, cube_to_vector2, CubeCoordinate } from '../utils/
  * player movement.
  */
 export default class PlayerControlSystem extends System {
-  world!: World
-
   gamepadDeadzone = 0.3
+
+  playerQuery: Query
 
   queries!: {
     players: QueryType

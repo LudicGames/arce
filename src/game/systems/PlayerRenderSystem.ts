@@ -5,8 +5,8 @@ import { PositionComponent,
          MechComponent,
          SizeComponent
        } from '../components'
-import { System, World, Entity } from 'ecsy'
-import { QueryType } from '/src/ecsy'
+import { System, World, Entity } from '@ludic/ein'
+
 import Color from 'color'
 
 export default class PlayerRenderSystem extends System {

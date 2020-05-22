@@ -1,7 +1,7 @@
 import Ludic, {Screen, Camera, ScreenManager} from '@ludic/ludic'
 import { Engine } from '@ludic/ein'
 
-import Level1 from '../levels/level1/level'
+// import Level1 from '../levels/level1/level'
 // import Player from '../entities/Player'
 // import BaseLevel from '../levels/BaseLevel'
 import { CameraComponent } from '../components'

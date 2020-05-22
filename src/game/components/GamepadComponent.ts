@@ -1,4 +1,4 @@
-import { Component } from 'ecsy'
+import { Component } from '@ludic/ein'
 
 export default class GamepadComponent extends Component {
   index: number

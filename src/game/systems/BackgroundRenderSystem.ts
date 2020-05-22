@@ -1,5 +1,5 @@
 import Ludic, { Camera } from '@ludic/ludic'
-import { System } from 'ecsy'
+import { System } from '@ludic/ein'
 
 export default class BackgroundRenderSystem extends System {
   public execute(delta: number, time: number): void {

@@ -1,5 +1,5 @@
 import { Camera } from '@ludic/ludic'
-import { Component } from 'ecsy'
+import { Component } from '@ludic/ein'
 
 export default class CameraComponent extends Component {
   value: Camera

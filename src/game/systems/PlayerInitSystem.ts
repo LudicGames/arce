@@ -1,6 +1,6 @@
 import { Vector2 } from '@ludic/ludic'
-import { System, World, Entity } from 'ecsy'
-import { QueryType } from '/src/ecsy'
+import { System, Engine, Entity } from '@ludic/ein'
+
 import { Map, MapTile } from '../utils/Map'
 import { MapConfigComponent,
          PlayerConfigComponent,

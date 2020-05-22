@@ -1,5 +1,5 @@
 import Ludic, { Vector2 }from '@ludic/ludic'
-import { System, World, Entity } from 'ecsy'
+import { System, Engine, Entity } from '@ludic/ein'
 import {
   isTileComponent,
   SizeComponent,
@@ -8,7 +8,6 @@ import {
   CameraComponent,
 } from '../components'
 
-import { QueryType } from '/src/ecsy'
 import { Hex, cube_to_vector2, CubeCoordinate } from '../utils/Hex'
 import Color from 'color'
 

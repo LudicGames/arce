@@ -15,11 +15,8 @@
     "@ludic/ein": "0.0.2",
     "@ludic/ludic": "^0.0.1",
     "color": "^3.1.2",
-    "ecsy": "^0.1.4",
-    "ein": "0.0.3",
     "intersects": "^2.7.1",
     "lit-html": "^1.1.2",
-    "src": "^1.1.2",
     "three": "^0.115.0"
   },
   "devDependencies": {

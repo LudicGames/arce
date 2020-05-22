@@ -1,6 +1,6 @@
-import { SystemStateComponent } from 'ecsy'
+import { Component } from '@ludic/ein'
 
-export default class TowerMenuStateComponent extends SystemStateComponent {
+export default class TowerMenuStateComponent extends Component {
   index: number
   constructor(){
     super()

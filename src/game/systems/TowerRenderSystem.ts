@@ -1,7 +1,6 @@
 import Ludic from '@ludic/ludic'
-import { System, Entity } from 'ecsy'
+import { System, Entity } from '@ludic/ein'
 import { isTowerComponent, TowerTypeComponent, PositionComponent } from '../components'
-import { QueryType } from '/src/ecsy'
 
 export default class TowerRenderSystem extends System {
 

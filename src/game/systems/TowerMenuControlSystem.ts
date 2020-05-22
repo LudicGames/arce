@@ -13,8 +13,7 @@ import {
 
 import Ludic, { Vector2 } from '@ludic/ludic'
 import TowerMenu from '../ui/towerMenu'
-import { System, Entity, World } from 'ecsy'
-import { QueryType } from '/src/ecsy'
+import { System, Entity, Engine } from '@ludic/ein'
 
 export default class TowerMenuControlSystem extends System {
 

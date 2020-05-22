@@ -1,6 +1,5 @@
 import { Camera } from '@ludic/ludic'
-import { System, World, Entity } from 'ecsy'
-import { QueryType } from '/src/ecsy'
+import { System, World, Entity } from '@ludic/ein'
 import { Map, MapCastle } from '../utils/Map'
 import { CameraComponent,
          MapConfigComponent,
