@@ -1,10 +1,9 @@
 // import { Camera } from '@ludic/ludic'
-import { System, World, Entity } from 'ecsy'
-import { QueryType } from '/src/ecsy'
+import { System, Engine, Entity, Query } from '@ludic/ein'
+
 // import { Map, MapTile } from '../utils/Map'
 import { CameraComponent,
          MapConfigComponent,
-         isTileComponent,
          TileStateComponent,
          SizeComponent,
          CubeCoordinateComponent,
@@ -16,9 +15,6 @@ import { ContextComponent } from '../components/ContextComponent'
 import { PerspectiveCamera, OrthographicCamera, Shape, Vector2, ShapeGeometry, MeshBasicMaterial, Mesh, Scene, WebGLRenderer, BackSide, EdgesGeometry, LineBasicMaterial, LineSegments } from 'three'
 
 export default class TileInitSystem extends System {
-  enabled: boolean
-  world: World
-
   blueMaterial = new MeshBasicMaterial( { color: '#607eeb', wireframe: false} )
   redMaterial = new MeshBasicMaterial( { color: 'red', wireframe: false} )
   outlineMaterial = new LineBasicMaterial( { color: 'black' } )
@@ -27,17 +23,26 @@ export default class TileInitSystem extends System {
   geometry: ShapeGeometry
   outlineGeometry: EdgesGeometry
 
-  queries: {
-    // map: QueryType
-    context: QueryType
+  contextQuery: Query
+
+  constructor(priority: number = 0, enabled: boolean = true) {
+    super(priority, enabled)
   }
 
-  execute(deltaTime: number): void {
+  onAdded(engine: Engine){
+    this.engine = engine
+    this.contextQuery = engine.createQuery({
+      name: 'context'
+    })
+  }
+
+
+  execute(delta: number, time: number): void {
     // const map: Map = this.queries.map.results[0].getComponent(MapConfigComponent).value
     // const camera: Camera = this.queries.camera.results[0].getComponent(CameraComponent).value
 
-    const camera: OrthographicCamera = this.queries.context.results[0].getComponent(ContextComponent).camera
-    const renderer: WebGLRenderer = this.queries.context.results[0].getComponent(ContextComponent).renderer
+    const camera: OrthographicCamera = this.contextQuery.entities[0].getComponent(ContextComponent).camera
+    const renderer: WebGLRenderer = this.contextQuery.entities[0].getComponent(ContextComponent).renderer
 
     const canvasSize = renderer.getSize(new Vector2())
 
@@ -68,7 +73,7 @@ export default class TileInitSystem extends System {
 
     // const minX = camera.left * scale
     // const maxX = camera.right * scale
-    
+
     // const minY = camera.bottom * scale
     // const maxY = camera.top * scale
 
@@ -119,7 +124,7 @@ export default class TileInitSystem extends System {
   createTile(offset: Vector2, size: number){
     const cubeCoord: CubeCoordinate = offset_to_cube({q: offset.x, r: offset.y})
     const pos: Vector2 = cube_to_vector2({x: cubeCoord.x, y: cubeCoord.y, z: cubeCoord.z}, size)
-    const scene: Scene = this.queries.context.results[0].getComponent(ContextComponent).scene
+    const scene: Scene = this.contextQuery.entities[0].getComponent(ContextComponent).scene
 
     let tile = new Mesh( this.geometry, this.blueMaterial )
     tile.position.set(pos.x, pos.y, 1)
@@ -128,12 +133,11 @@ export default class TileInitSystem extends System {
     tileOutline.position.set(pos.x, pos.y, 1)
 
 
-    this.world.createEntity()
-      .addComponent(isTileComponent)
-      // .addComponent(TileStateComponent)
-      // .addComponent(SizeComponent, {value: sideLength})
+    this.engine.createEntity("tile")
       .addComponent(CubeCoordinateComponent, cubeCoord)
       .addComponent(PositionComponent, pos)
+      // .addComponent(TileStateComponent)
+      // .addComponent(SizeComponent, {value: sideLength})
 
     scene.add( tile )
     scene.add( tileOutline )

@@ -1,11 +1,11 @@
 import Ludic, {Screen, Camera, ScreenManager} from '@ludic/ludic'
+import { Engine } from '@ludic/ein'
 
 import Level1 from '../levels/level1/level'
 // import Player from '../entities/Player'
 // import BaseLevel from '../levels/BaseLevel'
 import { CameraComponent } from '../components'
 import CameraRenderSystem from '../systems/CameraRenderSystem'
-import { World } from 'ecsy'
 import { Scene, PerspectiveCamera, WebGLRenderer, Raycaster, BoxGeometry, MeshBasicMaterial, Mesh, ShapeGeometry, Shape, Vector2, OrthographicCamera, Color } from 'three'
 import { WEBGL } from 'three/examples/jsm/WebGL'
 import { hex_vertices } from '../utils/Hex'
@@ -13,7 +13,7 @@ import { ContextComponent } from '../components/ContextComponent'
 import { TileInitSystem } from '../systems'
 
 export default class GameScreen extends Screen {
-  engine: World
+  engine: Engine
   // player: Player
   // level: BaseLevel
   // camera: Camera
@@ -28,7 +28,7 @@ export default class GameScreen extends Screen {
 
   constructor() {
     super()
-    this.engine = new World()
+    this.engine = new Engine()
 
     this.scene = new Scene()
 
@@ -43,13 +43,13 @@ export default class GameScreen extends Screen {
     this.renderer = new WebGLRenderer({canvas: Ludic.canvas.element, context, antialias: true})
     // this.renderer.setPixelRatio(window.devicePixelRatio)
 
-    this.engine.createEntity()
+    this.engine.createEntity("context")
       .addComponent(ContextComponent, {camera: this.camera, scene: this.scene, renderer: this.renderer})
 
     this.camera.position.z = 8
 
-    this.engine.registerSystem(TileInitSystem)
-    
+    this.engine.addSystem(TileInitSystem)
+
   }
 
   public onAddedToManager(manager: ScreenManager, finalData?: {[key: number]: string}) {
