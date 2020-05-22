@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "parcel -p 8080 index.html --no-autoinstall --no-cache",
+    "dev": "vite serve",
     "build": "parcel build index.html --out-dir docs",
     "test": "echo \"Error: no test specified\" && exit 1",
     "link": "npm link @ludic/ludic && npm link @ludic/ein"
@@ -23,7 +23,8 @@
     "@types/node": "^12.7.11",
     "parcel-bundler": "^1.12.4",
     "stylus": "^0.54.7",
-    "typescript": "^3.8.3"
+    "typescript": "^3.8.3",
+    "vite": "^0.16.6"
   },
   "browserslist": [
     "last 1 Chrome version"
