@@ -12,7 +12,28 @@ import { CameraComponent,
 
 import { side_length_from_area, area_from_side_length, offset_to_cube, OffsetCoordinate, CubeCoordinate, hex_vertices, cube_to_vector2 } from '../utils/Hex'
 import { ContextComponent } from '../components/ContextComponent'
-import { PerspectiveCamera, OrthographicCamera, Shape, Vector2, ShapeGeometry, MeshBasicMaterial, Mesh, Scene, WebGLRenderer, BackSide, EdgesGeometry, LineBasicMaterial, LineSegments } from 'three'
+import {
+  PerspectiveCamera,
+  OrthographicCamera,
+  Shape,
+  Vector2,
+  ShapeGeometry,
+  MeshBasicMaterial,
+  Mesh,
+  Scene,
+  WebGLRenderer,
+  BackSide,
+  EdgesGeometry,
+  LineBasicMaterial,
+  LineSegments,
+  ShapeBufferGeometry,
+  Matrix3,
+  Matrix4,
+  Vector3,
+  Euler,
+  Quaternion,
+  InstancedMesh,
+} from 'three'
 
 export default class TileInitSystem extends System {
   blueMaterial = new MeshBasicMaterial( { color: '#607eeb', wireframe: false} )
@@ -20,8 +41,9 @@ export default class TileInitSystem extends System {
   outlineMaterial = new LineBasicMaterial( { color: 'black' } )
 
   tileShape: Shape
-  geometry: ShapeGeometry
+  geometry: ShapeBufferGeometry
   outlineGeometry: EdgesGeometry
+  tileMesh: InstancedMesh
 
   contextQuery: Query
 
@@ -38,11 +60,9 @@ export default class TileInitSystem extends System {
 
 
   execute(delta: number, time: number): void {
-    // const map: Map = this.queries.map.results[0].getComponent(MapConfigComponent).value
-    // const camera: Camera = this.queries.camera.results[0].getComponent(CameraComponent).value
-
     const camera: OrthographicCamera = this.contextQuery.entities[0].getComponent(ContextComponent).camera
     const renderer: WebGLRenderer = this.contextQuery.entities[0].getComponent(ContextComponent).renderer
+    const scene: Scene = this.contextQuery.entities[0].getComponent(ContextComponent).scene
 
     const canvasSize = renderer.getSize(new Vector2())
 
@@ -90,62 +110,57 @@ export default class TileInitSystem extends System {
 
 
     let sideLength = tileWidth / 2
+    let totalTiles = (maxX+1 - minX) * (maxY+1 - minY)
     console.log("tile size", sideLength)
 
-
-    // console.log("tileHeight ratio", tileHeight / 9)
-    // console.log("tileWidth ratio", tileWidth / 16 * (3/2))
-
     this.tileShape = new Shape(hex_vertices({size: sideLength}).map(({x, y})=>new Vector2(x, y)))
-    this.geometry = new ShapeGeometry(this.tileShape)
+    this.geometry = new ShapeBufferGeometry(this.tileShape)
     this.outlineGeometry = new EdgesGeometry(this.geometry)
+    // This method of rendering is more performant as it batches the geometries into one mesh for one draw call
+    // https://threejs.org/docs/index.html#api/en/objects/InstancedMesh
+    this.tileMesh = new InstancedMesh(this.geometry, this.blueMaterial, totalTiles)
 
+    let outlineSegments = []
 
     let actualTiles = 0
     for(let q=minX; q <= maxX; q++){
       for(let r=maxY; r >= minY; r--){
-        actualTiles++
         const position = new Vector2(q, r)
-        this.createTile(position, sideLength)
+        const matrix = this.createTileMatix(position, sideLength)
+        // set the matrix of the geometry in the mesh at index `actualTiles`
+        this.tileMesh.setMatrixAt(actualTiles, matrix)
+
+        // create the line segments that draw the outline of each hex
+        let tileOutline = new LineSegments(this.outlineGeometry, this.outlineMaterial)
+        tileOutline.applyMatrix4(matrix)
+        outlineSegments.push(tileOutline)
+        
+        actualTiles++
       }
     }
 
-    console.log("actual tiles: ", actualTiles)
-    // map.tiles.forEach((tile: MapTile) => {
-    //   this.world.createEntity()
-    //     .addComponent(isTileComponent)
-    //     .addComponent(SizeComponent, {value: sideLength})
-    //     .addComponent(CubeCoordinateComponent, tile.coords)
-    // })
+    scene.add(this.tileMesh)
+    outlineSegments.forEach(outline => scene.add(outline))
+
+    console.log("actual tiles: ", actualTiles, totalTiles)
 
     this.enabled = false
   }
 
-  createTile(offset: Vector2, size: number){
+  createTileMatix(offset: Vector2, size: number): Matrix4 {
     const cubeCoord: CubeCoordinate = offset_to_cube({q: offset.x, r: offset.y})
     const pos: Vector2 = cube_to_vector2({x: cubeCoord.x, y: cubeCoord.y, z: cubeCoord.z}, size)
-    const scene: Scene = this.contextQuery.entities[0].getComponent(ContextComponent).scene
 
-    let tile = new Mesh( this.geometry, this.blueMaterial )
-    tile.position.set(pos.x, pos.y, 1)
+    let position = new Vector3(pos.x, pos.y, 1)
+    let rotation = new Euler()
+    let quat = new Quaternion()
+    quat.setFromEuler(rotation)
+    let scale = new Vector3(1, 1, 1)
 
-    let tileOutline = new LineSegments(this.outlineGeometry, this.outlineMaterial)
-    tileOutline.position.set(pos.x, pos.y, 1)
+    let matrix = new Matrix4()
+    matrix.compose(position, quat, scale)
 
-
-    this.engine.createEntity("tile")
-      .addComponent(CubeCoordinateComponent, cubeCoord)
-      .addComponent(PositionComponent, pos)
-      // .addComponent(TileStateComponent)
-      // .addComponent(SizeComponent, {value: sideLength})
-
-    scene.add( tile )
-    scene.add( tileOutline )
+    return matrix
   }
 }
 
-// @ts-ignore
-TileInitSystem.queries = {
-  // map: { components: [MapConfigComponent], mandatory: true},
-  context: { components: [ContextComponent], mandatory: true},
-}
