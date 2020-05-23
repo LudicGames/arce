@@ -10,7 +10,7 @@ import { Scene, PerspectiveCamera, WebGLRenderer, Raycaster, BoxGeometry, MeshBa
 import { WEBGL } from 'three/examples/jsm/WebGL'
 import { hex_vertices } from '../utils/Hex'
 import { ContextComponent } from '../components/ContextComponent'
-import { TileInitSystem } from '../systems'
+import { TileInitSystem, CastleInitSystem } from '../systems'
 
 export default class GameScreen extends Screen {
   engine: Engine
@@ -49,6 +49,7 @@ export default class GameScreen extends Screen {
     this.camera.position.z = 8
 
     this.engine.addSystem(TileInitSystem)
+    this.engine.addSystem(CastleInitSystem)
 
   }
 

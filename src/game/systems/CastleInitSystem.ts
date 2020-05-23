@@ -1,53 +1,80 @@
-import { Camera } from '@ludic/ludic'
-import { System, World, Entity } from '@ludic/ein'
-import { Map, MapCastle } from '../utils/Map'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import { System, Engine, Entity, Query } from '@ludic/ein'
 import { CameraComponent,
          MapConfigComponent,
-         isCastleComponent,
-         isTileComponent,
+         TileStateComponent,
          SizeComponent,
-         HealthComponent,
          CubeCoordinateComponent,
+         PositionComponent,
        } from '../components'
 
-export default class CastleInitSystem extends System {
-  enabled: boolean
-  world: World
+import { side_length_from_area, area_from_side_length, offset_to_cube, OffsetCoordinate, CubeCoordinate, hex_vertices, cube_to_vector2 } from '../utils/Hex'
+import { ContextComponent } from '../components/ContextComponent'
+import {
+  PerspectiveCamera,
+  OrthographicCamera,
+  Shape,
+  Vector2,
+  ShapeGeometry,
+  MeshBasicMaterial,
+  Mesh,
+  Scene,
+  WebGLRenderer,
+  BackSide,
+  EdgesGeometry,
+  LineBasicMaterial,
+  LineSegments,
+  ShapeBufferGeometry,
+  Matrix3,
+  Matrix4,
+  Vector3,
+  Euler,
+  Quaternion,
+  InstancedMesh,
+} from 'three'
 
-  queries: {
-    map: QueryType
-    camera: QueryType
-    tiles: QueryType
+export default class CastleInitSystem extends System {
+  blueMaterial = new MeshBasicMaterial( { color: '#607eeb', wireframe: false} )
+  redMaterial = new MeshBasicMaterial( { color: 'red', wireframe: false} )
+  outlineMaterial = new LineBasicMaterial( { color: 'black' } )
+
+  tileShape: Shape
+  geometry: ShapeBufferGeometry
+  outlineGeometry: EdgesGeometry
+  tileMesh: InstancedMesh
+
+  contextQuery: Query
+
+  constructor(priority: number = 0, enabled: boolean = true) {
+    super(priority, enabled)
   }
 
-  execute(deltaTime: number): void {
-    const map: Map = this.queries.map.results[0].getComponent(MapConfigComponent).value
-    const camera: Camera = this.queries.camera.results[0].getComponent(CameraComponent).value
+  onAdded(engine: Engine){
+    this.engine = engine
+    this.contextQuery = engine.createQuery({
+      name: 'context'
+    })
+  }
 
-    const ptm: number = camera.pixelsToMeters
-    const mapH: number = Math.ceil(camera.height / ptm)
-    const mapW: number = Math.ceil(camera.width / ptm)
-    const mapArea: number = mapH * mapW
 
-    const tileSize: number = this.queries.tiles.results[0].getComponent(SizeComponent).value
-    const size: number = tileSize
+  execute(delta: number, time: number): void {
+    console.log("castle init", GLTFLoader)
+    const camera: OrthographicCamera = this.contextQuery.entities[0].getComponent(ContextComponent).camera
+    const renderer: WebGLRenderer = this.contextQuery.entities[0].getComponent(ContextComponent).renderer
+    const scene: Scene = this.contextQuery.entities[0].getComponent(ContextComponent).scene
 
-    map.castles.forEach((castle: MapCastle) => {
-      this.world.createEntity()
-        .addComponent(isCastleComponent)
-        .addComponent(SizeComponent, {value: size})
-        .addComponent(HealthComponent, {value: 10})
-        .addComponent(CubeCoordinateComponent, castle.coords)
+    const canvasSize = renderer.getSize(new Vector2())
+    const w = camera.right - camera.left
+    const h = camera.top - camera.bottom
+
+
+    const loader = new GLTFLoader()
+    loader.load('./src/assets/cube.glb', function(gltf: any){
+	    scene.add(gltf.scene)
+    }, undefined, function (error: any) {
+	    console.error(error)
     })
 
-    // this System only runs once
     this.enabled = false
   }
-}
-
-// @ts-ignore
-CastleInitSystem.queries = {
-  map: { components: [MapConfigComponent], mandatory: true},
-  camera: { components: [CameraComponent], mandatory: true},
-  tiles:  { components: [isTileComponent], mandatory: true},
 }
