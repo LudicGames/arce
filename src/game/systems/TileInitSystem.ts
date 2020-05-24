@@ -34,6 +34,8 @@ import {
   Quaternion,
   InstancedMesh,
 } from 'three'
+import { BufferGeometryUtils } from 'three/BufferGeometryUtils'
+
 
 export default class TileInitSystem extends System {
   blueMaterial = new MeshBasicMaterial( { color: '#607eeb', wireframe: false} )
@@ -119,6 +121,9 @@ export default class TileInitSystem extends System {
     // This method of rendering is more performant as it batches the geometries into one mesh for one draw call
     // https://threejs.org/docs/index.html#api/en/objects/InstancedMesh
     this.tileMesh = new InstancedMesh(this.geometry, this.blueMaterial, totalTiles)
+
+    let a = BufferGeometryUtils.mergeBufferGeometries([this.outlineGeometry, this.outlineGeometry.clone()])
+    console.log(a)
 
     let outlineSegments = []
 

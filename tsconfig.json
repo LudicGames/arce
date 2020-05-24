@@ -9,7 +9,10 @@
     "target": "esnext",
     "moduleResolution": "node",
     "paths": {
-      "/*": ["./*"]
+      "/*": ["./*"],
+      // See vite.config.js for these alias defs
+      "three/BufferGeometryUtils": ["node_modules/three/examples/jsm/utils/BufferGeometryUtils"],
+      "three/WebGL": ["node_modules/three/examples/jsm/WebGL"],
     }
   },
   "include": ["./src/**/*"],

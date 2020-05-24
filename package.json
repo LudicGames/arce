@@ -17,14 +17,14 @@
     "color": "^3.1.2",
     "intersects": "^2.7.1",
     "lit-html": "^1.1.2",
-    "three": "^0.115.0"
+    "three": "^0.116.1"
   },
   "devDependencies": {
     "@types/node": "^12.7.11",
     "parcel-bundler": "^1.12.4",
     "stylus": "^0.54.7",
     "typescript": "^3.8.3",
-    "vite": "^0.16.6"
+    "vite": "^0.16.10"
   },
   "browserslist": [
     "last 1 Chrome version"
