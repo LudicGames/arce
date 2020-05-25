@@ -58,7 +58,6 @@ export default class CastleInitSystem extends System {
 
 
   execute(delta: number, time: number): void {
-    console.log("castle init", GLTFLoader)
     const camera: OrthographicCamera = this.contextQuery.entities[0].getComponent(ContextComponent).camera
     const renderer: WebGLRenderer = this.contextQuery.entities[0].getComponent(ContextComponent).renderer
     const scene: Scene = this.contextQuery.entities[0].getComponent(ContextComponent).scene
@@ -66,10 +65,12 @@ export default class CastleInitSystem extends System {
     const canvasSize = renderer.getSize(new Vector2())
     const w = camera.right - camera.left
     const h = camera.top - camera.bottom
+    renderer.setClearColor( 0xffffff, 1)
+
 
 
     const loader = new GLTFLoader()
-    loader.load('./src/assets/cube.glb', function(gltf: any){
+    loader.load('./src/assets/square.glb', function(gltf: any){
 	    scene.add(gltf.scene)
     }, undefined, function (error: any) {
 	    console.error(error)

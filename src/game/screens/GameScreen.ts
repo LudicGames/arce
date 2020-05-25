@@ -48,7 +48,7 @@ export default class GameScreen extends Screen {
 
     this.camera.position.z = 8
 
-    this.engine.addSystem(TileInitSystem)
+    // this.engine.addSystem(TileInitSystem)
     this.engine.addSystem(CastleInitSystem)
 
   }
