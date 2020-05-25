@@ -11,7 +11,6 @@ import { CameraComponent,
        } from '../components'
 
 import { side_length_from_area, area_from_side_length, offset_to_cube, OffsetCoordinate, CubeCoordinate, hex_vertices, cube_to_vector2 } from '../utils/Hex'
-import { ContextComponent } from '../components/ContextComponent'
 import {
   PerspectiveCamera,
   OrthographicCamera,
@@ -35,6 +34,8 @@ import {
   InstancedMesh,
 } from 'three'
 import { BufferGeometryUtils } from 'three/BufferGeometryUtils'
+import { RendererComponent } from '../components/RendererComponent'
+import { SceneComponent } from '../components/SceneComponent'
 
 
 export default class TileInitSystem extends System {
@@ -62,9 +63,9 @@ export default class TileInitSystem extends System {
 
 
   execute(delta: number, time: number): void {
-    const camera: OrthographicCamera = this.contextQuery.entities[0].getComponent(ContextComponent).camera
-    const renderer: WebGLRenderer = this.contextQuery.entities[0].getComponent(ContextComponent).renderer
-    const scene: Scene = this.contextQuery.entities[0].getComponent(ContextComponent).scene
+    const { camera } = this.engine.getSingletonComponent(CameraComponent)
+    const { renderer } = this.engine.getSingletonComponent(RendererComponent)
+    const { scene } = this.engine.getSingletonComponent(SceneComponent)
 
     const canvasSize = renderer.getSize(new Vector2())
 

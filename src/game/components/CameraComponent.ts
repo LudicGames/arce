@@ -1,15 +1,6 @@
-import { Camera } from '@ludic/ludic'
-import { Component } from '@ludic/ein'
+import { SingletonComponent } from '@ludic/ein'
+import { OrthographicCamera } from 'three'
 
-export default class CameraComponent extends Component {
-  value: Camera
-
-  constructor(){
-    super()
-    this.reset()
-  }
-
-  reset(){
-    this.value = null
-  }
+export default class CameraComponent extends SingletonComponent {
+  camera: OrthographicCamera
 }

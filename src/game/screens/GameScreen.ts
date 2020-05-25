@@ -9,8 +9,9 @@ import CameraRenderSystem from '../systems/CameraRenderSystem'
 import { Scene, PerspectiveCamera, WebGLRenderer, Raycaster, BoxGeometry, MeshBasicMaterial, Mesh, ShapeGeometry, Shape, Vector2, OrthographicCamera, Color } from 'three'
 import { WEBGL } from 'three/WebGL'
 import { hex_vertices } from '../utils/Hex'
-import { ContextComponent } from '../components/ContextComponent'
 import { TileInitSystem, CastleInitSystem } from '../systems'
+import { SceneComponent } from '../components/SceneComponent'
+import { RendererComponent } from '../components/RendererComponent'
 
 export default class GameScreen extends Screen {
   engine: Engine
@@ -43,8 +44,9 @@ export default class GameScreen extends Screen {
     this.renderer = new WebGLRenderer({canvas: Ludic.canvas.element, context, antialias: true})
     // this.renderer.setPixelRatio(window.devicePixelRatio)
 
-    this.engine.createEntity("context")
-      .addComponent(ContextComponent, {camera: this.camera, scene: this.scene, renderer: this.renderer})
+    this.engine.addSingletonComponent(CameraComponent, {camera: this.camera})
+    this.engine.addSingletonComponent(SceneComponent, {scene: this.scene})
+    this.engine.addSingletonComponent(RendererComponent, {renderer: this.renderer})
 
     this.camera.position.z = 8
 
