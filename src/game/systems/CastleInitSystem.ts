@@ -31,7 +31,18 @@ import {
   Euler,
   Quaternion,
   InstancedMesh,
+  Camera,
+  Group,
+  AnimationClip
 } from 'three'
+
+export interface GLTFAsset {
+  animations: AnimationClip[] // Array<THREE.AnimationClip>
+	scene: Group
+	scenes: Group[]
+	cameras:  Camera[]
+	asset: any
+}
 
 export default class CastleInitSystem extends System {
   blueMaterial = new MeshBasicMaterial( { color: '#607eeb', wireframe: false} )
@@ -67,11 +78,14 @@ export default class CastleInitSystem extends System {
     const h = camera.top - camera.bottom
     renderer.setClearColor( 0xffffff, 1)
 
-
-
     const loader = new GLTFLoader()
-    loader.load('./src/assets/square.glb', function(gltf: any){
+    loader.load('./src/assets/square.glb', function(gltf: GLTFAsset){
 	    scene.add(gltf.scene)
+      const model = gltf.scene
+      model.rotation.x = 1.00
+      model.scale.set(5, 5, 5)
+
+
     }, undefined, function (error: any) {
 	    console.error(error)
     })
