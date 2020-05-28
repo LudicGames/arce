@@ -6,7 +6,7 @@ import { Engine } from '@ludic/ein'
 // import BaseLevel from '../levels/BaseLevel'
 import { CameraComponent } from '../components'
 import CameraRenderSystem from '../systems/CameraRenderSystem'
-import { Scene, PerspectiveCamera, WebGLRenderer, Raycaster, BoxGeometry, MeshBasicMaterial, Mesh, ShapeGeometry, Shape, Vector2, OrthographicCamera, Color } from 'three'
+import { Scene, PerspectiveCamera, WebGLRenderer, Raycaster, BoxGeometry, MeshBasicMaterial, Mesh, ShapeGeometry, Shape, Vector2, OrthographicCamera, Color, PointLight, AmbientLight } from 'three'
 import { WEBGL } from 'three/WebGL'
 import { hex_vertices } from '../utils/Hex'
 import { TileInitSystem, CastleInitSystem } from '../systems'
@@ -42,6 +42,10 @@ export default class GameScreen extends Screen {
       ? Ludic.canvas.element.getContext('webgl2', { alpha: false })
       : Ludic.canvas.element.getContext('webgl', { alpha: false })
     this.renderer = new WebGLRenderer({canvas: Ludic.canvas.element, context, antialias: true})
+
+    var ambientLight = new AmbientLight( 0xffffff )
+		this.scene.add( ambientLight )
+
     // this.renderer.setPixelRatio(window.devicePixelRatio)
 
     this.engine.addSingletonComponent(CameraComponent, {camera: this.camera})
