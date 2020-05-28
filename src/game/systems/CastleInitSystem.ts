@@ -80,7 +80,7 @@ export default class CastleInitSystem extends System {
     renderer.setClearColor( 0xffffff, 1)
 
     const loader = new GLTFLoader()
-    loader.load('./src/assets/cube.glb', function(gltf: GLTFAsset){
+    loader.load('./src/assets/square.glb', function(gltf: GLTFAsset){
 	    scene.add(gltf.scene)
       const model = gltf.scene
       model.rotation.x = 1.00
